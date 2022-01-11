@@ -60,11 +60,124 @@ const farmableWoodItems = [
 ];
 
 const tomatoTool = [
-    // {}
+    {
+        name: 'Garden shears',
+        icon: 'crate',
+        description: 'Garden shears.',
+        data: {
+            durability: 25,
+            rarity: 'Common'
+        },
+    },
 ]
 const farmableTomatoItems = [
-    // {}
+    {
+        name: 'Tomato',
+        icon: 'crate',
+        description: 'Tomato',
+        data: {},
+    },
 ];
 
-export const itemLists = [farmableMiningItems, farmableWoodItems /*farmableTomatoItems*/];
-export const farmingTools = [miningTool, woodTool, /*tomatoTool*/];
+const orangeTool = [
+    {
+        name: 'Garden shears',
+        icon: 'crate',
+        description: 'Garden shears.',
+        data: {
+            durability: 25,
+            rarity: 'Common'
+        },
+    },
+]
+const farmableOrangeItems = [
+    {
+        name: 'Orange',
+        icon: 'crate',
+        description: 'Orange',
+        data: {},
+    },
+];
+
+const saladTool = [
+    {
+        name: 'Garden shears',
+        icon: 'crate',
+        description: 'Garden shears.',
+        data: {
+            durability: 25,
+            rarity: 'Common'
+        },
+    },
+]
+const farmableSaladItems = [
+    {
+        name: 'Salad',
+        icon: 'crate',
+        description: 'Salad',
+        data: {},
+    },
+];
+
+const potateTool = [
+    {
+        name: 'Garden shears',
+        icon: 'crate',
+        description: 'Garden shears.',
+        data: {
+            durability: 25,
+            rarity: 'Common'
+        },
+    },
+]
+const farmablePotateItems = [
+    {
+        name: 'Potate',
+        icon: 'crate',
+        description: 'Potate',
+        data: {},
+    },
+];
+
+const pepperTool = [
+    {
+        name: 'Garden shears',
+        icon: 'crate',
+        description: 'Garden shears.',
+        data: {
+            durability: 25,
+            rarity: 'Common'
+        },
+    },
+]
+const farmablePepperItems = [
+    {
+        name: 'Pepper',
+        icon: 'crate',
+        description: 'Pepper',
+        data: {},
+    },
+];
+
+const grapeTool = [
+    {
+        name: 'Garden shears',
+        icon: 'crate',
+        description: 'Garden shears.',
+        data: {
+            durability: 25,
+            rarity: 'Common'
+        },
+    },
+]
+const farmableGrapeItems = [
+    {
+        name: 'Grape',
+        icon: 'crate',
+        description: 'Grape',
+        data: {},
+    },
+];
+
+export const itemLists = [farmableMiningItems, farmableWoodItems, farmableTomatoItems, farmableOrangeItems, farmableSaladItems, farmablePotateItems, farmablePepperItems, farmableGrapeItems,       ];
+export const farmingTools = [miningTool, woodTool, tomatoTool, orangeTool, saladTool, potateTool, pepperTool, grapeTool,  ];

@@ -13,7 +13,7 @@ farmingTools.forEach((tool, index) => {
             behavior: ITEM_TYPE.CAN_TRADE | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK,
             data: item.data,
             dbName: item.name,
-            version: 1
+            version: 1.1
         }
         await ItemFactory.add(osFarmingTools);
         await ItemFactory.update(osFarmingTools.name, osFarmingTools);

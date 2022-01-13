@@ -62,10 +62,10 @@ export class FarmingController {
 
                         this.startFarming(player, newAnimation, itemLists[i]);
                         player.setMeta(`SpotUsed-${x}`, x);
-
+                        const farmRespawn = getRandomInt(OSFarming.minspotRespawnTime, OSFarming.maxspotRespawnTime);
                         alt.setTimeout(() => {
                             player.deleteMeta(`SpotUsed-${x}`);
-                        }, OSFarming.spotRespawnTime);
+                        }, farmRespawn);
                         return;
                     },
                 });

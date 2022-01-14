@@ -1,5 +1,6 @@
 import * as alt from 'alt-server';
 import { ANIMATION_FLAGS } from '../../../shared/flags/animationFlags';
+import { miningLocations } from '../farmingRoutes/miningRoute/miningLocations';
 import { IFarming } from '../interfaces/iFarming';
 
 // Required Tool can be null. So it will just skip all the tool checks.
@@ -7,7 +8,7 @@ import { IFarming } from '../interfaces/iFarming';
 export const farmRegistry: Array<IFarming> = [
     {
         routeName: 'Mining Route',
-        requiredTool: 'Mining Drill',
+        requiredTool: 'Mining Drill' || 'Rare Drill' || 'Epic Drill',
         isAnimation: true,
         farmDuration: 10000,
         blip: {
@@ -35,40 +36,21 @@ export const farmRegistry: Array<IFarming> = [
             name: 'base',
             flags: ANIMATION_FLAGS.REPEAT,
         },
+        attacheable: {
+            bone: 0,
+            model: '',
+            pos: { x: 0, y: 0, z: 0 } as alt.Vector3,
+            rot: { x: 0, y: 0, z: 0 } as alt.Vector3,
+        },
         spots: {
-            positions: [
-                { x: 2975.733154296875, y: 2791.59716796875, z: 40.515140533447266 - 1 } as alt.Vector3,
-                { x: 2966.3916015625, y: 2775.824462890625, z: 38.95657730102539 - 1 } as alt.Vector3,
-                { x: 2951.238037109375, y: 2770.526611328125, z: 38.99069595336914 - 1 } as alt.Vector3,
-                { x: 2937.0654296875, y: 2778.3662109375, z: 39.21839141845703 - 1 } as alt.Vector3,
-                { x: 2927.2353515625, y: 2794.62744140625, z: 40.72378921508789 - 1 } as alt.Vector3,
-                { x: 2932.526611328125, y: 2813.072021484375, z: 43.69724655151367 - 1 } as alt.Vector3,
-                { x: 2947.60986328125, y: 2817.997802734375, z: 42.51972579956055 - 1 } as alt.Vector3,
-                { x: 2966.80712890625, y: 2806.69384765625, z: 42.09012222290039 - 1 } as alt.Vector3,
-                { x: 2953.723876953125, y: 2789.539794921875, z: 41.44651794433594 - 1 } as alt.Vector3,
-            ],
+            interactionText: 'Start mining...',
+            positions: miningLocations,
         },
         outcome: {
-            common: 
-            [
-                'Iron Ore',
-                'Cooper Ore',
-                'Silver Ore',
-            ],
-            rare: [
-                'Iron Ore',
-                'Cooper Ore',
-                'Silver Ore',
-                'Gold Ore',
-            ],
-            epic: [
-                'Iron Ore',
-                'Cooper Ore',
-                'Silver Ore',
-                'Gold Ore',
-                'Titanium Ore',
-            ]
-        }
+            common: ['Iron Ore', 'Cooper Ore'],
+            rare: ['Iron Ore', 'Cooper Ore', 'Silver Ore'],
+            epic: ['Iron Ore', 'Cooper Ore', 'Silver Ore', 'Gold Ore', 'Titanium Ore'],
+        },
     },
     {
         routeName: 'Wood-Route',
@@ -81,7 +63,7 @@ export const farmRegistry: Array<IFarming> = [
             sprite: 801,
             scale: 1,
             isBlip: true,
-            position: { x: 2912.41748046875, y: 2778.765380859375, z: 44.96366882324219 - 1 } as alt.Vector3,
+            position: { x: -474.09478759765625, y: 5587.1962890625, z: 69.96195220947266 } as alt.Vector3,
         },
         marker: {
             type: 2,
@@ -101,6 +83,7 @@ export const farmRegistry: Array<IFarming> = [
             flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
+            interactionText: 'Start woodfelling...',
             positions: [
                 { x: -474.09478759765625, y: 5587.1962890625, z: 69.96195220947266 - 1 } as alt.Vector3,
                 { x: -475.7586975097656, y: 5583.57177734375, z: 70.50320434570312 - 1 } as alt.Vector3,
@@ -140,6 +123,7 @@ export const farmRegistry: Array<IFarming> = [
             flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
+            interactionText: 'Start farming...',
             positions: [
                 { x: 322.8791198730469, y: 6483.6923828125, z: 29.3304443359375 - 1 } as alt.Vector3,
                 { x: 322.79998779296875, y: 6480.93603515625, z: 29.4820556640625 - 1 } as alt.Vector3,
@@ -186,6 +170,7 @@ export const farmRegistry: Array<IFarming> = [
             flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
+            interactionText: 'Start farming...',
             positions: [
                 { x: 369.4945068359375, y: 6531.23095703125, z: 28.3868408203125 - 1 } as alt.Vector3,
                 { x: 362.017578125, y: 6531.46826171875, z: 28.3363037109375 - 1 } as alt.Vector3,
@@ -244,6 +229,7 @@ export const farmRegistry: Array<IFarming> = [
             flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
+            interactionText: 'Start farming...',
             positions: [
                 { x: 551.4066162109375, y: 6511.10791015625, z: 29.852783203125 - 1 } as alt.Vector3,
                 { x: 551.4066162109375, y: 6504.2109375, z: 29.9033203125 - 1 } as alt.Vector3,
@@ -287,6 +273,7 @@ export const farmRegistry: Array<IFarming> = [
             flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
+            interactionText: 'Start farming...',
             positions: [
                 { x: 545.1692504882812, y: 6517.60888671875, z: 29.920166015625 - 1 } as alt.Vector3,
                 { x: 545.090087890625, y: 6511.9912109375, z: 29.86962890625 - 1 } as alt.Vector3,
@@ -332,6 +319,7 @@ export const farmRegistry: Array<IFarming> = [
             flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
+            interactionText: 'Start farming...',
             positions: [
                 { x: 393.6263732910156, y: 6595.00244140625, z: 28.5047607421875 - 1 } as alt.Vector3,
                 { x: 393.982421875, y: 6602.1494140625, z: 28.5047607421875 - 1 } as alt.Vector3,
@@ -374,6 +362,7 @@ export const farmRegistry: Array<IFarming> = [
             flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
+            interactionText: 'Start farming...',
             positions: [
                 { x: -1909.6746826171875, y: 2107.60888671875, z: 130.934814453125 - 1 } as alt.Vector3,
                 { x: -1899.072509765625, y: 2106.46142578125, z: 134.3890380859375 - 1 } as alt.Vector3,
@@ -389,4 +378,3 @@ export const farmRegistry: Array<IFarming> = [
         },
     },
 ];
-

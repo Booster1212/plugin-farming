@@ -36,7 +36,15 @@ export interface IFarming {
         flags: ANIMATION_FLAGS;
     };
 
+    attacheable?: {
+        bone: number;
+        model: string;
+        pos: alt.Vector3;
+        rot: alt.Vector3;
+    };
+
     spots: {
+        interactionText?: string;
         positions: Array<alt.Vector3>;
     };
 

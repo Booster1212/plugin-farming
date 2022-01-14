@@ -96,8 +96,19 @@ export class FarmingController {
                     farmingData.outcome.common[getRandomInt(0, farmingData.outcome.common.length)],
                 );
                 const hasCommonItem = playerFuncs.inventory.isInInventory(player, { name: commonItemToAdd.name });
+
                 // Rare Items
+                const rareItemToAdd = await ItemFactory.getByName(
+                    farmingData.outcome.rare[getRandomInt(0, farmingData.outcome.rare.length)],
+                );
+                const hasRareItem = playerFuncs.inventory.isInInventory(player, { name: rareItemToAdd.name });
+
                 // Epic Items
+                const epicItemToAdd = await ItemFactory.getByName(
+                    farmingData.outcome.epic[getRandomInt(0, farmingData.outcome.epic.length)],
+                );
+                const hasEpicItem = playerFuncs.inventory.isInInventory(player, { name: epicItemToAdd.name });
+
                 const emptySlot = playerFuncs.inventory.getFreeInventorySlot(player);
                 switch (toolItem.data.rarity) {
                     case 'common': {
@@ -110,7 +121,7 @@ export class FarmingController {
                         }
 
                         player.data.inventory[hasTool.index].data.durability -= 1;
-                        if(player.data.inventory[hasTool.index].data.durability <= 1) {
+                        if (player.data.inventory[hasTool.index].data.durability <= 1) {
                             playerFuncs.inventory.findAndRemove(player, farmingData.requiredTool);
                         }
 

@@ -5,6 +5,7 @@ import { SYSTEM_EVENTS } from '../../shared/enums/system';
 import { FarmingController } from './src/controller';
 
 import './farmingLists/farmingTools';
+import './farmingLists/farmingItems';
 
 export const OSFarming = {
     name: 'OSFarming',

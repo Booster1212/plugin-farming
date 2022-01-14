@@ -1,10 +1,12 @@
 import * as alt from 'alt-server';
 import { ANIMATION_FLAGS } from '../../../shared/flags/animationFlags';
+import { Item } from '../../../shared/interfaces/item';
 
 export interface IFarming {
     routeName: string;
     requiredTool?: string;
-    isAnimation?: boolean;
+    isAnimation: boolean;
+    farmDuration: number;
 
     blip?: {
         text: string;
@@ -23,6 +25,8 @@ export interface IFarming {
             b: number;
             a: number;
         };
+        bobUpAndDown: boolean;
+        rotate: boolean;
         isMarker: boolean;
     };
 
@@ -30,10 +34,15 @@ export interface IFarming {
         dict: string;
         name: string;
         flags: ANIMATION_FLAGS;
-        duration: number;
     };
 
     spots: {
         positions: Array<alt.Vector3>;
     };
+
+    outcome?: {
+        common: Array<string>;
+        rare: Array<string>;
+        epic: Array<string>;
+    }
 }

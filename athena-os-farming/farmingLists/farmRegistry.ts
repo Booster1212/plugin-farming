@@ -9,6 +9,7 @@ export const farmRegistry: Array<IFarming> = [
         routeName: 'Mining Route',
         requiredTool: 'Mining Drill',
         isAnimation: true,
+        farmDuration: 10000,
         blip: {
             text: 'Miners Place',
             color: 40,
@@ -25,13 +26,14 @@ export const farmRegistry: Array<IFarming> = [
                 b: 0,
                 a: 255,
             },
+            bobUpAndDown: true,
+            rotate: true,
             isMarker: true,
         },
         animation: {
             dict: 'amb@world_human_gardener_plant@male@base',
             name: 'base',
-            flags: ANIMATION_FLAGS.NORMAL,
-            duration: 30000
+            flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
             positions: [
@@ -46,11 +48,33 @@ export const farmRegistry: Array<IFarming> = [
                 { x: 2953.723876953125, y: 2789.539794921875, z: 41.44651794433594 - 1 } as alt.Vector3,
             ],
         },
+        outcome: {
+            common: 
+            [
+                'Iron Ore',
+                'Cooper Ore',
+                'Silver Ore',
+            ],
+            rare: [
+                'Iron Ore',
+                'Cooper Ore',
+                'Silver Ore',
+                'Gold Ore',
+            ],
+            epic: [
+                'Iron Ore',
+                'Cooper Ore',
+                'Silver Ore',
+                'Gold Ore',
+                'Titanium Ore',
+            ]
+        }
     },
     {
         routeName: 'Wood-Route',
         requiredTool: 'Woodfellers Axe',
         isAnimation: true,
+        farmDuration: 60000,
         blip: {
             text: 'Woodfellers Place',
             color: 56,
@@ -67,13 +91,14 @@ export const farmRegistry: Array<IFarming> = [
                 b: 0,
                 a: 255,
             },
+            bobUpAndDown: true,
+            rotate: true,
             isMarker: true,
         },
         animation: {
             dict: 'amb@world_human_gardener_plant@male@base',
             name: 'base',
-            flags: ANIMATION_FLAGS.NORMAL,
-            duration: 30000
+            flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
             positions: [
@@ -88,6 +113,7 @@ export const farmRegistry: Array<IFarming> = [
         routeName: 'Tomato-Route',
         requiredTool: 'Garden Shears',
         isAnimation: true,
+        farmDuration: 60000,
         blip: {
             text: 'Tomato Plantation',
             color: 1,
@@ -104,13 +130,14 @@ export const farmRegistry: Array<IFarming> = [
                 b: 0,
                 a: 255,
             },
+            bobUpAndDown: true,
+            rotate: true,
             isMarker: true,
         },
         animation: {
             dict: 'amb@world_human_gardener_plant@male@base',
             name: 'base',
-            flags: ANIMATION_FLAGS.NORMAL,
-            duration: 30000
+            flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
             positions: [
@@ -132,6 +159,7 @@ export const farmRegistry: Array<IFarming> = [
         routeName: 'Orange-Route',
         requiredTool: 'Garden Shears',
         isAnimation: true,
+        farmDuration: 60000,
         blip: {
             text: 'Orange Plantation',
             color: 17,
@@ -148,13 +176,14 @@ export const farmRegistry: Array<IFarming> = [
                 b: 0,
                 a: 255,
             },
+            bobUpAndDown: true,
+            rotate: true,
             isMarker: true,
         },
         animation: {
             dict: 'amb@world_human_gardener_plant@male@base',
             name: 'base',
-            flags: ANIMATION_FLAGS.NORMAL,
-            duration: 30000
+            flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
             positions: [
@@ -188,6 +217,7 @@ export const farmRegistry: Array<IFarming> = [
         routeName: 'Salad-Route',
         requiredTool: 'Garden Shears',
         isAnimation: true,
+        farmDuration: 60000,
         blip: {
             text: 'Salad Plantation',
             color: 2,
@@ -204,13 +234,14 @@ export const farmRegistry: Array<IFarming> = [
                 b: 0,
                 a: 255,
             },
+            bobUpAndDown: true,
+            rotate: true,
             isMarker: true,
         },
         animation: {
             dict: 'amb@world_human_gardener_plant@male@base',
             name: 'base',
-            flags: ANIMATION_FLAGS.NORMAL,
-            duration: 30000
+            flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
             positions: [
@@ -229,6 +260,7 @@ export const farmRegistry: Array<IFarming> = [
         routeName: 'Salad-Route',
         requiredTool: 'Garden Shears',
         isAnimation: true,
+        farmDuration: 60000,
         blip: {
             text: 'Potato Plantation',
             color: 21,
@@ -245,13 +277,14 @@ export const farmRegistry: Array<IFarming> = [
                 b: 0,
                 a: 255,
             },
+            bobUpAndDown: true,
+            rotate: true,
             isMarker: true,
         },
         animation: {
             dict: 'amb@world_human_gardener_plant@male@base',
             name: 'base',
-            flags: ANIMATION_FLAGS.NORMAL,
-            duration: 30000
+            flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
             positions: [
@@ -272,6 +305,7 @@ export const farmRegistry: Array<IFarming> = [
         routeName: 'Pepper-Route',
         requiredTool: 'Garden Shears',
         isAnimation: true,
+        farmDuration: 60000,
         blip: {
             text: 'Pepper Plantation',
             color: 25,
@@ -288,13 +322,14 @@ export const farmRegistry: Array<IFarming> = [
                 b: 0,
                 a: 255,
             },
+            bobUpAndDown: true,
+            rotate: true,
             isMarker: true,
         },
         animation: {
             dict: 'amb@world_human_gardener_plant@male@base',
             name: 'base',
-            flags: ANIMATION_FLAGS.NORMAL,
-            duration: 30000
+            flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
             positions: [
@@ -312,6 +347,7 @@ export const farmRegistry: Array<IFarming> = [
         routeName: 'Grape-Route',
         requiredTool: 'Garden Shears',
         isAnimation: true,
+        farmDuration: 60000,
         blip: {
             text: 'Grape Plantation',
             color: 58,
@@ -328,13 +364,14 @@ export const farmRegistry: Array<IFarming> = [
                 b: 0,
                 a: 255,
             },
+            bobUpAndDown: true,
+            rotate: true,
             isMarker: true,
         },
         animation: {
             dict: 'amb@world_human_gardener_plant@male@base',
             name: 'base',
-            flags: ANIMATION_FLAGS.NORMAL,
-            duration: 30000
+            flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
             positions: [

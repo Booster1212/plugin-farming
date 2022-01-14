@@ -5,7 +5,7 @@ import { Item } from "../../../shared/interfaces/item";
 export const farmingTools: Array<Item> = [
     {
         name: 'Mining Drill',
-        icon: 'drill',
+        icon: 'crate',
         description: 'Some example description.',
         behavior: ITEM_TYPE.CAN_DROP, 
         quantity: 1,
@@ -14,7 +14,7 @@ export const farmingTools: Array<Item> = [
             durability: 25,
         },
         dbName: 'OS-Farming-Drill',
-        version: 1
+        version: 2
     },
     {
         name: 'Woodfellers Axe',
@@ -46,9 +46,6 @@ export const farmingTools: Array<Item> = [
 
 for(let x = 0; x < farmingTools.length; x ++) {
     await ItemFactory.add(farmingTools[x]);
-    
-    const needsUpdate = await ItemFactory.get(farmingTools[x].dbName);
-    if(needsUpdate.version != farmingTools[x].version) {
-        await ItemFactory.update(farmingTools[x].dbName, farmingTools[x]); 
-    }
+    await ItemFactory.update(farmingTools[x].dbName, farmingTools[x]);
 }
+// 

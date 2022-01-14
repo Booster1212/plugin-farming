@@ -14,7 +14,10 @@ export const OSFarming = {
     interactionRange: 1,
     minFarmDuration: 5000, // In Milliseconds.. each spot takes 5 seconds to farm, so.
     maxFarmDuration: 15000,
-    spotRespawnTime: 180000, // Should be higher then maxFarmDuration (3 Minutes default)
+  //  spotRespawnTime: 180000, // Should be higher then maxFarmDuration (3 Minutes default)
+    minspotRespawnTime: 60000, // Should be higher then maxFarmDuration (1 Minutes default)
+    maxspotRespawnTime: 1800000, // Should be higher then maxFarmDuration (3 Minutes default)
+
 }
 
 PluginSystem.registerPlugin(OSFarming.name, () => {

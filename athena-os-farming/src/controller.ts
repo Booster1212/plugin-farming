@@ -49,7 +49,7 @@ export class FarmingController {
                 }
 
                 InteractionController.add({
-                    description: 'Start Farming...',
+                    description: farmRegistry[x].spots.interactionText,
                     position: farmRegistry[x].spots.positions[spot],
                     callback: (player: alt.Player) => {
                         this.handleFarming(player, farmRegistry[x], farmRegistry[x].spots.positions[spot]);
@@ -68,13 +68,20 @@ export class FarmingController {
                 return;
             }
 
-            if (player.getMeta(`SpotUsed-${antiMacro}`) === true) {
-                playerFuncs.emit.notification(player, `Already used this spot before...`); // ADD TRANSLATION
+            if (player.getMeta(`IsFarming`) === true) {
                 return;
             }
+            if (player.getMeta(`Spotused-${antiMacro.x}`) === antiMacro.x) {
+                playerFuncs.emit.notification(player, `[ANTIMACRO] - Already used this spot before.`);
+                return;
+            }
+            player.setMeta(`Spotused-${antiMacro.x}`, antiMacro.x);
+            player.setMeta(`IsFarming`, true);
 
-            // Player probably has the required tool. Continue.
-            player.setMeta(`SpotUsed-${antiMacro}`, true);
+            alt.setTimeout(() => {
+                player.deleteMeta(`Spotused-${antiMacro.x}`);
+            }, getRandomInt(60000, 180000));
+
             playerFuncs.emit.animation(
                 player,
                 farmingData.animation.dict,
@@ -84,23 +91,29 @@ export class FarmingController {
             );
 
             alt.setTimeout(async () => {
-                const itemToAdd = await ItemFactory.getByName(
+                // Common Items
+                const commonItemToAdd = await ItemFactory.getByName(
                     farmingData.outcome.common[getRandomInt(0, farmingData.outcome.common.length)],
                 );
+                const hasCommonItem = playerFuncs.inventory.isInInventory(player, { name: commonItemToAdd.name });
+                // Rare Items
+                // Epic Items
                 const emptySlot = playerFuncs.inventory.getFreeInventorySlot(player);
-                const hasItem = playerFuncs.inventory.isInInventory(player, itemToAdd);
                 switch (toolItem.data.rarity) {
                     case 'common': {
-                        if(!hasItem) {
-                            playerFuncs.inventory.inventoryAdd(
-                                player,
-                                itemToAdd,
-                                emptySlot.slot,
-                            );
+                        if (!hasCommonItem) {
+                            playerFuncs.inventory.inventoryAdd(player, commonItemToAdd, emptySlot.slot);
+                            playerFuncs.emit.notification(player, `You've found ${commonItemToAdd.name}!`);
                         } else {
-                            player.data.inventory[hasItem.index].quantity += 1;
+                            player.data.inventory[hasCommonItem.index].quantity += 1;
+                            playerFuncs.emit.notification(player, `You've found ${commonItemToAdd.name}!`);
                         }
+
                         player.data.inventory[hasTool.index].data.durability -= 1;
+                        if(player.data.inventory[hasTool.index].data.durability <= 1) {
+                            playerFuncs.inventory.findAndRemove(player, farmingData.requiredTool);
+                        }
+
                         playerFuncs.save.field(player, 'inventory', player.data.inventory);
                         playerFuncs.sync.inventory(player);
                         break;
@@ -115,13 +128,8 @@ export class FarmingController {
                         break;
                     }
                 }
+                player.deleteMeta(`IsFarming`);
             }, farmingData.farmDuration);
-
-            alt.setTimeout(() => {
-                player.deleteMeta(`SpotUsed-${antiMacro}`);
-            }, getRandomInt(60000, 180000));
-
-            alt.log(antiMacro);
         }
     }
 }

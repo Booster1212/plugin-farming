@@ -91,54 +91,44 @@ export class FarmingController {
             );
 
             alt.setTimeout(async () => {
-                // Common Items
-                const commonItemToAdd = await ItemFactory.getByName(
-                    farmingData.outcome.common[getRandomInt(0, farmingData.outcome.common.length)],
-                );
-                const hasCommonItem = playerFuncs.inventory.isInInventory(player, { name: commonItemToAdd.name });
-
-                // Rare Items
-                const rareItemToAdd = await ItemFactory.getByName(
-                    farmingData.outcome.rare[getRandomInt(0, farmingData.outcome.rare.length)],
-                );
-                const hasRareItem = playerFuncs.inventory.isInInventory(player, { name: rareItemToAdd.name });
-
-                // Epic Items
-                const epicItemToAdd = await ItemFactory.getByName(
-                    farmingData.outcome.epic[getRandomInt(0, farmingData.outcome.epic.length)],
-                );
-                const hasEpicItem = playerFuncs.inventory.isInInventory(player, { name: epicItemToAdd.name });
-
-                const emptySlot = playerFuncs.inventory.getFreeInventorySlot(player);
-                switch (toolItem.data.rarity) {
-                    case 'common': {
-                        if (!hasCommonItem) {
-                            playerFuncs.inventory.inventoryAdd(player, commonItemToAdd, emptySlot.slot);
-                            playerFuncs.emit.notification(player, `You've found ${commonItemToAdd.name}!`);
-                        } else {
-                            player.data.inventory[hasCommonItem.index].quantity += 1;
-                            playerFuncs.emit.notification(player, `You've found ${commonItemToAdd.name}!`);
-                        }
-
-                        player.data.inventory[hasTool.index].data.durability -= 1;
-                        if (player.data.inventory[hasTool.index].data.durability <= 1) {
-                            playerFuncs.inventory.findAndRemove(player, farmingData.requiredTool);
-                        }
-
-                        playerFuncs.save.field(player, 'inventory', player.data.inventory);
-                        playerFuncs.sync.inventory(player);
-                        break;
-                    }
-                    case 'rare': {
-                        break;
-                    }
-                    case 'epic': {
-                        break;
-                    }
+                let outcomeList = [];
+                let epicness = 'common';
+                let allItems = playerFuncs.inventory.getAllItems(player).filter(i=>i.name===farmingData.requiredTool && i.data.rarity);
+                if (allItems.some(i =>i.data.rarity==='epic')){
+                    epicness = 'epic';
+                } else if (allItems.some(i =>i.data.rarity==='rare')){
+                    epicness = 'rare';
+                }
+                switch (epicness) {
+                    case 'epic':
+                        outcomeList.push(farmingData.outcome.epic);
+                    case 'rare':
+                        outcomeList.push(farmingData.outcome.rare);
+                    case 'common':
                     default: {
+                        outcomeList.push(farmingData.outcome.common);
                         break;
                     }
                 }
+                const itemToAdd = await ItemFactory.getByName(
+                    outcomeList[getRandomInt(0, outcomeList.length)]);
+                const hasItem = playerFuncs.inventory.isInInventory(player, { name: itemToAdd.name });
+                const emptySlot = playerFuncs.inventory.getFreeInventorySlot(player);
+                if (!hasItem) {
+                    playerFuncs.inventory.inventoryAdd(player, itemToAdd, emptySlot.slot);
+                    playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
+                } else {
+                    player.data.inventory[hasItem.index].quantity += 1;
+                    playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
+                }
+
+                player.data.inventory[hasTool.index].data.durability -= 1;
+                if (player.data.inventory[hasTool.index].data.durability <= 1) {
+                    playerFuncs.inventory.findAndRemove(player, farmingData.requiredTool);
+                }
+
+                playerFuncs.save.field(player, 'inventory', player.data.inventory);
+                playerFuncs.sync.inventory(player);
                 player.deleteMeta(`IsFarming`);
             }, farmingData.farmDuration);
         }

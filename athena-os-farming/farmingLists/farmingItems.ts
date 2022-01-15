@@ -136,18 +136,6 @@ export const farmingItems: Array<Item> = [
         version: 1 
     },
     {
-        name: '',
-        icon: 'crate',
-        description: 'Some example description.',
-        behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_TRADE, 
-        quantity: 1,
-        data: {
-            rarity: 'common',
-        },
-        dbName: 'OS-Farming-',
-        version: 1 
-    },
-    {
         name: 'Pepper',
         icon: 'crate',
         description: 'Some example description.',

@@ -7,6 +7,7 @@ import { ItemFactory } from '../../../server/systems/item';
 import { farmRegistry } from '../farmingLists/farmRegistry';
 import { IFarming } from '../interfaces/iFarming';
 import { OSFARMING_TRANSLATIONS } from './translations';
+import {ItemSpecial} from "../../../shared/interfaces/item";
 
 export class FarmingController {
     /**
@@ -92,14 +93,17 @@ export class FarmingController {
 
             alt.setTimeout(async () => {
                 let outcomeList = [];
-                let epicness = 'common';
-                let allItems = playerFuncs.inventory.getAllItems(player).filter(i=>i.name===farmingData.requiredTool && i.data.rarity);
-                if (allItems.some(i =>i.data.rarity==='epic')){
-                    epicness = 'epic';
-                } else if (allItems.some(i =>i.data.rarity==='rare')){
-                    epicness = 'rare';
+                let allItems = playerFuncs.inventory.getAllItems(player).filter(i=>i.name===farmingData.requiredTool && i.data.rarity && i.data.durability > 0);
+
+                let currentTool:ItemSpecial = allItems.find(i => i.data.rarity === 'epic');
+                if (!currentTool) {
+                    currentTool = allItems.find(i => i.data.rarity === 'rare')
                 }
-                switch (epicness) {
+                if (!currentTool) {
+                    currentTool = allItems.find(i => i.data.rarity === 'common')
+                }
+
+                switch (currentTool.data.rarity) {
                     case 'epic':
                         outcomeList.push(farmingData.outcome.epic);
                     case 'rare':
@@ -121,10 +125,15 @@ export class FarmingController {
                     player.data.inventory[hasItem.index].quantity += 1;
                     playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
                 }
-
-                player.data.inventory[hasTool.index].data.durability -= 1;
-                if (player.data.inventory[hasTool.index].data.durability <= 1) {
+                currentTool.data.durability -= 1;
+                if (currentTool.data.durability <= 1) {
                     playerFuncs.inventory.findAndRemove(player, farmingData.requiredTool);
+                } else if (currentTool.isEquipment) {
+                    player.data.equipment[currentTool.dataIndex].data.durability = currentTool.data.durability;
+                } else if (currentTool.isInventory) {
+                    player.data.inventory[currentTool.dataIndex].data.durability = currentTool.data.durability;
+                } else if (currentTool.isToolbar) {
+                    player.data.toolbar[currentTool.dataIndex].data.durability = currentTool.data.durability;
                 }
 
                 playerFuncs.save.field(player, 'inventory', player.data.inventory);

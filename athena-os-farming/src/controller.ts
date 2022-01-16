@@ -7,9 +7,10 @@ import {ItemFactory} from '../../../server/systems/item';
 import {farmRegistry} from '../farmingLists/farmRegistry';
 import {IFarming} from '../interfaces/iFarming';
 import {OSFARMING_TRANSLATIONS} from './translations';
-import {ItemSpecial} from '../../../shared/interfaces/item';
+import {Item, ItemSpecial} from '../../../shared/interfaces/item';
 import IAttachable from '../../../shared/interfaces/iAttachable';
 import {Particle} from '../../../shared/interfaces/particle';
+import {getClosestVectorByPos} from "../../../shared/utility/vector";
 
 export class FarmingController {
     /**
@@ -53,39 +54,24 @@ export class FarmingController {
                     });
                 }
 
-                InteractionController.add({
-                    description: currentFarm.spots.interactionText,
-                    position: currentFarm.spots.positions[spot],
-                    callback: (player: alt.Player) => {
-                        this.handleFarming(player, currentFarm, currentFarm.spots.positions[spot]);
-                    },
-                });
             }
         }
+        alt.on('OSFarming:Server:handleFarming', (player: alt.Player, item: Item, inventorySlot: number) => {
+            farmRegistry.foreach(farm => {
+                if (farm.requiredTool.includes(item.name)) {
+                    farm.spots.positions.foreach(farmimngSpot => {
+                        if (player.pos.isInRange(farmimngSpot, 3.5)) {
+                            FarmingController.handleFarming(player, item, farm, farmimngSpot)
+                            return;
+                        }
+                    })
+                }
+            })
+            playerFuncs.emit.notification(player, `You can't use this item here!`);
+        })
     }
 
-    static async handleFarming(player: alt.Player, farmingData: IFarming, antiMacro: alt.Vector3) {
-
-        let toolToUse;
-        //Brauchen wir ein Werkzeug? Nicht immer!
-        if (farmingData.requiredTool) {
-            //Falls wir ein Werkzeug brauchen, suchen wir es uns im Inventar
-            //Lade alle Tools mit dem requiredTool-Namen aus dem Inventar:
-            playerFuncs.inventory.getAllItems(player).filter((item) => item.name === farmingData.requiredTool && item.data.durability > 0)
-                .forEach(searchTool => {
-                    if (!toolToUse || searchTool.rarity && !toolToUse.rarity || searchTool.rarity > toolToUse.rarity){
-                        //Wenn wir noch kein tool haben, oder wenn das Tool was wir haben keine oder eine schlechtere Rarity hat als das gefundene Tool,
-                        // dann nehmen wir das neue Tool:
-                        toolToUse=searchTool;
-                    }
-                });
-
-            //Kein tool gefunden?
-            if (!toolToUse) {
-                playerFuncs.emit.notification(player, OSFARMING_TRANSLATIONS.NO_TOOL);
-                return;
-            }
-        }
+    static async handleFarming(player: alt.Player, toolToUse: Item, farmingData: IFarming, antiMacro: alt.Vector3) {
 
         if (player.getMeta(`IsFarming`) === true) {
             return;
@@ -134,7 +120,7 @@ export class FarmingController {
             let outcomeList = [];
 
             //Wenn wir kein Tool brauchen/haben, nehmen wir auch die common-Liste
-            if ((!toolToUse || toolToUse.rarity === 0 || toolToUse.rarity < 3) && farmingData.outcome.common) {
+            if ((!toolToUse.rarity || toolToUse.rarity === 0 || toolToUse.rarity < 3) && farmingData.outcome.common) {
                 outcomeList.push(farmingData.outcome.common);
             }
 
@@ -180,21 +166,26 @@ export class FarmingController {
                 playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
             }
 
-            if (toolToUse) {
-                //Falls wir ein Tool benutzt haben, müssen wir den verbrauch noch anpassen
-                toolToUse.data.durability -= 1;
-                if (toolToUse.data.durability <= 1) {
-                    playerFuncs.inventory.findAndRemove(player, farmingData.requiredTool[toolToUse.dataIndex]);
-                } else if (toolToUse.isEquipment) {
-                    player.data.equipment[toolToUse.dataIndex].data.durability = toolToUse.data.durability;
-                } else if (toolToUse.isInventory) {
-                    player.data.inventory[toolToUse.dataIndex].data.durability = toolToUse.data.durability;
-                } else if (toolToUse.isToolbar) {
-                    player.data.toolbar[toolToUse.dataIndex].data.durability = toolToUse.data.durability;
+            toolToUse.data.durability -= 1
+            let toolbarItem = playerFuncs.inventory.isInToolbar(player, toolToUse)
+            if (toolbarItem) {
+                if (toolToUse.data.durability <= 0) {
+                    playerFuncs.inventory.toolbarRemove(player, toolbarItem.index);
+                } else {
+                    player.data.toolbar[toolbarItem.index].data.durability = toolToUse.data.durability;
+                }
+            }
+            let invItem = playerFuncs.inventory.isInInventory(player, toolToUse)
+            if (invItem) {
+                if (toolToUse.data.durability <= 0) {
+                    playerFuncs.inventory.inventoryRemove(player, toolbarItem.index);
+                } else {
+                    player.data.inventory[invItem.index].data.durability = toolToUse.data.durability;
                 }
             }
 
             playerFuncs.save.field(player, 'inventory', player.data.inventory);
+            playerFuncs.save.field(player, 'toolbar', player.data.toolbar);
             playerFuncs.sync.inventory(player);
             player.deleteMeta(`IsFarming`);
         }, farmingData.farmDuration);
@@ -213,3 +204,4 @@ function getRandomInt(min: number, max: number) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
 }
+

@@ -4,7 +4,7 @@ import { Item } from '../../../shared/interfaces/item';
 
 export interface IFarming {
     routeName: string;
-    requiredTool?: string;
+    requiredTool?: Array<string>;
     isAnimation: boolean;
     farmDuration: number;
 

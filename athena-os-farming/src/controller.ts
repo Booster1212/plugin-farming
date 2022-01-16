@@ -9,6 +9,7 @@ import { IFarming } from '../interfaces/iFarming';
 import { OSFARMING_TRANSLATIONS } from './translations';
 import { ItemSpecial } from '../../../shared/interfaces/item';
 import IAttachable from '../../../shared/interfaces/iAttachable';
+import { Particle } from '../../../shared/interfaces/particle';
 
 export class FarmingController {
     /**
@@ -109,6 +110,17 @@ export class FarmingController {
                     bone: farmingData.attacheable.bone
                 }
                 playerFuncs.emit.objectAttach(player, objectToAttach, farmingData.farmDuration);
+            }
+
+            if(farmingData.particles) {
+                const particle: Particle = {
+                    pos: farmingData.particles.pos,
+                    dict: farmingData.particles.dict,
+                    name: farmingData.particles.name,
+                    duration: farmingData.particles.duration,
+                    scale: farmingData.particles.scale,
+                }
+                playerFuncs.emit.particle(player, particle, true);
             }
 
             alt.setTimeout(async () => {

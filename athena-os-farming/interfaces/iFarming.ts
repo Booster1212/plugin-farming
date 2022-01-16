@@ -43,6 +43,14 @@ export interface IFarming {
         rot: alt.Vector3;
     };
 
+    particles?: {
+        pos: alt.Vector3,
+        dict: string,
+        name: string,
+        duration: number,
+        scale: number
+    };
+
     spots: {
         interactionText?: string;
         positions: Array<alt.Vector3>;

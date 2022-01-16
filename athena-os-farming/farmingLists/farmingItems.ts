@@ -34,7 +34,7 @@ export const farmingItems: Array<Item> = [
         behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_TRADE, 
         quantity: 1,
         data: {
-            rarity: 'common',
+            rarity: 'rare',
         },
         dbName: 'OS-Farming-Silver-Ore',
         version: 1 
@@ -46,7 +46,7 @@ export const farmingItems: Array<Item> = [
         behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_TRADE, 
         quantity: 1,
         data: {
-            rarity: 'common',
+            rarity: 'epic',
         },
         dbName: 'OS-Farming-Gold-Ore',
         version: 1 
@@ -58,7 +58,7 @@ export const farmingItems: Array<Item> = [
         behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_TRADE, 
         quantity: 1,
         data: {
-            rarity: 'common',
+            rarity: 'epic',
         },
         dbName: 'OS-Farming-Titanium-Ore',
         version: 1 

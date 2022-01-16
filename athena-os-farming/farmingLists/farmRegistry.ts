@@ -15,7 +15,7 @@ import { IFarming } from '../interfaces/iFarming';
 export const farmRegistry: Array<IFarming> = [
     {
         routeName: 'Mining Route',
-        requiredTool: 'Mining Drill' || 'Rare Drill' || 'Epic Drill',
+        requiredTool: 'Mining Drill',
         isAnimation: true,
         farmDuration: 10000,
         blip: {

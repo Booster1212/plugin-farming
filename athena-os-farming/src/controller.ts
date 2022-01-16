@@ -7,7 +7,8 @@ import { ItemFactory } from '../../../server/systems/item';
 import { farmRegistry } from '../farmingLists/farmRegistry';
 import { IFarming } from '../interfaces/iFarming';
 import { OSFARMING_TRANSLATIONS } from './translations';
-import {ItemSpecial} from "../../../shared/interfaces/item";
+import { ItemSpecial } from '../../../shared/interfaces/item';
+import { miningCommonOutcome, miningEpicOutcome, miningRareOutcome } from '../farmingRoutes/miningRoute/miningOutcome';
 
 export class FarmingController {
     /**
@@ -16,44 +17,46 @@ export class FarmingController {
      */
     static createSpots() {
         for (let x = 0; x < farmRegistry.length; x++) {
-            if (farmRegistry[x].blip.isBlip) {
+            let currentFarm = farmRegistry[x];
+
+            if (currentFarm.blip.isBlip) {
                 ServerBlipController.append({
-                    pos: farmRegistry[x].blip.position,
+                    pos: currentFarm.blip.position,
                     shortRange: true,
-                    sprite: farmRegistry[x].blip.sprite,
-                    color: farmRegistry[x].blip.color,
-                    text: farmRegistry[x].blip.text,
-                    scale: farmRegistry[x].blip.scale,
-                    identifier: `${farmRegistry[x].routeName}-${x}`,
+                    sprite: currentFarm.blip.sprite,
+                    color: currentFarm.blip.color,
+                    text: currentFarm.blip.text,
+                    scale: currentFarm.blip.scale,
+                    identifier: `${currentFarm.routeName}-${x}`,
                 });
             }
 
-            for (let spot = 0; spot < farmRegistry[x].spots.positions.length; spot++) {
-                if (farmRegistry[x].marker.isMarker) {
+            for (let spot = 0; spot < currentFarm.spots.positions.length; spot++) {
+                if (currentFarm.marker.isMarker) {
                     ServerMarkerController.append({
                         pos: {
-                            x: farmRegistry[x].spots.positions[spot].x,
-                            y: farmRegistry[x].spots.positions[spot].y,
-                            z: farmRegistry[x].spots.positions[spot].z + 1,
+                            x: currentFarm.spots.positions[spot].x,
+                            y: currentFarm.spots.positions[spot].y,
+                            z: currentFarm.spots.positions[spot].z + 1,
                         },
-                        type: farmRegistry[x].marker.type,
-                        bobUpAndDown: farmRegistry[x].marker.bobUpAndDown,
-                        rotate: farmRegistry[x].marker.rotate,
+                        type: currentFarm.marker.type,
+                        bobUpAndDown: currentFarm.marker.bobUpAndDown,
+                        rotate: currentFarm.marker.rotate,
                         color: {
-                            r: farmRegistry[x].marker.color.r,
-                            g: farmRegistry[x].marker.color.g,
-                            b: farmRegistry[x].marker.color.b,
-                            a: farmRegistry[x].marker.color.a,
+                            r: currentFarm.marker.color.r,
+                            g: currentFarm.marker.color.g,
+                            b: currentFarm.marker.color.b,
+                            a: currentFarm.marker.color.a,
                         },
-                        uid: `${farmRegistry[x].routeName}-${x}`,
+                        uid: `${currentFarm.routeName}-${x}`,
                     });
                 }
 
                 InteractionController.add({
-                    description: farmRegistry[x].spots.interactionText,
-                    position: farmRegistry[x].spots.positions[spot],
+                    description: currentFarm.spots.interactionText,
+                    position: currentFarm.spots.positions[spot],
                     callback: (player: alt.Player) => {
-                        this.handleFarming(player, farmRegistry[x], farmRegistry[x].spots.positions[spot]);
+                        this.handleFarming(player, currentFarm, currentFarm.spots.positions[spot]);
                     },
                 });
             }
@@ -63,7 +66,6 @@ export class FarmingController {
     static async handleFarming(player: alt.Player, farmingData: IFarming, antiMacro: alt.Vector3) {
         if (farmingData.requiredTool != null) {
             const hasTool = playerFuncs.inventory.isInInventory(player, { name: farmingData.requiredTool });
-            const toolItem = player.data.inventory[hasTool.index];
             if (!hasTool) {
                 playerFuncs.emit.notification(player, OSFARMING_TRANSLATIONS.NO_TOOL);
                 return;
@@ -93,31 +95,41 @@ export class FarmingController {
 
             alt.setTimeout(async () => {
                 let outcomeList = [];
-                let allItems = playerFuncs.inventory.getAllItems(player).filter(i=>i.name===farmingData.requiredTool && i.data.rarity && i.data.durability > 0);
+                let allItems = playerFuncs.inventory
+                    .getAllItems(player)
+                    .filter((i) => i.name === farmingData.requiredTool && i.data.rarity && i.data.durability > 0);
 
-                let currentTool:ItemSpecial = allItems.find(i => i.data.rarity === 'epic');
+                let currentTool: ItemSpecial = allItems.find((i) => i.data.rarity === 'epic');
                 if (!currentTool) {
-                    currentTool = allItems.find(i => i.data.rarity === 'rare')
+                    currentTool = allItems.find((i) => i.data.rarity === 'rare');
                 }
                 if (!currentTool) {
-                    currentTool = allItems.find(i => i.data.rarity === 'common')
+                    currentTool = allItems.find((i) => i.data.rarity === 'common');
                 }
+                alt.log(currentTool);
 
                 switch (currentTool.data.rarity) {
-                    case 'epic':
-                        outcomeList.push(farmingData.outcome.epic);
-                    case 'rare':
-                        outcomeList.push(farmingData.outcome.rare);
-                    case 'common':
+                    case 'epic': {
+                        outcomeList.push(miningCommonOutcome);
+                        break;
+                    }
+                    case 'rare': {
+                        outcomeList.push(miningRareOutcome);
+                        break;
+                    }
+                    case 'common': {
+                        outcomeList.push(miningCommonOutcome);
+                        break;
+                    }
                     default: {
-                        outcomeList.push(farmingData.outcome.common);
                         break;
                     }
                 }
-                const itemToAdd = await ItemFactory.getByName(
-                    outcomeList[getRandomInt(0, outcomeList.length)]);
+                const itemToAdd = await ItemFactory.getByName(outcomeList[0][getRandomInt(0, outcomeList.length)]);
+
                 const hasItem = playerFuncs.inventory.isInInventory(player, { name: itemToAdd.name });
                 const emptySlot = playerFuncs.inventory.getFreeInventorySlot(player);
+
                 if (!hasItem) {
                     playerFuncs.inventory.inventoryAdd(player, itemToAdd, emptySlot.slot);
                     playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);

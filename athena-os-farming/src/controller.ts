@@ -1,15 +1,15 @@
 import * as alt from 'alt-server';
-import { playerFuncs } from '../../../server/extensions/extPlayer';
-import { ServerMarkerController } from '../../../server/streamers/marker';
-import { ServerBlipController } from '../../../server/systems/blip';
-import { InteractionController } from '../../../server/systems/interaction';
-import { ItemFactory } from '../../../server/systems/item';
-import { farmRegistry } from '../farmingLists/farmRegistry';
-import { IFarming } from '../interfaces/iFarming';
-import { OSFARMING_TRANSLATIONS } from './translations';
-import { ItemSpecial } from '../../../shared/interfaces/item';
+import {playerFuncs} from '../../../server/extensions/extPlayer';
+import {ServerMarkerController} from '../../../server/streamers/marker';
+import {ServerBlipController} from '../../../server/systems/blip';
+import {InteractionController} from '../../../server/systems/interaction';
+import {ItemFactory} from '../../../server/systems/item';
+import {farmRegistry} from '../farmingLists/farmRegistry';
+import {IFarming} from '../interfaces/iFarming';
+import {OSFARMING_TRANSLATIONS} from './translations';
+import {ItemSpecial} from '../../../shared/interfaces/item';
 import IAttachable from '../../../shared/interfaces/iAttachable';
-import { Particle } from '../../../shared/interfaces/particle';
+import {Particle} from '../../../shared/interfaces/particle';
 
 export class FarmingController {
     /**
@@ -65,137 +65,140 @@ export class FarmingController {
     }
 
     static async handleFarming(player: alt.Player, farmingData: IFarming, antiMacro: alt.Vector3) {
-        if (farmingData.requiredTool != null) {
-            let hasTool = null;
-            for (let x = 0; x < farmingData.requiredTool.length; x++) {
-                let currentTool = farmingData.requiredTool[x];
-                if (currentTool) {
-                    hasTool = currentTool;
-                    break;
-                }
-            }
 
-            if (!playerFuncs.inventory.isInInventory(player, { name: hasTool })) {
+        let toolToUse;
+        //Brauchen wir ein Werkzeug? Nicht immer!
+        if (farmingData.requiredTool) {
+            //Falls wir ein Werkzeug brauchen, suchen wir es uns im Inventar
+            //Lade alle Tools mit dem requiredTool-Namen aus dem Inventar:
+            playerFuncs.inventory.getAllItems(player).filter((item) => item.name === farmingData.requiredTool && item.data.durability > 0)
+                .forEach(searchTool => {
+                    if (!toolToUse || searchTool.rarity && !toolToUse.rarity || searchTool.rarity > toolToUse.rarity){
+                        //Wenn wir noch kein tool haben, oder wenn das Tool was wir haben keine oder eine schlechtere Rarity hat als das gefundene Tool,
+                        // dann nehmen wir das neue Tool:
+                        toolToUse=searchTool;
+                    }
+                });
+
+            //Kein tool gefunden?
+            if (!toolToUse) {
                 playerFuncs.emit.notification(player, OSFARMING_TRANSLATIONS.NO_TOOL);
                 return;
             }
-
-            if (player.getMeta(`IsFarming`) === true) {
-                return;
-            }
-            if (player.getMeta(`Spotused-${antiMacro.x}`) === antiMacro.x) {
-                playerFuncs.emit.notification(player, `[ANTIMACRO] - Already used this spot before.`);
-                return;
-            }
-            player.setMeta(`Spotused-${antiMacro.x}`, antiMacro.x);
-            player.setMeta(`IsFarming`, true);
-
-            alt.setTimeout(() => {
-                player.deleteMeta(`Spotused-${antiMacro.x}`);
-            }, getRandomInt(60000, 180000));
-
-            playerFuncs.emit.animation(
-                player,
-                farmingData.animation.dict,
-                farmingData.animation.name,
-                farmingData.animation.flags,
-                farmingData.farmDuration,
-            );
-
-            if(farmingData.attacheable) {
-                const objectToAttach: IAttachable = {
-                    model: farmingData.attacheable.model,
-                    pos: farmingData.attacheable.pos,
-                    rot: farmingData.attacheable.rot,
-                    bone: farmingData.attacheable.bone
-                }
-                playerFuncs.emit.objectAttach(player, objectToAttach, farmingData.farmDuration);
-            }
-
-            if(farmingData.particles) {
-                const particle: Particle = {
-                    pos: farmingData.particles.pos,
-                    dict: farmingData.particles.dict,
-                    name: farmingData.particles.name,
-                    duration: farmingData.particles.duration,
-                    scale: farmingData.particles.scale,
-                }
-                playerFuncs.emit.particle(player, particle, true);
-            }
-
-            alt.setTimeout(async () => {
-                let outcomeList = [];
-                let allItems = playerFuncs.inventory
-                    .getAllItems(player)
-                    .filter(
-                        (item) =>
-                            item.name.includes(farmingData.requiredTool[item.dataIndex]) && item.data.durability > 0,
-                    );
-
-                let currentTool: ItemSpecial = allItems.find((item) => item.rarity >= 0);
-
-                if ((currentTool.rarity === 0 || currentTool.rarity < 3) && farmingData.outcome.common) {
-                    outcomeList.push(farmingData.outcome.common);
-                }
-
-                if (currentTool.rarity >= 1 && currentTool.rarity < 3 && farmingData.outcome.uncommon) {
-                    outcomeList.push(farmingData.outcome.uncommon);
-                } 
-
-                if (currentTool.rarity >= 2 && currentTool.rarity < 4 && farmingData.outcome.rare) {
-                    outcomeList.push(farmingData.outcome.rare);
-                }
-
-                if (currentTool.rarity >= 3 && currentTool.rarity < 5 && farmingData.outcome.veryRare) {
-                    outcomeList.push(farmingData.outcome.veryRare);
-                }
-
-                if (currentTool.rarity >= 4 && currentTool.rarity < 6 && farmingData.outcome.epic) {
-                    outcomeList.push(farmingData.outcome.epic);
-                }
-
-                if (currentTool.rarity >= 5 && currentTool.rarity <= 6 && farmingData.outcome.legendary) {
-                    outcomeList.push(farmingData.outcome.legendary);
-                }
-
-                if (currentTool.rarity == 6 && farmingData.outcome.unique) {
-                    outcomeList.push(farmingData.outcome.unique);
-                }
-
-                if(!outcomeList || outcomeList.length === 0) {
-                    playerFuncs.emit.notification(player, `You found nothing!`);
-                    return;
-                }
-
-                const randomized = getRandomInt(0, outcomeList.length);
-                const itemToAdd = await ItemFactory.getByName(outcomeList[0][randomized]);
-                const hasItem = playerFuncs.inventory.isInInventory(player, { name: itemToAdd.name });
-                const emptySlot = playerFuncs.inventory.getFreeInventorySlot(player);
-
-                if (!hasItem) {
-                    playerFuncs.inventory.inventoryAdd(player, itemToAdd, emptySlot.slot);
-                    playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
-                } else {
-                    player.data.inventory[hasItem.index].quantity += 1;
-                    playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
-                }
-
-                currentTool.data.durability -= 1;
-                if (currentTool.data.durability <= 1) {
-                    playerFuncs.inventory.findAndRemove(player, farmingData.requiredTool[currentTool.dataIndex]);
-                } else if (currentTool.isEquipment) {
-                    player.data.equipment[currentTool.dataIndex].data.durability = currentTool.data.durability;
-                } else if (currentTool.isInventory) {
-                    player.data.inventory[currentTool.dataIndex].data.durability = currentTool.data.durability;
-                } else if (currentTool.isToolbar) {
-                    player.data.toolbar[currentTool.dataIndex].data.durability = currentTool.data.durability;
-                }
-
-                playerFuncs.save.field(player, 'inventory', player.data.inventory);
-                playerFuncs.sync.inventory(player);
-                player.deleteMeta(`IsFarming`);
-            }, farmingData.farmDuration);
         }
+
+        if (player.getMeta(`IsFarming`) === true) {
+            return;
+        }
+        if (player.getMeta(`Spotused-${antiMacro.x}`) === antiMacro.x) {
+            playerFuncs.emit.notification(player, `[ANTIMACRO] - Already used this spot before.`);
+            return;
+        }
+        player.setMeta(`Spotused-${antiMacro.x}`, antiMacro.x);
+        player.setMeta(`IsFarming`, true);
+
+        alt.setTimeout(() => {
+            player.deleteMeta(`Spotused-${antiMacro.x}`);
+        }, getRandomInt(60000, 180000));
+
+        playerFuncs.emit.animation(
+            player,
+            farmingData.animation.dict,
+            farmingData.animation.name,
+            farmingData.animation.flags,
+            farmingData.farmDuration,
+        );
+
+        if (farmingData.attacheable) {
+            const objectToAttach: IAttachable = {
+                model: farmingData.attacheable.model,
+                pos: farmingData.attacheable.pos,
+                rot: farmingData.attacheable.rot,
+                bone: farmingData.attacheable.bone
+            }
+            playerFuncs.emit.objectAttach(player, objectToAttach, farmingData.farmDuration);
+        }
+
+        if (farmingData.particles) {
+            const particle: Particle = {
+                pos: farmingData.particles.pos,
+                dict: farmingData.particles.dict,
+                name: farmingData.particles.name,
+                duration: farmingData.particles.duration,
+                scale: farmingData.particles.scale,
+            }
+            playerFuncs.emit.particle(player, particle, true);
+        }
+
+        alt.setTimeout(async () => {
+            let outcomeList = [];
+
+            //Wenn wir kein Tool brauchen/haben, nehmen wir auch die common-Liste
+            if ((!toolToUse || toolToUse.rarity === 0 || toolToUse.rarity < 3) && farmingData.outcome.common) {
+                outcomeList.push(farmingData.outcome.common);
+            }
+
+            if (toolToUse.rarity >= 1 && toolToUse.rarity < 3 && farmingData.outcome.uncommon) {
+                outcomeList.push(farmingData.outcome.uncommon);
+            }
+
+            if (toolToUse.rarity >= 2 && toolToUse.rarity < 4 && farmingData.outcome.rare) {
+                outcomeList.push(farmingData.outcome.rare);
+            }
+
+            if (toolToUse.rarity >= 3 && toolToUse.rarity < 5 && farmingData.outcome.veryRare) {
+                outcomeList.push(farmingData.outcome.veryRare);
+            }
+
+            if (toolToUse.rarity >= 4 && toolToUse.rarity < 6 && farmingData.outcome.epic) {
+                outcomeList.push(farmingData.outcome.epic);
+            }
+
+            if (toolToUse.rarity >= 5 && toolToUse.rarity <= 6 && farmingData.outcome.legendary) {
+                outcomeList.push(farmingData.outcome.legendary);
+            }
+
+            if (toolToUse.rarity == 6 && farmingData.outcome.unique) {
+                outcomeList.push(farmingData.outcome.unique);
+            }
+
+            if (!outcomeList || outcomeList.length === 0) {
+                playerFuncs.emit.notification(player, `You found nothing!`);
+                return;
+            }
+
+            const randomized = getRandomInt(0, outcomeList.length);
+            const itemToAdd = await ItemFactory.getByName(outcomeList[0][randomized]);
+            const hasItem = playerFuncs.inventory.isInInventory(player, {name: itemToAdd.name});
+            const emptySlot = playerFuncs.inventory.getFreeInventorySlot(player);
+
+            if (!hasItem) {
+                playerFuncs.inventory.inventoryAdd(player, itemToAdd, emptySlot.slot);
+                playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
+            } else {
+                player.data.inventory[hasItem.index].quantity += 1;
+                playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
+            }
+
+            if (toolToUse) {
+                //Falls wir ein Tool benutzt haben, müssen wir den verbrauch noch anpassen
+                toolToUse.data.durability -= 1;
+                if (toolToUse.data.durability <= 1) {
+                    playerFuncs.inventory.findAndRemove(player, farmingData.requiredTool[toolToUse.dataIndex]);
+                } else if (toolToUse.isEquipment) {
+                    player.data.equipment[toolToUse.dataIndex].data.durability = toolToUse.data.durability;
+                } else if (toolToUse.isInventory) {
+                    player.data.inventory[toolToUse.dataIndex].data.durability = toolToUse.data.durability;
+                } else if (toolToUse.isToolbar) {
+                    player.data.toolbar[toolToUse.dataIndex].data.durability = toolToUse.data.durability;
+                }
+            }
+
+            playerFuncs.save.field(player, 'inventory', player.data.inventory);
+            playerFuncs.sync.inventory(player);
+            player.deleteMeta(`IsFarming`);
+        }, farmingData.farmDuration);
+
     }
 }
 

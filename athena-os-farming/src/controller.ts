@@ -8,6 +8,7 @@ import { farmRegistry } from '../farmingLists/farmRegistry';
 import { IFarming } from '../interfaces/iFarming';
 import { OSFARMING_TRANSLATIONS } from './translations';
 import { ItemSpecial } from '../../../shared/interfaces/item';
+import IAttachable from '../../../shared/interfaces/iAttachable';
 
 export class FarmingController {
     /**
@@ -64,8 +65,16 @@ export class FarmingController {
 
     static async handleFarming(player: alt.Player, farmingData: IFarming, antiMacro: alt.Vector3) {
         if (farmingData.requiredTool != null) {
-            const hasTool = playerFuncs.inventory.isInInventory(player, { name: farmingData.requiredTool });
-            if (!hasTool) {
+            let hasTool = null;
+            for (let x = 0; x < farmingData.requiredTool.length; x++) {
+                let currentTool = farmingData.requiredTool[x];
+                if (currentTool) {
+                    hasTool = currentTool;
+                    break;
+                }
+            }
+
+            if (!playerFuncs.inventory.isInInventory(player, { name: hasTool })) {
                 playerFuncs.emit.notification(player, OSFARMING_TRANSLATIONS.NO_TOOL);
                 return;
             }
@@ -92,31 +101,61 @@ export class FarmingController {
                 farmingData.farmDuration,
             );
 
+            if(farmingData.attacheable) {
+                const objectToAttach: IAttachable = {
+                    model: farmingData.attacheable.model,
+                    pos: farmingData.attacheable.pos,
+                    rot: farmingData.attacheable.rot,
+                    bone: farmingData.attacheable.bone
+                }
+                playerFuncs.emit.objectAttach(player, objectToAttach, farmingData.farmDuration);
+            }
+
             alt.setTimeout(async () => {
                 let outcomeList = [];
                 let allItems = playerFuncs.inventory
                     .getAllItems(player)
-                    .filter((item) => item.name === farmingData.requiredTool && item.data.durability > 0);
+                    .filter(
+                        (item) =>
+                            item.name.includes(farmingData.requiredTool[item.dataIndex]) && item.data.durability > 0,
+                    );
 
                 let currentTool: ItemSpecial = allItems.find((item) => item.rarity >= 0);
-                switch (currentTool.rarity) {
-                    // Rare Tool
-                    case 1: {
-                        outcomeList.push(farmingData.outcome.rare);
-                    }
-                    // Epic Tool
-                    case 2: {
-                        outcomeList.push(farmingData.outcome.epic);
-                        // break; -> UNWANTED
-                    }
-                    // Common Tool
-                    default: {
-                        outcomeList.push(farmingData.outcome.common);
-                        break;
-                    }
+
+                if ((currentTool.rarity === 0 || currentTool.rarity < 3) && farmingData.outcome.common) {
+                    outcomeList.push(farmingData.outcome.common);
                 }
-                
-                const randomized = getRandomInt(0, outcomeList.length + 1);
+
+                if (currentTool.rarity >= 1 && currentTool.rarity < 3 && farmingData.outcome.uncommon) {
+                    outcomeList.push(farmingData.outcome.uncommon);
+                } 
+
+                if (currentTool.rarity >= 2 && currentTool.rarity < 4 && farmingData.outcome.rare) {
+                    outcomeList.push(farmingData.outcome.rare);
+                }
+
+                if (currentTool.rarity >= 3 && currentTool.rarity < 5 && farmingData.outcome.veryRare) {
+                    outcomeList.push(farmingData.outcome.veryRare);
+                }
+
+                if (currentTool.rarity >= 4 && currentTool.rarity < 6 && farmingData.outcome.epic) {
+                    outcomeList.push(farmingData.outcome.epic);
+                }
+
+                if (currentTool.rarity >= 5 && currentTool.rarity <= 6 && farmingData.outcome.legendary) {
+                    outcomeList.push(farmingData.outcome.legendary);
+                }
+
+                if (currentTool.rarity == 6 && farmingData.outcome.unique) {
+                    outcomeList.push(farmingData.outcome.unique);
+                }
+
+                if(!outcomeList || outcomeList.length === 0) {
+                    playerFuncs.emit.notification(player, `You found nothing!`);
+                    return;
+                }
+
+                const randomized = getRandomInt(0, outcomeList.length);
                 const itemToAdd = await ItemFactory.getByName(outcomeList[0][randomized]);
                 const hasItem = playerFuncs.inventory.isInInventory(player, { name: itemToAdd.name });
                 const emptySlot = playerFuncs.inventory.getFreeInventorySlot(player);
@@ -128,9 +167,10 @@ export class FarmingController {
                     player.data.inventory[hasItem.index].quantity += 1;
                     playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
                 }
+
                 currentTool.data.durability -= 1;
                 if (currentTool.data.durability <= 1) {
-                    playerFuncs.inventory.findAndRemove(player, farmingData.requiredTool);
+                    playerFuncs.inventory.findAndRemove(player, farmingData.requiredTool[currentTool.dataIndex]);
                 } else if (currentTool.isEquipment) {
                     player.data.equipment[currentTool.dataIndex].data.durability = currentTool.data.durability;
                 } else if (currentTool.isInventory) {

@@ -4,7 +4,7 @@ import { Item } from "../../../shared/interfaces/item";
 
 export const farmingTools: Array<Item> = [
     {
-        name: 'Mining Drill',
+        name: 'Mining-Drill',
         icon: 'crate',
         description: 'Some example description.',
         behavior: ITEM_TYPE.CAN_DROP, 
@@ -14,7 +14,20 @@ export const farmingTools: Array<Item> = [
         },
         rarity: 0,
         dbName: 'OS-Farming-Drill',
-        version: 2
+        version: 1
+    },
+    {
+        name: 'Mining-Drill 6',
+        icon: 'crate',
+        description: 'Some example description.',
+        behavior: ITEM_TYPE.CAN_DROP, 
+        quantity: 1,
+        data: {
+            durability: 25,
+        },
+        rarity: 6,
+        dbName: 'OS-Farming-Drill-6',
+        version: 1
     },
     {
         name: 'Woodfellers Axe',

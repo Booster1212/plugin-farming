@@ -56,18 +56,21 @@ export class FarmingController {
 
             }
         }
-        alt.on('OSFarming:Server:handleFarming', (player: alt.Player, item: Item, inventorySlot: number) => {
-            farmRegistry.foreach(farm => {
+        alt.on('OSFarming:Server:handleFarming', (player: alt.Player, item: Item) => {
+            let wasFarming = false;
+            for (const farm of farmRegistry) {
                 if (farm.requiredTool.includes(item.name)) {
-                    farm.spots.positions.foreach(farmimngSpot => {
+                    farm.spots.positions.forEach(farmimngSpot => {
                         if (player.pos.isInRange(farmimngSpot, 3.5)) {
                             FarmingController.handleFarming(player, item, farm, farmimngSpot)
-                            return;
+                            wasFarming = true;
                         }
                     })
                 }
-            })
-            playerFuncs.emit.notification(player, `You can't use this item here!`);
+            }
+            if (!wasFarming) {
+                playerFuncs.emit.notification(player, `You can't use this item here!`);
+            }
         })
     }
 
@@ -166,7 +169,7 @@ export class FarmingController {
                 playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
             }
 
-            toolToUse.data.durability -= 1
+            toolToUse.data.durability = toolToUse.data.durability-1;
             let toolbarItem = playerFuncs.inventory.isInToolbar(player, toolToUse)
             if (toolbarItem) {
                 if (toolToUse.data.durability <= 0) {

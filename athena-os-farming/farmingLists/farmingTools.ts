@@ -10,9 +10,9 @@ export const farmingTools: Array<Item> = [
         behavior: ITEM_TYPE.CAN_DROP, 
         quantity: 1,
         data: {
-            rarity: 'common',
             durability: 25,
         },
+        rarity: 0,
         dbName: 'OS-Farming-Drill',
         version: 2
     },
@@ -23,9 +23,9 @@ export const farmingTools: Array<Item> = [
         behavior: ITEM_TYPE.CAN_DROP, 
         quantity: 1,
         data: {
-            rarity: 'common',
             durability: 25,
         },
+        rarity: 0,
         dbName: 'OS-Farming-Axe',
         version: 1 
     },
@@ -36,9 +36,9 @@ export const farmingTools: Array<Item> = [
         behavior: ITEM_TYPE.CAN_DROP, 
         quantity: 1,
         data: {
-            rarity: 'common',
             durability: 25,
         },
+        rarity: 0,
         dbName: 'OS-Farming-Garden-Shears',
         version: 1 
     }

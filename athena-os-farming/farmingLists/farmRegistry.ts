@@ -55,8 +55,8 @@ export const farmRegistry: Array<IFarming> = [
         },
         outcome: {
             common: ['Iron Ore', 'Cooper Ore'],
-            rare: ['Iron Ore', 'Cooper Ore', 'Silver Ore'],
-            epic: ['Iron Ore', 'Cooper Ore', 'Silver Ore', 'Gold Ore', 'Titanium Ore'],
+            rare: ['Silver Ore'],
+            epic: ['Gold Ore', 'Titanium Ore'],
         },
     },
     {

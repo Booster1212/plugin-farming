@@ -8,7 +8,6 @@ import { farmRegistry } from '../farmingLists/farmRegistry';
 import { IFarming } from '../interfaces/iFarming';
 import { OSFARMING_TRANSLATIONS } from './translations';
 import { ItemSpecial } from '../../../shared/interfaces/item';
-import { miningCommonOutcome, miningEpicOutcome, miningRareOutcome } from '../farmingRoutes/miningRoute/miningOutcome';
 
 export class FarmingController {
     /**
@@ -97,36 +96,28 @@ export class FarmingController {
                 let outcomeList = [];
                 let allItems = playerFuncs.inventory
                     .getAllItems(player)
-                    .filter((i) => i.name === farmingData.requiredTool && i.data.rarity && i.data.durability > 0);
+                    .filter((item) => item.name === farmingData.requiredTool && item.data.durability > 0);
 
-                let currentTool: ItemSpecial = allItems.find((i) => i.data.rarity === 'epic');
-                if (!currentTool) {
-                    currentTool = allItems.find((i) => i.data.rarity === 'rare');
-                }
-                if (!currentTool) {
-                    currentTool = allItems.find((i) => i.data.rarity === 'common');
-                }
-                alt.log(currentTool);
-
-                switch (currentTool.data.rarity) {
-                    case 'epic': {
-                        outcomeList.push(miningCommonOutcome);
-                        break;
+                let currentTool: ItemSpecial = allItems.find((item) => item.rarity >= 0);
+                switch (currentTool.rarity) {
+                    // Rare Tool
+                    case 1: {
+                        outcomeList.push(farmingData.outcome.rare);
                     }
-                    case 'rare': {
-                        outcomeList.push(miningRareOutcome);
-                        break;
+                    // Epic Tool
+                    case 2: {
+                        outcomeList.push(farmingData.outcome.epic);
+                        // break; -> UNWANTED
                     }
-                    case 'common': {
-                        outcomeList.push(miningCommonOutcome);
-                        break;
-                    }
+                    // Common Tool
                     default: {
+                        outcomeList.push(farmingData.outcome.common);
                         break;
                     }
                 }
-                const itemToAdd = await ItemFactory.getByName(outcomeList[0][getRandomInt(0, outcomeList.length)]);
-
+                
+                const randomized = getRandomInt(0, outcomeList.length + 1);
+                const itemToAdd = await ItemFactory.getByName(outcomeList[0][randomized]);
                 const hasItem = playerFuncs.inventory.isInInventory(player, { name: itemToAdd.name });
                 const emptySlot = playerFuncs.inventory.getFreeInventorySlot(player);
 

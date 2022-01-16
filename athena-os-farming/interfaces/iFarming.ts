@@ -50,7 +50,10 @@ export interface IFarming {
 
     outcome?: {
         common: Array<string>;
-        rare: Array<string>;
-        epic: Array<string>;
+        uncommon?: Array<string>;
+        rare?: Array<string>;
+        epic?: Array<string>;
+        legendary?: Array<string>;
+        ultra?: Array<string>;
     }
 }

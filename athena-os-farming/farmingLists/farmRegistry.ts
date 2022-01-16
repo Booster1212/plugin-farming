@@ -10,12 +10,18 @@ import { tomatoLocations } from '../farmingRoutes/tomatoRoute/tomatoLocations';
 import { woodLocations } from '../farmingRoutes/woodRoute/woodLocations';
 import { IFarming } from '../interfaces/iFarming';
 
-// Required Tool can be null. So it will just skip all the tool checks.
-// requiredTool: null,
 export const farmRegistry: Array<IFarming> = [
+    // MINING ROUTE
     {
         routeName: 'Mining Route',
-        requiredTool: 'Mining Drill',
+        requiredTool: [
+            'Mining-Drill', // Uncommon 
+            'Mining-Drill 2', // Common
+            'Mining-Drill 3', // Rare
+            'Mining-Drill 4', // Very Rare
+            'Mining-Drill 5', // Legendary
+            'Mining-Drill 6' // Unique
+        ],
         isAnimation: true,
         farmDuration: 10000,
         blip: {
@@ -39,13 +45,13 @@ export const farmRegistry: Array<IFarming> = [
             isMarker: true,
         },
         animation: {
-            dict: 'amb@world_human_gardener_plant@male@base',
+            dict: 'amb@world_human_const_drill@male@drill@base',
             name: 'base',
             flags: ANIMATION_FLAGS.REPEAT,
         },
         attacheable: {
-            bone: 0,
-            model: '',
+            bone: 60309,
+            model: 'prop_tool_jackham',
             pos: { x: 0, y: 0, z: 0 } as alt.Vector3,
             rot: { x: 0, y: 0, z: 0 } as alt.Vector3,
         },
@@ -59,11 +65,12 @@ export const farmRegistry: Array<IFarming> = [
             epic: ['Gold Ore', 'Titanium Ore'],
         },
     },
+    // WOOD ROUTE
     {
         routeName: 'Wood-Route',
-        requiredTool: 'Woodfellers Axe',
+        requiredTool: ['Woodfellers Axe'],
         isAnimation: true,
-        farmDuration: 60000,
+        farmDuration: 3000,
         blip: {
             text: 'Woodfellers Place',
             color: 56,
@@ -72,6 +79,7 @@ export const farmRegistry: Array<IFarming> = [
             isBlip: true,
             position: { x: -474.09478759765625, y: 5587.1962890625, z: 69.96195220947266 } as alt.Vector3,
         },
+
         marker: {
             type: 2,
             color: {
@@ -84,16 +92,30 @@ export const farmRegistry: Array<IFarming> = [
             rotate: true,
             isMarker: true,
         },
+
+        attacheable: {
+            bone: 6286,
+            model: 'prop_ld_fireaxe',
+            pos: { x: 0.05, y: -0.1, z: -0.06, } as alt.Vector3,
+            rot: { x: 60, y: 0, z: -180} as alt.Vector3,
+        },
+
         animation: {
-            dict: 'amb@world_human_gardener_plant@male@base',
-            name: 'base',
+            dict: 'melee@large_wpn@streamed_core',
+            name: 'car_down_attack',
             flags: ANIMATION_FLAGS.REPEAT,
         },
+
         spots: {
             interactionText: 'Start woodfelling...',
             positions: woodLocations
         },
+
+        outcome: {
+            common: ['Oak Wood'],
+        }
     },
+    /*
     {
         routeName: 'Tomato-Route',
         requiredTool: 'Garden Shears',
@@ -128,7 +150,8 @@ export const farmRegistry: Array<IFarming> = [
             interactionText: 'Start farming...',
             positions: tomatoLocations
         },
-    },
+    }, 
+    /*
     {
         routeName: 'Orange-Route',
         requiredTool: 'Garden Shears',
@@ -304,4 +327,5 @@ export const farmRegistry: Array<IFarming> = [
             positions: grapeLocations
         },
     },
+    */
 ];

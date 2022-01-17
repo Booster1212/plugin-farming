@@ -117,7 +117,12 @@ export class FarmingController {
 
         alt.setTimeout(async () => {
             let outcomeList = [];
+            // console.log(`index 0`);
+            // console.log(player.data.toolbar[0]);
 
+            // console.log(`index 1`);
+            // console.log(player.data.toolbar[1]);
+            // console.log(JSON.stringify(player.data.toolbar, null, '\t'));
             //Wenn wir kein Tool brauchen/haben, nehmen wir auch die common-Liste
             if ((!toolToUse.rarity || toolToUse.rarity === 0 || toolToUse.rarity < 3) && farmingData.outcome.common) {
                 outcomeList.push(farmingData.outcome.common);
@@ -165,7 +170,7 @@ export class FarmingController {
                 playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
             }
 
-            let toolbarItem = playerFuncs.inventory.isInToolbar(player, toolToUse);
+            let toolbarItem = playerFuncs.inventory.isInToolbar(player, { name: toolToUse.name });
             if (toolbarItem) {
                 if (toolToUse.data.durability <= 1) {
                     playerFuncs.inventory.toolbarRemove(player, toolbarItem.index);
@@ -173,7 +178,8 @@ export class FarmingController {
                     player.data.toolbar[toolbarItem.index].data.durability -= 1;
                 }
             }
-            let invItem = playerFuncs.inventory.isInInventory(player, toolToUse);
+            
+            let invItem = playerFuncs.inventory.isInInventory(player, {name: toolToUse.name });
             if (invItem) {
                 if (toolToUse.data.durability <= 1) {
                     playerFuncs.inventory.inventoryRemove(player, toolbarItem.index);
@@ -181,7 +187,6 @@ export class FarmingController {
                     player.data.inventory[invItem.index].data.durability -= 1;
                 }
             }
-
             playerFuncs.save.field(player, 'inventory', player.data.inventory);
             playerFuncs.save.field(player, 'toolbar', player.data.toolbar);
             playerFuncs.sync.inventory(player);

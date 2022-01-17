@@ -112,7 +112,7 @@ export const farmRegistry: Array<IFarming> = [
         routeName: 'Fishing-Route-1',
         requiredTool: ['Fishing Rod'],
         isAnimation: true,
-        farmDuration: 60000 * 3,
+        farmDuration: 3000,
         blip: {
             text: 'Fishermens Place',
             color: 56,

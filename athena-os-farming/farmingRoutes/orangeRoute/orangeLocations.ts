@@ -1,4 +1,5 @@
 import * as alt from 'alt-server';
+
 export const orangeLocations: Array<alt.Vector3> = [
     { x: 369.4945068359375, y: 6531.23095703125, z: 28.3868408203125 - 1 } as alt.Vector3,
     { x: 362.017578125, y: 6531.46826171875, z: 28.3363037109375 - 1 } as alt.Vector3,

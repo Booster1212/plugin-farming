@@ -1,4 +1,5 @@
 import * as alt from 'alt-server';
+
 export const potatoLocations: Array<alt.Vector3> = [
     { x: 545.1692504882812, y: 6517.60888671875, z: 29.920166015625 - 1 } as alt.Vector3,
     { x: 545.090087890625, y: 6511.9912109375, z: 29.86962890625 - 1 } as alt.Vector3,

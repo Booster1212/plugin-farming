@@ -1,4 +1,5 @@
 import * as alt from 'alt-server';
+
 export const pepperLocations: Array<alt.Vector3> = [
     { x: 393.6263732910156, y: 6595.00244140625, z: 28.5047607421875 - 1 } as alt.Vector3,
     { x: 393.982421875, y: 6602.1494140625, z: 28.5047607421875 - 1 } as alt.Vector3,

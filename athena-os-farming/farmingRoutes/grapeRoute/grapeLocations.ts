@@ -1,4 +1,5 @@
 import * as alt from 'alt-server';
+
 export const grapeLocations: Array<alt.Vector3> = [
     { x: -1909.6746826171875, y: 2107.60888671875, z: 130.934814453125 - 1 } as alt.Vector3,
     { x: -1899.072509765625, y: 2106.46142578125, z: 134.3890380859375 - 1 } as alt.Vector3,

@@ -1,16 +1,14 @@
 import * as alt from 'alt-server';
-import {playerFuncs} from '../../../server/extensions/extPlayer';
-import {ServerMarkerController} from '../../../server/streamers/marker';
-import {ServerBlipController} from '../../../server/systems/blip';
-import {InteractionController} from '../../../server/systems/interaction';
-import {ItemFactory} from '../../../server/systems/item';
-import {farmRegistry} from '../farmingLists/farmRegistry';
-import {IFarming} from '../interfaces/iFarming';
-import {OSFARMING_TRANSLATIONS} from './translations';
-import {Item, ItemSpecial} from '../../../shared/interfaces/item';
 import IAttachable from '../../../shared/interfaces/iAttachable';
-import {Particle} from '../../../shared/interfaces/particle';
-import {getClosestVectorByPos} from "../../../shared/utility/vector";
+
+import { ServerMarkerController } from '../../../server/streamers/marker';
+import { ServerBlipController } from '../../../server/systems/blip';
+import { farmRegistry } from '../farmingLists/farmRegistry';
+import { playerFuncs } from '../../../server/extensions/extPlayer';
+import { ItemFactory } from '../../../server/systems/item';
+import { Particle } from '../../../shared/interfaces/particle';
+import { IFarming } from '../interfaces/IFarming';
+import { Item } from '../../../shared/interfaces/item';
 
 export class FarmingController {
     /**
@@ -53,29 +51,27 @@ export class FarmingController {
                         uid: `${currentFarm.routeName}-${x}`,
                     });
                 }
-
             }
         }
         alt.on('OSFarming:Server:handleFarming', (player: alt.Player, item: Item) => {
             let wasFarming = false;
             for (const farm of farmRegistry) {
                 if (farm.requiredTool.includes(item.name)) {
-                    farm.spots.positions.forEach(farmimngSpot => {
+                    farm.spots.positions.forEach((farmimngSpot) => {
                         if (player.pos.isInRange(farmimngSpot, 3.5)) {
-                            FarmingController.handleFarming(player, item, farm, farmimngSpot)
+                            FarmingController.handleFarming(player, item, farm, farmimngSpot);
                             wasFarming = true;
                         }
-                    })
+                    });
                 }
             }
             if (!wasFarming) {
                 playerFuncs.emit.notification(player, `You can't use this item here!`);
             }
-        })
+        });
     }
 
     static async handleFarming(player: alt.Player, toolToUse: Item, farmingData: IFarming, antiMacro: alt.Vector3) {
-
         if (player.getMeta(`IsFarming`) === true) {
             return;
         }
@@ -103,8 +99,8 @@ export class FarmingController {
                 model: farmingData.attacheable.model,
                 pos: farmingData.attacheable.pos,
                 rot: farmingData.attacheable.rot,
-                bone: farmingData.attacheable.bone
-            }
+                bone: farmingData.attacheable.bone,
+            };
             playerFuncs.emit.objectAttach(player, objectToAttach, farmingData.farmDuration);
         }
 
@@ -115,7 +111,7 @@ export class FarmingController {
                 name: farmingData.particles.name,
                 duration: farmingData.particles.duration,
                 scale: farmingData.particles.scale,
-            }
+            };
             playerFuncs.emit.particle(player, particle, true);
         }
 
@@ -158,7 +154,7 @@ export class FarmingController {
 
             const randomized = getRandomInt(0, outcomeList.length);
             const itemToAdd = await ItemFactory.getByName(outcomeList[0][randomized]);
-            const hasItem = playerFuncs.inventory.isInInventory(player, {name: itemToAdd.name});
+            const hasItem = playerFuncs.inventory.isInInventory(player, { name: itemToAdd.name });
             const emptySlot = playerFuncs.inventory.getFreeInventorySlot(player);
 
             if (!hasItem) {
@@ -169,7 +165,7 @@ export class FarmingController {
                 playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
             }
 
-            let toolbarItem = playerFuncs.inventory.isInToolbar(player, toolToUse)
+            let toolbarItem = playerFuncs.inventory.isInToolbar(player, toolToUse);
             if (toolbarItem) {
                 if (toolToUse.data.durability <= 1) {
                     playerFuncs.inventory.toolbarRemove(player, toolbarItem.index);
@@ -177,7 +173,7 @@ export class FarmingController {
                     player.data.toolbar[toolbarItem.index].data.durability -= 1;
                 }
             }
-            let invItem = playerFuncs.inventory.isInInventory(player, toolToUse)
+            let invItem = playerFuncs.inventory.isInInventory(player, toolToUse);
             if (invItem) {
                 if (toolToUse.data.durability <= 1) {
                     playerFuncs.inventory.inventoryRemove(player, toolbarItem.index);
@@ -191,7 +187,6 @@ export class FarmingController {
             playerFuncs.sync.inventory(player);
             player.deleteMeta(`IsFarming`);
         }, farmingData.farmDuration);
-
     }
 }
 
@@ -206,4 +201,3 @@ function getRandomInt(min: number, max: number) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
 }
-

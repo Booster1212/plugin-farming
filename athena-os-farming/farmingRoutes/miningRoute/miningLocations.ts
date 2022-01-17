@@ -1,4 +1,5 @@
 import * as alt from 'alt-server';
+
 export const miningLocations: Array<alt.Vector3> = [
     { x: 2975.733154296875, y: 2791.59716796875, z: 40.515140533447266 - 1 } as alt.Vector3,
     { x: 2966.3916015625, y: 2775.824462890625, z: 38.95657730102539 - 1 } as alt.Vector3,

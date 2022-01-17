@@ -1,4 +1,5 @@
 import * as alt from 'alt-server';
+
 export const saladLocations: Array<alt.Vector3> = [
     { x: 551.4066162109375, y: 6511.10791015625, z: 29.852783203125 - 1 } as alt.Vector3,
     { x: 551.4066162109375, y: 6504.2109375, z: 29.9033203125 - 1 } as alt.Vector3,

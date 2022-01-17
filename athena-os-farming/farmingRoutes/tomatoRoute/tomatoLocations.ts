@@ -1,4 +1,5 @@
 import * as alt from 'alt-server';
+
 export const tomatoLocations: Array<alt.Vector3> = [
     { x: 322.8791198730469, y: 6483.6923828125, z: 29.3304443359375 - 1 } as alt.Vector3,
     { x: 322.79998779296875, y: 6480.93603515625, z: 29.4820556640625 - 1 } as alt.Vector3,

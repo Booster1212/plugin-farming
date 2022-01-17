@@ -1,6 +1,5 @@
 import * as alt from 'alt-server';
 import { ANIMATION_FLAGS } from '../../../shared/flags/animationFlags';
-import { Item } from '../../../shared/interfaces/item';
 
 export interface IFarming {
     routeName: string;

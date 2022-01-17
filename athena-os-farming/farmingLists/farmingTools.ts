@@ -58,6 +58,20 @@ export const farmingTools: Array<Item> = [
         rarity: 0,
         dbName: 'OS-Farming-Garden-Shears',
         version: 1 
+    },
+    {
+        name: 'Fishing Rod',
+        icon: 'crate',
+        description: 'Some example description.',
+        behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE | ITEM_TYPE.IS_TOOLBAR | ITEM_TYPE.CONSUMABLE | ITEM_TYPE.SKIP_CONSUMABLE,
+        quantity: 1,
+        data: {
+            durability: 25,
+            event: 'OSFarming:Server:handleFarming',
+        },
+        rarity: 0,
+        dbName: 'OS-Farming-Fishing-Rod',
+        version: 1 
     }
 ];
 

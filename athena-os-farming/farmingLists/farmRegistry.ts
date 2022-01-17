@@ -51,7 +51,6 @@ export const farmRegistry: Array<IFarming> = [
             rot: { x: 0, y: 0, z: 0 } as alt.Vector3,
         },
         spots: {
-            interactionText: 'Start mining...',
             positions: miningLocations,
         },
         outcome: {
@@ -102,7 +101,6 @@ export const farmRegistry: Array<IFarming> = [
         },
 
         spots: {
-            interactionText: 'Start woodfelling...',
             positions: woodLocations,
         },
 
@@ -147,7 +145,6 @@ export const farmRegistry: Array<IFarming> = [
             bone: 60309,
         },
         spots: {
-            interactionText: 'Start Fishing...',
             positions: fishingLocations,
         },
         outcome: {
@@ -186,7 +183,6 @@ export const farmRegistry: Array<IFarming> = [
             flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
-            interactionText: 'Start farming...',
             positions: tomatoLocations
         },
     }, 
@@ -222,7 +218,6 @@ export const farmRegistry: Array<IFarming> = [
             flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
-            interactionText: 'Start farming...',
             positions: orangeLocations,
         },
     },
@@ -257,7 +252,6 @@ export const farmRegistry: Array<IFarming> = [
             flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
-            interactionText: 'Start farming...',
             positions: saladLocations
         },
     },
@@ -292,7 +286,6 @@ export const farmRegistry: Array<IFarming> = [
             flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
-            interactionText: 'Start farming...',
             positions: potatoLocations
         },
     },
@@ -327,7 +320,6 @@ export const farmRegistry: Array<IFarming> = [
             flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
-            interactionText: 'Start farming...',
             positions: pepperLocations,
         },
     },
@@ -362,7 +354,6 @@ export const farmRegistry: Array<IFarming> = [
             flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
-            interactionText: 'Start farming...',
             positions: grapeLocations
         },
     },

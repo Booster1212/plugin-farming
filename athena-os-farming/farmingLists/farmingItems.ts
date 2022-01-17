@@ -124,7 +124,7 @@ export const farmingItems: Array<Item> = [
         version: 1,
     },
     {
-        name: 'Potate',
+        name: 'Potato',
         icon: 'crate',
         description: 'Some example description.',
         behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_TRADE,

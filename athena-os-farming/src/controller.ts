@@ -9,6 +9,8 @@ import { ItemFactory } from '../../../server/systems/item';
 import { Particle } from '../../../shared/interfaces/particle';
 import { IFarming } from '../interfaces/IFarming';
 import { Item } from '../../../shared/interfaces/item';
+import {INVENTORY_TYPE} from "../../../shared/enums/inventoryTypes";
+import {ItemEffects} from "../../../server/systems/itemEffects";
 
 export class FarmingController {
     /**
@@ -53,25 +55,27 @@ export class FarmingController {
                 }
             }
         }
-        alt.on('OSFarming:Server:handleFarming', (player: alt.Player, item: Item) => {
-            let wasFarming = false;
-            for (const farm of farmRegistry) {
-                if (farm.requiredTool.includes(item.name)) {
-                    farm.spots.positions.forEach((farmingSpot) => {
-                        if (player.pos.isInRange(farmingSpot, 3.5)) {
-                            FarmingController.handleFarming(player, item, farm, farmingSpot);
-                            wasFarming = true;
-                        }
-                    });
-                }
-            }
-            if (!wasFarming) {
-                playerFuncs.emit.notification(player, `You can't use this item here!`);
-            }
-        });
+        ItemEffects.add('OSFarming:Server:handleFarming', FarmingController.handleFarmingEvent)
     }
 
-    static async handleFarming(player: alt.Player, toolToUse: Item, farmingData: IFarming, antiMacro: alt.Vector3) {
+    static async handleFarmingEvent(player: alt.Player, item: Item, slot: number, type: INVENTORY_TYPE) {
+        let wasFarming = false;
+        for (const farm of farmRegistry) {
+            if (farm.requiredTool.includes(item.name)) {
+                farm.spots.positions.forEach((farmingSpot) => {
+                    if (player.pos.isInRange(farmingSpot, 3.5)) {
+                        FarmingController.handleFarming(player, item, farm, farmingSpot, slot, type);
+                        wasFarming = true;
+                    }
+                });
+            }
+        }
+        if (!wasFarming) {
+            playerFuncs.emit.notification(player, `You can't use this item here!`);
+        }
+    }
+
+    static async handleFarming(player: alt.Player, toolToUse: Item, farmingData: IFarming, antiMacro: alt.Vector3, itemSlot: number, inventoryType: INVENTORY_TYPE) {
         if (player.getMeta(`IsFarming`) === true) {
             return;
         }
@@ -164,22 +168,17 @@ export class FarmingController {
                 player.data.inventory[hasItem.index].quantity += 1;
                 playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
             }
-
-            let toolbarItem = playerFuncs.inventory.isInToolbar(player, { name: toolToUse.name });
-            if (toolbarItem) {
+            if (INVENTORY_TYPE.INVENTORY == inventoryType) {
                 if (toolToUse.data.durability <= 1) {
-                    playerFuncs.inventory.toolbarRemove(player, toolbarItem.index);
+                    playerFuncs.inventory.inventoryRemove(player, itemSlot);
                 } else {
-                    player.data.toolbar[toolbarItem.index].data.durability -= 1;
+                    player.data.inventory[itemSlot].data.durability -= 1;
                 }
-            }
-            
-            let invItem = playerFuncs.inventory.isInInventory(player, { name: toolToUse.name });
-            if (invItem) {
+            } else if (INVENTORY_TYPE.TOOLBAR == inventoryType) {
                 if (toolToUse.data.durability <= 1) {
-                    playerFuncs.inventory.inventoryRemove(player, toolbarItem.index);
+                    playerFuncs.inventory.toolbarRemove(player, itemSlot);
                 } else {
-                    player.data.inventory[invItem.index].data.durability -= 1;
+                    player.data.toolbar[itemSlot].data.durability -= 1;
                 }
             }
             playerFuncs.save.field(player, 'inventory', player.data.inventory);

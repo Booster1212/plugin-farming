@@ -51,7 +51,6 @@ export interface IFarming {
     };
 
     spots: {
-        interactionText?: string;
         positions: Array<alt.Vector3>;
     };
 

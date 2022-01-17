@@ -57,9 +57,9 @@ export class FarmingController {
             let wasFarming = false;
             for (const farm of farmRegistry) {
                 if (farm.requiredTool.includes(item.name)) {
-                    farm.spots.positions.forEach((farmimngSpot) => {
-                        if (player.pos.isInRange(farmimngSpot, 3.5)) {
-                            FarmingController.handleFarming(player, item, farm, farmimngSpot);
+                    farm.spots.positions.forEach((farmingSpot) => {
+                        if (player.pos.isInRange(farmingSpot, 3.5)) {
+                            FarmingController.handleFarming(player, item, farm, farmingSpot);
                             wasFarming = true;
                         }
                     });
@@ -117,13 +117,8 @@ export class FarmingController {
 
         alt.setTimeout(async () => {
             let outcomeList = [];
-            // console.log(`index 0`);
-            // console.log(player.data.toolbar[0]);
 
-            // console.log(`index 1`);
-            // console.log(player.data.toolbar[1]);
-            // console.log(JSON.stringify(player.data.toolbar, null, '\t'));
-            //Wenn wir kein Tool brauchen/haben, nehmen wir auch die common-Liste
+            // If tool is not required or we dont have one, we just return the common list.
             if ((!toolToUse.rarity || toolToUse.rarity === 0 || toolToUse.rarity < 3) && farmingData.outcome.common) {
                 outcomeList.push(farmingData.outcome.common);
             }
@@ -179,7 +174,7 @@ export class FarmingController {
                 }
             }
             
-            let invItem = playerFuncs.inventory.isInInventory(player, {name: toolToUse.name });
+            let invItem = playerFuncs.inventory.isInInventory(player, { name: toolToUse.name });
             if (invItem) {
                 if (toolToUse.data.durability <= 1) {
                     playerFuncs.inventory.inventoryRemove(player, toolbarItem.index);

@@ -1,7 +1,13 @@
 import * as alt from 'alt-server';
 import { ANIMATION_FLAGS } from '../../../shared/flags/animationFlags';
 import { fishingLocations } from '../farmingRoutes/fishing/fishingLocations';
+import { grapeLocations } from '../farmingRoutes/grapeRoute/grapeLocations';
 import { miningLocations } from '../farmingRoutes/miningRoute/miningLocations';
+import { orangeLocations } from '../farmingRoutes/orangeRoute/orangeLocations';
+import { pepperLocations } from '../farmingRoutes/pepperRoute/pepperLocations';
+import { potatoLocations } from '../farmingRoutes/potatoRoute/potatoLocations';
+import { saladLocations } from '../farmingRoutes/saladRoute/saladLocations';
+import { tomatoLocations } from '../farmingRoutes/tomatoRoute/tomatoLocations';
 import { woodLocations } from '../farmingRoutes/woodRoute/woodLocations';
 import { IFarming } from '../interfaces/IFarming';
 
@@ -148,13 +154,12 @@ export const farmRegistry: Array<IFarming> = [
             positions: fishingLocations,
         },
         outcome: {
-            common: ['Calico bass', 'White seabass', 'Rockfish', 'Largemouth Bass', 'Trout', 'Catfish', 'Tilapia']
-        }
+            common: ['Calico bass', 'White seabass', 'Rockfish', 'Largemouth Bass', 'Trout', 'Catfish', 'Tilapia'],
+        },
     },
-    /*
     {
         routeName: 'Tomato-Route',
-        requiredTool: 'Garden Shears',
+        requiredTool: ['Garden Shears'],
         isAnimation: true,
         farmDuration: 60000,
         blip: {
@@ -182,14 +187,23 @@ export const farmRegistry: Array<IFarming> = [
             name: 'base',
             flags: ANIMATION_FLAGS.REPEAT,
         },
-        spots: {
-            positions: tomatoLocations
+        attacheable: {
+            bone: 57005,
+            model: 'v_ret_gc_scissors',
+            pos: { x: 0.2, y: 0.09, z: 0.05 } as alt.Vector3,
+            rot: { x: -55, y: -145, z: 10 } as alt.Vector3,
         },
-    }, 
-    /*
+        spots: {
+            positions: tomatoLocations,
+        },
+        outcome: {
+            common: ['Tomato'],
+        },
+    },
+
     {
         routeName: 'Orange-Route',
-        requiredTool: 'Garden Shears',
+        requiredTool: ['Garden Shears'],
         isAnimation: true,
         farmDuration: 60000,
         blip: {
@@ -212,18 +226,27 @@ export const farmRegistry: Array<IFarming> = [
             rotate: true,
             isMarker: true,
         },
+        attacheable: {
+            model: 'ng_proc_food_ornge1a',
+            bone: 57005,
+            pos: { x: 0.16, y: 0.01, z: -0.01 } as alt.Vector3,
+            rot: { x: -15, y: -150, z: -95 } as alt.Vector3,
+        },
         animation: {
-            dict: 'amb@world_human_gardener_plant@male@base',
-            name: 'base',
+            dict: 'amb@prop_human_movie_bulb@idle_a',
+            name: 'idle_a',
             flags: ANIMATION_FLAGS.REPEAT,
         },
         spots: {
             positions: orangeLocations,
         },
+        outcome: {
+            common: ['Orange'],
+        },
     },
     {
         routeName: 'Salad-Route',
-        requiredTool: 'Garden Shears',
+        requiredTool: ['Garden Shears'],
         isAnimation: true,
         farmDuration: 60000,
         blip: {
@@ -251,13 +274,22 @@ export const farmRegistry: Array<IFarming> = [
             name: 'base',
             flags: ANIMATION_FLAGS.REPEAT,
         },
+        attacheable: {
+            bone: 57005,
+            model: 'prop_cs_trowel',
+            pos: { x: 0.1, y: 0.01, z: -0.03 } as alt.Vector3,
+            rot: { x: 130, y: 70, z: -5 } as alt.Vector3,
+        },
         spots: {
-            positions: saladLocations
+            positions: saladLocations,
+        },
+        outcome: {
+            common: ['Salad'],
         },
     },
     {
         routeName: 'Potato-Route',
-        requiredTool: 'Garden Shears',
+        requiredTool: ['Garden Shears'],
         isAnimation: true,
         farmDuration: 60000,
         blip: {
@@ -285,13 +317,20 @@ export const farmRegistry: Array<IFarming> = [
             name: 'base',
             flags: ANIMATION_FLAGS.REPEAT,
         },
-        spots: {
-            positions: potatoLocations
+        attacheable: {
+            bone: 57005,
+            model: 'prop_cs_trowel',
+            pos: { x: 0.1, y: 0.01, z: -0.03 } as alt.Vector3,
+            rot: { x: 130, y: 70, z: -5 } as alt.Vector3,
         },
+        spots: {
+            positions: potatoLocations,
+        },
+        outcome: { common: ['Potato'] },
     },
     {
         routeName: 'Pepper-Route',
-        requiredTool: 'Garden Shears',
+        requiredTool: ['Garden Shears'],
         isAnimation: true,
         farmDuration: 60000,
         blip: {
@@ -319,13 +358,22 @@ export const farmRegistry: Array<IFarming> = [
             name: 'base',
             flags: ANIMATION_FLAGS.REPEAT,
         },
+        attacheable: {
+            bone: 57005,
+            model: 'prop_cs_trowel',
+            pos: { x: 0.1, y: 0.01, z: -0.03 } as alt.Vector3,
+            rot: { x: 130, y: 70, z: -5 } as alt.Vector3,
+        },
         spots: {
             positions: pepperLocations,
+        },
+        outcome: {
+            common: ['Pepper'],
         },
     },
     {
         routeName: 'Grape-Route',
-        requiredTool: 'Garden Shears',
+        requiredTool: ['Garden Shears'],
         isAnimation: true,
         farmDuration: 60000,
         blip: {
@@ -353,9 +401,17 @@ export const farmRegistry: Array<IFarming> = [
             name: 'base',
             flags: ANIMATION_FLAGS.REPEAT,
         },
+        attacheable: {
+            bone: 57005,
+            model: 'prop_cs_trowel',
+            pos: { x: 0.1, y: 0.01, z: -0.03 } as alt.Vector3,
+            rot: { x: 130, y: 70, z: -5 } as alt.Vector3,
+        },
         spots: {
-            positions: grapeLocations
+            positions: grapeLocations,
+        },
+        outcome: {
+            common: ['Grape'],
         },
     },
-    */
 ];

@@ -160,18 +160,6 @@ export const farmingItems: Array<Item> = [
         version: 1,
     },
     {
-        name: 'Some Fish..',
-        description: 'The fish smells from the head.',
-        icon: 'crate',
-        quantity: 1,
-        behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
-        data: {
-            rarity: 'common',
-        },
-        dbName: 'Common-Fish-1',
-        version: 1,
-    },
-    {
         name: 'Calico bass',
         description:
             'This species attains a maximum total length of 72 centimetres (28 in) and a maximum published weight of 7.0 kilograms (15.4 lb)',

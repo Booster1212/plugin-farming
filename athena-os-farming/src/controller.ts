@@ -11,6 +11,7 @@ import { IFarming } from '../interfaces/IFarming';
 import { Item } from '../../../shared/interfaces/item';
 import {INVENTORY_TYPE} from "../../../shared/enums/inventoryTypes";
 import {ItemEffects} from "../../../server/systems/itemEffects";
+import {disableAllControls} from "../../../client/utility/disableControls";
 
 export class FarmingController {
     /**
@@ -76,6 +77,8 @@ export class FarmingController {
     }
 
     static async handleFarming(player: alt.Player, toolToUse: Item, farmingData: IFarming, antiMacro: alt.Vector3, itemSlot: number, inventoryType: INVENTORY_TYPE) {
+        disableAllControls(true);
+
         if (player.getMeta(`IsFarming`) === true) {
             return;
         }
@@ -185,6 +188,7 @@ export class FarmingController {
             playerFuncs.save.field(player, 'toolbar', player.data.toolbar);
             playerFuncs.sync.inventory(player);
             player.deleteMeta(`IsFarming`);
+            disableAllControls(false);
         }, farmingData.farmDuration);
     }
 }

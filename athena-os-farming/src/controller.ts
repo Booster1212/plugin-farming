@@ -169,10 +169,9 @@ export class FarmingController {
                 playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
             }
 
-            // toolToUse.data.durability = toolToUse.data.durability-1;
             let toolbarItem = playerFuncs.inventory.isInToolbar(player, toolToUse)
             if (toolbarItem) {
-                if (toolToUse.data.durability <= 0) {
+                if (toolToUse.data.durability <= 1) {
                     playerFuncs.inventory.toolbarRemove(player, toolbarItem.index);
                 } else {
                     player.data.toolbar[toolbarItem.index].data.durability -= 1;
@@ -180,7 +179,7 @@ export class FarmingController {
             }
             let invItem = playerFuncs.inventory.isInInventory(player, toolToUse)
             if (invItem) {
-                if (toolToUse.data.durability <= 0) {
+                if (toolToUse.data.durability <= 1) {
                     playerFuncs.inventory.inventoryRemove(player, toolbarItem.index);
                 } else {
                     player.data.inventory[invItem.index].data.durability -= 1;

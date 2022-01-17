@@ -150,6 +150,9 @@ export const farmRegistry: Array<IFarming> = [
             interactionText: 'Start Fishing...',
             positions: fishingLocations,
         },
+        outcome: {
+            common: ['Calico bass', 'White seabass', 'Rockfish', 'Largemouth Bass', 'Trout', 'Catfish', 'Tilapia']
+        }
     },
     /*
     {

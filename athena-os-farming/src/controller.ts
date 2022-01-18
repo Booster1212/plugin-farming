@@ -11,7 +11,6 @@ import { IFarming } from '../interfaces/iFarming';
 import { Item } from '../../../shared/interfaces/item';
 import {INVENTORY_TYPE} from "../../../shared/enums/inventoryTypes";
 import {ItemEffects} from "../../../server/systems/itemEffects";
-// import {disableAllControls} from "../../../client/utility/disableControls";
 
 export class FarmingController {
     /**
@@ -60,7 +59,7 @@ export class FarmingController {
         ItemEffects.add('OSFarming:Server:handleFarming', FarmingController.handleFarmingEvent)
     }
 
-    static async handleFarmingEvent(player: alt.Player, item: Item, slot: number, type: INVENTORY_TYPE) {
+    private static async handleFarmingEvent(player: alt.Player, item: Item, slot: number, type: INVENTORY_TYPE) {
         let wasFarming = false;
         for (const farm of farmRegistry) {
             if (farm.requiredTool.includes(item.name)) {
@@ -77,22 +76,26 @@ export class FarmingController {
         }
     }
 
-    static async handleFarming(player: alt.Player, toolToUse: Item, farmingData: IFarming, antiMacro: alt.Vector3, itemSlot: number, inventoryType: INVENTORY_TYPE) {
-        // disableAllControls(true);
-
+    private static async handleFarming(player: alt.Player, toolToUse: Item, farmingData: IFarming, antiMacro: alt.Vector3, itemSlot: number, inventoryType: INVENTORY_TYPE) {
         if (player.getMeta(`IsFarming`) === true) {
             return;
         }
+
         if (player.getMeta(`Spotused-${antiMacro.x}`) === antiMacro.x) {
             playerFuncs.emit.notification(player, `[ANTIMACRO] - Already used this spot before.`);
             return;
         }
+
         player.setMeta(`Spotused-${antiMacro.x}`, antiMacro.x);
         player.setMeta(`IsFarming`, true);
 
+        playerFuncs.safe.setPosition(player, player.pos.x, player.pos.y, player.pos.z);
+        playerFuncs.set.frozen(player, true);
+        alt.log("FREEZE");
+
         alt.setTimeout(() => {
             player.deleteMeta(`Spotused-${antiMacro.x}`);
-        }, getRandomInt(60000, 180000));
+        }, FarmingController.getRandomInt(60000, 180000));
 
         playerFuncs.emit.animation(
             player,
@@ -160,7 +163,7 @@ export class FarmingController {
                 return;
             }
 
-            const randomized = getRandomInt(0, outcomeList.length);
+            const randomized = FarmingController.getRandomInt(0, outcomeList.length);
             const itemToAdd = await ItemFactory.getByName(outcomeList[0][randomized]);
             const hasItem = playerFuncs.inventory.isInInventory(player, { name: itemToAdd.name });
             const emptySlot = playerFuncs.inventory.getFreeInventorySlot(player);
@@ -189,8 +192,14 @@ export class FarmingController {
             playerFuncs.save.field(player, 'toolbar', player.data.toolbar);
             playerFuncs.sync.inventory(player);
             player.deleteMeta(`IsFarming`);
-            // disableAllControls(false);
+            playerFuncs.set.frozen(player, false);
         }, farmingData.farmDuration);
+    }
+    
+    private static getRandomInt(min: number, max: number) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min)) + min;
     }
 }
 
@@ -200,8 +209,9 @@ export class FarmingController {
  * @param {number} max - number
  * @returns A random integer between min and max.
  */
-function getRandomInt(min: number, max: number) {
+/* function getRandomInt(min: number, max: number) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
 }
+*/

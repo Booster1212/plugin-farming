@@ -202,19 +202,23 @@ export class FarmingController {
                 player.data.inventory[hasItem.index].quantity += 1;
                 playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
             }
-            if (INVENTORY_TYPE.INVENTORY == inventoryType) {
-                if (toolToUse.data.durability <= 1) {
-                    playerFuncs.inventory.inventoryRemove(player, itemSlot);
-                } else {
-                    let index = player.data.inventory.findIndex((item) => item.slot === itemSlot)
-                    player.data.inventory[index].data.durability -= 1
-                }
-            } else if (INVENTORY_TYPE.TOOLBAR == inventoryType) {
-                if (toolToUse.data.durability <= 1) {
-                    playerFuncs.inventory.toolbarRemove(player, itemSlot);
-                } else {
-                    let index = player.data.toolbar.findIndex((item) => item.slot === itemSlot)
-                    player.data.toolbar[index].data.durability -= 1
+
+            //Does the Item have a durability?
+            if (toolToUse.data.durability) {
+                if (INVENTORY_TYPE.INVENTORY == inventoryType) {
+                    if (toolToUse.data.durability <= 1) {
+                        playerFuncs.inventory.inventoryRemove(player, itemSlot);
+                    } else {
+                        let index = player.data.inventory.findIndex((item) => item.slot === itemSlot)
+                        player.data.inventory[index].data.durability -= 1
+                    }
+                } else if (INVENTORY_TYPE.TOOLBAR == inventoryType) {
+                    if (toolToUse.data.durability <= 1) {
+                        playerFuncs.inventory.toolbarRemove(player, itemSlot);
+                    } else {
+                        let index = player.data.toolbar.findIndex((item) => item.slot === itemSlot)
+                        player.data.toolbar[index].data.durability -= 1
+                    }
                 }
             }
             playerFuncs.save.field(player, 'inventory', player.data.inventory);

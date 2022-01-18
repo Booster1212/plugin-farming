@@ -7,14 +7,13 @@ export interface IFarming {
     isAnimation: boolean;
     farmDuration: number;
 
-    blip?: {
+    blips?: [{
         text: string;
         sprite: number;
         color: number;
         scale: number;
-        isBlip: boolean;
         position: alt.Vector3;
-    };
+    }];
 
     marker?: {
         type: number;

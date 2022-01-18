@@ -9,8 +9,8 @@ import { ItemFactory } from '../../../server/systems/item';
 import { Particle } from '../../../shared/interfaces/particle';
 import { IFarming } from '../interfaces/iFarming';
 import { Item } from '../../../shared/interfaces/item';
-import {INVENTORY_TYPE} from "../../../shared/enums/inventoryTypes";
-import {ItemEffects} from "../../../server/systems/itemEffects";
+import { INVENTORY_TYPE } from '../../../shared/enums/inventoryTypes';
+import { ItemEffects } from '../../../server/systems/itemEffects';
 
 export class FarmingController {
     /**
@@ -22,7 +22,7 @@ export class FarmingController {
             let currentFarm = farmRegistry[x];
 
             if (currentFarm.blips) {
-                currentFarm.blips.forEach(blip=>
+                currentFarm.blips.forEach((blip) =>
                     ServerBlipController.append({
                         pos: blip.position,
                         shortRange: true,
@@ -31,7 +31,8 @@ export class FarmingController {
                         text: blip.text,
                         scale: blip.scale,
                         identifier: `${currentFarm.routeName}-${x}`,
-                    }))
+                    }),
+                );
             }
 
             for (let spot = 0; spot < currentFarm.spots.positions.length; spot++) {
@@ -56,9 +57,18 @@ export class FarmingController {
                 }
             }
         }
-        ItemEffects.add('OSFarming:Server:handleFarming', FarmingController.handleFarmingEvent)
+        ItemEffects.add('OSFarming:Server:handleFarming', FarmingController.handleFarmingEvent);
     }
 
+    /**
+     * If the player is using a tool that is in the `requiredTool` array of a farm, then check if
+    the player is in range of any of the farming spots. If they are, then handle the farming.
+     * @param player - alt.Player - The player who used the item.
+     * @param {Item} item - The item that was used.
+     * @param {number} slot - The slot of the item in the inventory.
+     * @param {INVENTORY_TYPE} type - INVENTORY_TYPE
+     * @returns None
+     */
     private static async handleFarmingEvent(player: alt.Player, item: Item, slot: number, type: INVENTORY_TYPE) {
         let wasFarming = false;
         for (const farm of farmRegistry) {
@@ -76,7 +86,24 @@ export class FarmingController {
         }
     }
 
-    private static async handleFarming(player: alt.Player, toolToUse: Item, farmingData: IFarming, antiMacro: alt.Vector3, itemSlot: number, inventoryType: INVENTORY_TYPE) {
+    /**
+     * This function handles the farming of a specific item.
+     * @param player - The player who is farming.
+     * @param {Item} toolToUse - The item that the player is using to farm.
+     * @param {IFarming} farmingData - The farming data for the farming spot.
+     * @param antiMacro - The position of the farming spot.
+     * @param {number} itemSlot - The slot of the item in the inventory.
+     * @param {INVENTORY_TYPE} inventoryType - INVENTORY_TYPE.INVENTORY or INVENTORY_TYPE.TOOLBAR
+     * @returns The outcome of the farming.
+     */
+    private static async handleFarming(
+        player: alt.Player,
+        toolToUse: Item,
+        farmingData: IFarming,
+        antiMacro: alt.Vector3,
+        itemSlot: number,
+        inventoryType: INVENTORY_TYPE,
+    ) {
         if (player.getMeta(`IsFarming`) === true) {
             return;
         }
@@ -91,7 +118,7 @@ export class FarmingController {
 
         playerFuncs.safe.setPosition(player, player.pos.x, player.pos.y, player.pos.z);
         playerFuncs.set.frozen(player, true);
-        alt.log("FREEZE");
+        alt.log('FREEZE');
 
         alt.setTimeout(() => {
             player.deleteMeta(`Spotused-${antiMacro.x}`);
@@ -195,23 +222,16 @@ export class FarmingController {
             playerFuncs.set.frozen(player, false);
         }, farmingData.farmDuration);
     }
-    
+
+    /**
+     * Generate a random integer between two numbers.
+     * @param {number} min - The minimum number in the range.
+     * @param {number} max - the maximum number of times the function will be called.
+     * @returns A random integer between min and max.
+     */
     private static getRandomInt(min: number, max: number) {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min)) + min;
     }
 }
-
-/**
- * Generate a random integer between two numbers.
- * @param {number} min - The minimum number in the range.
- * @param {number} max - number
- * @returns A random integer between min and max.
- */
-/* function getRandomInt(min: number, max: number) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min;
-}
-*/

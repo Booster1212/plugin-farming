@@ -9,7 +9,7 @@ import { potatoLocations } from '../farmingRoutes/potatoRoute/potatoLocations';
 import { saladLocations } from '../farmingRoutes/saladRoute/saladLocations';
 import { tomatoLocations } from '../farmingRoutes/tomatoRoute/tomatoLocations';
 import { woodLocations } from '../farmingRoutes/woodRoute/woodLocations';
-import { IFarming } from '../interfaces/IFarming';
+import { IFarming } from '../interfaces/iFarming';
 
 export const farmRegistry: Array<IFarming> = [
     // MINING ROUTE
@@ -25,14 +25,13 @@ export const farmRegistry: Array<IFarming> = [
         ],
         isAnimation: true,
         farmDuration: 10000,
-        blip: {
+        blips: [{
             text: 'Miners Place',
             color: 40,
             sprite: 88,
             scale: 1,
-            isBlip: true,
             position: { x: 2912.41748046875, y: 2778.765380859375, z: 44.96366882324219 - 1 } as alt.Vector3,
-        },
+        }],
         marker: {
             type: 2,
             color: {
@@ -71,14 +70,13 @@ export const farmRegistry: Array<IFarming> = [
         requiredTool: ['Woodfellers Axe'],
         isAnimation: true,
         farmDuration: 3000,
-        blip: {
+        blips: [{
             text: 'Woodfellers Place',
             color: 56,
             sprite: 801,
             scale: 1,
-            isBlip: true,
             position: { x: -474.09478759765625, y: 5587.1962890625, z: 69.96195220947266 } as alt.Vector3,
-        },
+        }],
 
         marker: {
             type: 2,
@@ -119,14 +117,13 @@ export const farmRegistry: Array<IFarming> = [
         requiredTool: ['Fishing Rod'],
         isAnimation: true,
         farmDuration: 3000,
-        blip: {
+        blips: [{
             text: 'Fishermens Place',
             color: 56,
             sprite: 801,
             scale: 1,
-            isBlip: true,
             position: { x: 32.57453536987305, y: 855.6867065429688, z: 197.7342987060547 } as alt.Vector3,
-        },
+        }],
         marker: {
             type: 2,
             color: {
@@ -162,14 +159,13 @@ export const farmRegistry: Array<IFarming> = [
         requiredTool: ['Garden Shears'],
         isAnimation: true,
         farmDuration: 60000,
-        blip: {
+        blips: [{
             text: 'Tomato Plantation',
             color: 1,
             sprite: 88,
             scale: 1,
-            isBlip: true,
             position: { x: 322.28570556640625, y: 6487.79345703125, z: 29.161865234375 } as alt.Vector3,
-        },
+        }],
         marker: {
             type: 2,
             color: {
@@ -206,14 +202,13 @@ export const farmRegistry: Array<IFarming> = [
         requiredTool: ['Garden Shears'],
         isAnimation: true,
         farmDuration: 60000,
-        blip: {
+        blips: [{
             text: 'Orange Plantation',
             color: 17,
             sprite: 88,
             scale: 1,
-            isBlip: true,
             position: { x: 350.9010925292969, y: 6516.77783203125, z: 28.5216064453125 } as alt.Vector3,
-        },
+        }],
         marker: {
             type: 2,
             color: {
@@ -249,14 +244,13 @@ export const farmRegistry: Array<IFarming> = [
         requiredTool: ['Garden Shears'],
         isAnimation: true,
         farmDuration: 60000,
-        blip: {
+        blips: [{
             text: 'Salad Plantation',
             color: 2,
             sprite: 88,
             scale: 1,
-            isBlip: true,
             position: { x: 551.5120849609375, y: 6518.59765625, z: 29.819091796875 } as alt.Vector3,
-        },
+        }],
         marker: {
             type: 2,
             color: {
@@ -292,14 +286,13 @@ export const farmRegistry: Array<IFarming> = [
         requiredTool: ['Garden Shears'],
         isAnimation: true,
         farmDuration: 60000,
-        blip: {
+        blips: [{
             text: 'Potato Plantation',
             color: 21,
             sprite: 88,
             scale: 1,
-            isBlip: true,
             position: { x: 545.1692504882812, y: 6517.595703125, z: 29.920166015625 } as alt.Vector3,
-        },
+        }],
         marker: {
             type: 2,
             color: {
@@ -333,14 +326,13 @@ export const farmRegistry: Array<IFarming> = [
         requiredTool: ['Garden Shears'],
         isAnimation: true,
         farmDuration: 60000,
-        blip: {
+        blips: [{
             text: 'Pepper Plantation',
             color: 25,
             sprite: 88,
             scale: 1,
-            isBlip: true,
             position: { x: 393.6263732910156, y: 6594.98876953125, z: 28.5047607421875 } as alt.Vector3,
-        },
+        }],
         marker: {
             type: 2,
             color: {
@@ -376,14 +368,13 @@ export const farmRegistry: Array<IFarming> = [
         requiredTool: ['Garden Shears'],
         isAnimation: true,
         farmDuration: 60000,
-        blip: {
+        blips: [{
             text: 'Grape Plantation',
             color: 58,
             sprite: 88,
             scale: 1,
-            isBlip: true,
             position: { x: -1888.3385009765625, y: 2049.62646484375, z: 140.977294921875 } as alt.Vector3,
-        },
+        }],
         marker: {
             type: 2,
             color: {

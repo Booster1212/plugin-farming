@@ -7,11 +7,11 @@ import { farmRegistry } from '../farmingLists/farmRegistry';
 import { playerFuncs } from '../../../server/extensions/extPlayer';
 import { ItemFactory } from '../../../server/systems/item';
 import { Particle } from '../../../shared/interfaces/particle';
-import { IFarming } from '../interfaces/IFarming';
+import { IFarming } from '../interfaces/iFarming';
 import { Item } from '../../../shared/interfaces/item';
 import {INVENTORY_TYPE} from "../../../shared/enums/inventoryTypes";
 import {ItemEffects} from "../../../server/systems/itemEffects";
-import {disableAllControls} from "../../../client/utility/disableControls";
+// import {disableAllControls} from "../../../client/utility/disableControls";
 
 export class FarmingController {
     /**
@@ -22,16 +22,17 @@ export class FarmingController {
         for (let x = 0; x < farmRegistry.length; x++) {
             let currentFarm = farmRegistry[x];
 
-            if (currentFarm.blip.isBlip) {
-                ServerBlipController.append({
-                    pos: currentFarm.blip.position,
-                    shortRange: true,
-                    sprite: currentFarm.blip.sprite,
-                    color: currentFarm.blip.color,
-                    text: currentFarm.blip.text,
-                    scale: currentFarm.blip.scale,
-                    identifier: `${currentFarm.routeName}-${x}`,
-                });
+            if (currentFarm.blips) {
+                currentFarm.blips.forEach(blip=>
+                    ServerBlipController.append({
+                        pos: blip.position,
+                        shortRange: true,
+                        sprite: blip.sprite,
+                        color: blip.color,
+                        text: blip.text,
+                        scale: blip.scale,
+                        identifier: `${currentFarm.routeName}-${x}`,
+                    }))
             }
 
             for (let spot = 0; spot < currentFarm.spots.positions.length; spot++) {
@@ -77,7 +78,7 @@ export class FarmingController {
     }
 
     static async handleFarming(player: alt.Player, toolToUse: Item, farmingData: IFarming, antiMacro: alt.Vector3, itemSlot: number, inventoryType: INVENTORY_TYPE) {
-        disableAllControls(true);
+        // disableAllControls(true);
 
         if (player.getMeta(`IsFarming`) === true) {
             return;
@@ -188,7 +189,7 @@ export class FarmingController {
             playerFuncs.save.field(player, 'toolbar', player.data.toolbar);
             playerFuncs.sync.inventory(player);
             player.deleteMeta(`IsFarming`);
-            disableAllControls(false);
+            // disableAllControls(false);
         }, farmingData.farmDuration);
     }
 }

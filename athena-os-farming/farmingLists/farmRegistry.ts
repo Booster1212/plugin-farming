@@ -139,7 +139,7 @@ export const farmRegistry: Array<IFarming> = [
         animation: {
             dict: 'amb@world_human_stand_fishing@idle_a',
             name: 'idle_c',
-            flags: 49,
+            flags: ANIMATION_FLAGS.REPEAT,
         },
         attacheable: {
             model: 'prop_fishing_rod_01',

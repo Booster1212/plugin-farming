@@ -179,8 +179,8 @@ export const farmRegistry: Array<IFarming> = [
             isMarker: true,
         },
         animation: {
-            dict: 'amb@world_human_gardener_plant@male@base',
-            name: 'base',
+            dict: 'anim@amb@business@cfm@cfm_machine_oversee@',
+            name: 'button_press_operator',
             flags: ANIMATION_FLAGS.REPEAT,
         },
         attacheable: {
@@ -388,8 +388,8 @@ export const farmRegistry: Array<IFarming> = [
             isMarker: true,
         },
         animation: {
-            dict: 'amb@world_human_gardener_plant@male@base',
-            name: 'base',
+            dict: 'anim@amb@business@cfm@cfm_machine_oversee@',
+            name: 'button_press_operator',
             flags: ANIMATION_FLAGS.REPEAT,
         },
         attacheable: {

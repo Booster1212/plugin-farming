@@ -141,14 +141,17 @@ export class FarmingController {
             };
             playerFuncs.emit.objectAttach(player, objectToAttach, farmingData.farmDuration);
         }
-        playerFuncs.emit.createProgressBar(player, {
-            uid: `Farming-${player.data._id.toString()}`,
-            color: { r: 255, g: 0, b: 0, a: 200 },
-            distance: 15,
-            milliseconds: farmingData.farmDuration,
-            position: player.pos,
-            text: `Farming...`,
-        });
+        
+        if(farmingData.progressBar) {
+            playerFuncs.emit.createProgressBar(player, {
+                uid: `Farming-${player.data._id.toString()}`,
+                color: farmingData.progressBar.color,
+                distance: farmingData.progressBar.distance,
+                milliseconds: farmingData.farmDuration,
+                position: player.pos,
+                text: farmingData.progressBar.text,
+            });
+        }
 
         if (farmingData.particles) {
             const particle: Particle = {

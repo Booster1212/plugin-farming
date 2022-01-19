@@ -41,6 +41,17 @@ export interface IFarming {
         rot: alt.Vector3;
     };
 
+    progressBar?: {
+        color: {
+            r: number;
+            g: number;
+            b: number;
+            a: number;
+        },
+        distance: number;
+        text: string;
+    }
+
     particles?: {
         pos: alt.Vector3,
         dict: string,

@@ -62,7 +62,7 @@ export class FarmingController {
 
     /**
      * If the player is using a tool that is in the `requiredTool` array of a farm, then check if
-    the player is in range of any of the farming spots. If they are, then handle the farming.
+     the player is in range of any of the farming spots. If they are, then handle the farming.
      * @param player - alt.Player - The player who used the item.
      * @param {Item} item - The item that was used.
      * @param {number} slot - The slot of the item in the inventory.
@@ -202,17 +202,23 @@ export class FarmingController {
                 player.data.inventory[hasItem.index].quantity += 1;
                 playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
             }
-            if (INVENTORY_TYPE.INVENTORY == inventoryType) {
-                if (toolToUse.data.durability <= 1) {
-                    playerFuncs.inventory.inventoryRemove(player, itemSlot);
-                } else {
-                    player.data.inventory[itemSlot].data.durability -= 1;
-                }
-            } else if (INVENTORY_TYPE.TOOLBAR == inventoryType) {
-                if (toolToUse.data.durability <= 1) {
-                    playerFuncs.inventory.toolbarRemove(player, itemSlot);
-                } else {
-                    player.data.toolbar[itemSlot].data.durability -= 1;
+
+            //Does the Item have a durability?
+            if (toolToUse.data.durability) {
+                if (INVENTORY_TYPE.INVENTORY == inventoryType) {
+                    if (toolToUse.data.durability <= 1) {
+                        playerFuncs.inventory.inventoryRemove(player, itemSlot);
+                    } else {
+                        let index = player.data.inventory.findIndex((item) => item.slot === itemSlot)
+                        player.data.inventory[index].data.durability -= 1
+                    }
+                } else if (INVENTORY_TYPE.TOOLBAR == inventoryType) {
+                    if (toolToUse.data.durability <= 1) {
+                        playerFuncs.inventory.toolbarRemove(player, itemSlot);
+                    } else {
+                        let index = player.data.toolbar.findIndex((item) => item.slot === itemSlot)
+                        player.data.toolbar[index].data.durability -= 1
+                    }
                 }
             }
             playerFuncs.save.field(player, 'inventory', player.data.inventory);

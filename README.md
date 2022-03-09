@@ -40,7 +40,7 @@ In case of any unforeseen problems with the store system, please feel free to co
 
 ## Contribute to this plugin
 
-If you want to contribute something to our open source store system, you are very welcome to do so by creating a pull request, you can of course also submit bugs or feature requests via the GitHub issue system!
+If you want to contribute something to our open source farming system, you are very welcome to do so by creating a pull request, you can of course also submit bugs or feature requests via the GitHub issue system!
 
 ## Authors & Contributors
 

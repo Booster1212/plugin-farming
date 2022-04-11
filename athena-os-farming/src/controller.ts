@@ -51,7 +51,7 @@ export class FarmingController {
                             g: currentFarm.marker.color.g,
                             b: currentFarm.marker.color.b,
                             a: currentFarm.marker.color.a,
-                        },
+                        } as alt.RGBA,
                         uid: `${currentFarm.routeName}-${x}`,
                     });
                 }
@@ -145,7 +145,7 @@ export class FarmingController {
         if(farmingData.progressBar) {
             playerFuncs.emit.createProgressBar(player, {
                 uid: `Farming-${player.data._id.toString()}`,
-                color: farmingData.progressBar.color,
+                color: farmingData.progressBar.color as alt.RGBA,
                 distance: farmingData.progressBar.distance,
                 milliseconds: farmingData.farmDuration,
                 position: player.pos,

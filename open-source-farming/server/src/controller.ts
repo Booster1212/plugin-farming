@@ -1,16 +1,15 @@
 import * as alt from 'alt-server';
-import IAttachable from '../../../shared/interfaces/iAttachable';
-
-import { ServerMarkerController } from '../../../server/streamers/marker';
-import { ServerBlipController } from '../../../server/systems/blip';
+import { playerFuncs } from '../../../../server/extensions/extPlayer';
+import { ServerMarkerController } from '../../../../server/streamers/marker';
+import { ServerBlipController } from '../../../../server/systems/blip';
+import { ItemFactory } from '../../../../server/systems/item';
+import { ItemEffects } from '../../../../server/systems/itemEffects';
+import { INVENTORY_TYPE } from '../../../../shared/enums/inventoryTypes';
+import IAttachable from '../../../../shared/interfaces/iAttachable';
+import { Item } from '../../../../shared/interfaces/item';
+import { Particle } from '../../../../shared/interfaces/particle';
 import { farmRegistry } from '../farmingLists/farmRegistry';
-import { playerFuncs } from '../../../server/extensions/extPlayer';
-import { ItemFactory } from '../../../server/systems/item';
-import { Particle } from '../../../shared/interfaces/particle';
 import { IFarming } from '../interfaces/iFarming';
-import { Item } from '../../../shared/interfaces/item';
-import { INVENTORY_TYPE } from '../../../shared/enums/inventoryTypes';
-import { ItemEffects } from '../../../server/systems/itemEffects';
 
 export class FarmingController {
     /**

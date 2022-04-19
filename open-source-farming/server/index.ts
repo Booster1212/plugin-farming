@@ -1,11 +1,11 @@
 import * as alt from 'alt-server';
-
+import { PluginSystem } from '../../../../server/systems/plugins';
+import { SYSTEM_EVENTS } from '../../../../shared/enums/system';
+import './farmingLists/farmingItems';
+import './farmingLists/farmingTools';
 import { FarmingController } from './src/controller';
 
-import './farmingLists/farmingTools';
-import './farmingLists/farmingItems';
-import { PluginSystem } from '../../../server/systems/plugins';
-import { SYSTEM_EVENTS } from '../../../shared/enums/system';
+
 
 export const OSFarming = {
     name: 'OSFarming',

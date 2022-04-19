@@ -1,6 +1,6 @@
-import { ItemFactory } from "../../../../server/systems/item";
-import { ITEM_TYPE } from "../../../../shared/enums/itemTypes";
-import { Item } from "../../../../shared/interfaces/item";
+import { ItemFactory } from "../../../../../server/systems/item";
+import { ITEM_TYPE } from "../../../../../shared/enums/itemTypes";
+import { Item } from "../../../../../shared/interfaces/item";
 
 export const farmingTools: Array<Item> = [
     {

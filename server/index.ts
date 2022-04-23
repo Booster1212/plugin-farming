@@ -1,21 +1,14 @@
 import * as alt from 'alt-server';
 
 import { FarmingController } from './src/controller';
-
-import './farmingLists/farmingTools';
-import './farmingLists/farmingItems';
 import { PluginSystem } from '../../../server/systems/plugins';
-import { SYSTEM_EVENTS } from '../../../shared/enums/system';
+import { config } from './src/config';
 
-export const OSFarming = {
-    name: 'OSFarming',
-    version: 'v1.0',
-}
+import './src/defaults/index';
+import './src/defaults/farmingLists/farmingTools';
+import './src/defaults/farmingLists/farmingItems';
 
-PluginSystem.registerPlugin(OSFarming.name, () => {
-    alt.log(`~lg~${OSFarming.name} ${OSFarming.version} successfully loaded.`);
-});
-
-alt.on(SYSTEM_EVENTS.BOOTUP_ENABLE_ENTRY, () => {
-    FarmingController.createSpots();
+PluginSystem.registerPlugin(config.pluginName, () => {
+    const spots = FarmingController.createSpots();
+    alt.log(`~lg~[PLUGIN] ==> ${config.pluginName} successfully loaded. ${spots} spots created.`);
 });

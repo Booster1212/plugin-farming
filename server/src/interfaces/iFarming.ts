@@ -1,5 +1,5 @@
 import * as alt from 'alt-server';
-import { ANIMATION_FLAGS } from '../../../../shared/flags/animationFlags';
+import { ANIMATION_FLAGS } from '../../../../../shared/flags/animationFlags';
 
 
 export interface IFarming {

@@ -1,6 +1,5 @@
-import { ItemFactory } from "../../../../server/systems/item";
-import { ITEM_TYPE } from "../../../../shared/enums/itemTypes";
-import { Item } from "../../../../shared/interfaces/item";
+import { ITEM_TYPE } from "../../../../../../shared/enums/itemTypes";
+import { Item } from "../../../../../../shared/interfaces/item";
 
 export const farmingTools: Array<Item> = [
     {
@@ -99,9 +98,3 @@ export const farmingTools: Array<Item> = [
         version: 1,
     },
 ];
-
-for (let x = 0; x < farmingTools.length; x++) {
-    await ItemFactory.add(farmingTools[x]);
-    await ItemFactory.update(farmingTools[x].dbName, farmingTools[x]);
-}
-//

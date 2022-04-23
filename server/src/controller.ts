@@ -8,14 +8,10 @@ import { INVENTORY_TYPE } from '../../../../shared/enums/inventoryTypes';
 import IAttachable from '../../../../shared/interfaces/iAttachable';
 import { Item } from '../../../../shared/interfaces/item';
 import { Particle } from '../../../../shared/interfaces/particle';
-import { farmRegistry } from '../farmingLists/farmRegistry';
-import { IFarming } from '../interfaces/iFarming';
+import { farmRegistry } from './defaults/farmingLists/farmRegistry';
+import { IFarming } from './interfaces/iFarming';
 
 export class FarmingController {
-    /**
-     * Create all the spots and blips for the farms.
-     * @returns None
-     */
     static createSpots() {
         for (let x = 0; x < farmRegistry.length; x++) {
             let currentFarm = farmRegistry[x];
@@ -57,6 +53,7 @@ export class FarmingController {
             }
         }
         ItemEffects.add('OSFarming:Server:handleFarming', FarmingController.handleFarmingEvent);
+        return farmRegistry.length;
     }
 
     /**

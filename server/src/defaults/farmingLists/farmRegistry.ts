@@ -1,5 +1,6 @@
 import * as alt from 'alt-server';
-import { ANIMATION_FLAGS } from '../../../../shared/flags/animationFlags';
+import { ANIMATION_FLAGS } from '../../../../../../shared/flags/animationFlags';
+import { IFarming } from '../../interfaces/iFarming';
 import { fishingLocations } from '../farmingRoutes/fishing/fishingLocations';
 import { grapeLocations } from '../farmingRoutes/grapeRoute/grapeLocations';
 import { miningLocations } from '../farmingRoutes/miningRoute/miningLocations';
@@ -9,7 +10,6 @@ import { potatoLocations } from '../farmingRoutes/potatoRoute/potatoLocations';
 import { saladLocations } from '../farmingRoutes/saladRoute/saladLocations';
 import { tomatoLocations } from '../farmingRoutes/tomatoRoute/tomatoLocations';
 import { woodLocations } from '../farmingRoutes/woodRoute/woodLocations';
-import { IFarming } from '../interfaces/iFarming';
 
 export const farmRegistry: Array<IFarming> = [
     // MINING ROUTE

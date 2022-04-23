@@ -1,16 +1,15 @@
 import * as alt from 'alt-server';
-import IAttachable from '../../../shared/interfaces/iAttachable';
-
-import { ServerMarkerController } from '../../../server/streamers/marker';
-import { ServerBlipController } from '../../../server/systems/blip';
+import { Athena } from '../../../../server/api/athena';
+import { ServerMarkerController } from '../../../../server/streamers/marker';
+import { ServerBlipController } from '../../../../server/systems/blip';
+import { ItemFactory } from '../../../../server/systems/item';
+import { ItemEffects } from '../../../../server/systems/itemEffects';
+import { INVENTORY_TYPE } from '../../../../shared/enums/inventoryTypes';
+import IAttachable from '../../../../shared/interfaces/iAttachable';
+import { Item } from '../../../../shared/interfaces/item';
+import { Particle } from '../../../../shared/interfaces/particle';
 import { farmRegistry } from '../farmingLists/farmRegistry';
-import { playerFuncs } from '../../../server/extensions/extPlayer';
-import { ItemFactory } from '../../../server/systems/item';
-import { Particle } from '../../../shared/interfaces/particle';
 import { IFarming } from '../interfaces/iFarming';
-import { Item } from '../../../shared/interfaces/item';
-import { INVENTORY_TYPE } from '../../../shared/enums/inventoryTypes';
-import { ItemEffects } from '../../../server/systems/itemEffects';
 
 export class FarmingController {
     /**
@@ -51,7 +50,7 @@ export class FarmingController {
                             g: currentFarm.marker.color.g,
                             b: currentFarm.marker.color.b,
                             a: currentFarm.marker.color.a,
-                        },
+                        } as alt.RGBA,
                         uid: `${currentFarm.routeName}-${x}`,
                     });
                 }
@@ -82,7 +81,7 @@ export class FarmingController {
             }
         }
         if (!wasFarming) {
-            playerFuncs.emit.notification(player, `You can't use this item here!`);
+            Athena.player.emit.notification(player, `You can't use this item here!`);
         }
     }
 
@@ -109,22 +108,22 @@ export class FarmingController {
         }
 
         if (player.getMeta(`Spotused-${antiMacro.x}`) === antiMacro.x) {
-            playerFuncs.emit.notification(player, `[ANTIMACRO] - Already used this spot before.`);
+            Athena.player.emit.notification(player, `[ANTIMACRO] - Already used this spot before.`);
             return;
         }
 
         player.setMeta(`Spotused-${antiMacro.x}`, antiMacro.x);
         player.setMeta(`IsFarming`, true);
 
-        playerFuncs.safe.setPosition(player, player.pos.x, player.pos.y, player.pos.z);
-        playerFuncs.set.frozen(player, true);
+        Athena.player.safe.setPosition(player, player.pos.x, player.pos.y, player.pos.z);
+        Athena.player.set.frozen(player, true);
         alt.log('FREEZE');
 
         alt.setTimeout(() => {
             player.deleteMeta(`Spotused-${antiMacro.x}`);
         }, FarmingController.getRandomInt(60000, 180000));
 
-        playerFuncs.emit.animation(
+        Athena.player.emit.animation(
             player,
             farmingData.animation.dict,
             farmingData.animation.name,
@@ -139,13 +138,13 @@ export class FarmingController {
                 rot: farmingData.attacheable.rot,
                 bone: farmingData.attacheable.bone,
             };
-            playerFuncs.emit.objectAttach(player, objectToAttach, farmingData.farmDuration);
+            Athena.player.emit.objectAttach(player, objectToAttach, farmingData.farmDuration);
         }
         
         if(farmingData.progressBar) {
-            playerFuncs.emit.createProgressBar(player, {
+            Athena.player.emit.createProgressBar(player, {
                 uid: `Farming-${player.data._id.toString()}`,
-                color: farmingData.progressBar.color,
+                color: farmingData.progressBar.color as alt.RGBA,
                 distance: farmingData.progressBar.distance,
                 milliseconds: farmingData.farmDuration,
                 position: player.pos,
@@ -161,7 +160,7 @@ export class FarmingController {
                 duration: farmingData.particles.duration,
                 scale: farmingData.particles.scale,
             };
-            playerFuncs.emit.particle(player, particle, true);
+            Athena.player.emit.particle(player, particle, true);
         }
 
         alt.setTimeout(async () => {
@@ -197,46 +196,46 @@ export class FarmingController {
             }
 
             if (!outcomeList || outcomeList.length === 0) {
-                playerFuncs.emit.notification(player, `You found nothing!`);
+                Athena.player.emit.notification(player, `You found nothing!`);
                 return;
             }
 
             const randomized = FarmingController.getRandomInt(0, outcomeList.length);
             const itemToAdd = await ItemFactory.getByName(outcomeList[0][randomized]);
-            const hasItem = playerFuncs.inventory.isInInventory(player, { name: itemToAdd.name });
-            const emptySlot = playerFuncs.inventory.getFreeInventorySlot(player);
+            const hasItem = Athena.player.inventory.isInInventory(player, { name: itemToAdd.name });
+            const emptySlot = Athena.player.inventory.getFreeInventorySlot(player);
 
             if (!hasItem) {
-                playerFuncs.inventory.inventoryAdd(player, itemToAdd, emptySlot.slot);
-                playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
+                Athena.player.inventory.inventoryAdd(player, itemToAdd, emptySlot.slot);
+                Athena.player.emit.notification(player, `You've found ${itemToAdd.name}!`);
             } else {
                 player.data.inventory[hasItem.index].quantity += 1;
-                playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
+                Athena.player.emit.notification(player, `You've found ${itemToAdd.name}!`);
             }
 
             //Does the Item have a durability?
             if (toolToUse.data.durability) {
                 if (INVENTORY_TYPE.INVENTORY == inventoryType) {
                     if (toolToUse.data.durability <= 1) {
-                        playerFuncs.inventory.inventoryRemove(player, itemSlot);
+                        Athena.player.inventory.inventoryRemove(player, itemSlot);
                     } else {
                         let index = player.data.inventory.findIndex((item) => item.slot === itemSlot)
                         player.data.inventory[index].data.durability -= 1
                     }
                 } else if (INVENTORY_TYPE.TOOLBAR == inventoryType) {
                     if (toolToUse.data.durability <= 1) {
-                        playerFuncs.inventory.toolbarRemove(player, itemSlot);
+                        Athena.player.inventory.toolbarRemove(player, itemSlot);
                     } else {
                         let index = player.data.toolbar.findIndex((item) => item.slot === itemSlot)
                         player.data.toolbar[index].data.durability -= 1
                     }
                 }
             }
-            playerFuncs.save.field(player, 'inventory', player.data.inventory);
-            playerFuncs.save.field(player, 'toolbar', player.data.toolbar);
-            playerFuncs.sync.inventory(player);
+            Athena.player.save.field(player, 'inventory', player.data.inventory);
+            Athena.player.save.field(player, 'toolbar', player.data.toolbar);
+            Athena.player.sync.inventory(player);
             player.deleteMeta(`IsFarming`);
-            playerFuncs.set.frozen(player, false);
+            Athena.player.set.frozen(player, false);
         }, farmingData.farmDuration);
     }
 

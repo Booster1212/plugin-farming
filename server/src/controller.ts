@@ -56,15 +56,6 @@ export class FarmingController {
         return farmRegistry.length;
     }
 
-    /**
-     * If the player is using a tool that is in the `requiredTool` array of a farm, then check if
-     the player is in range of any of the farming spots. If they are, then handle the farming.
-     * @param player - alt.Player - The player who used the item.
-     * @param {Item} item - The item that was used.
-     * @param {number} slot - The slot of the item in the inventory.
-     * @param {INVENTORY_TYPE} type - INVENTORY_TYPE
-     * @returns None
-     */
     private static async handleFarmingEvent(player: alt.Player, item: Item, slot: number, type: INVENTORY_TYPE) {
         let wasFarming = false;
         for (const farm of farmRegistry) {
@@ -82,16 +73,6 @@ export class FarmingController {
         }
     }
 
-    /**
-     * This function handles the farming of a specific item.
-     * @param player - The player who is farming.
-     * @param {Item} toolToUse - The item that the player is using to farm.
-     * @param {IFarming} farmingData - The farming data for the farming spot.
-     * @param antiMacro - The position of the farming spot.
-     * @param {number} itemSlot - The slot of the item in the inventory.
-     * @param {INVENTORY_TYPE} inventoryType - INVENTORY_TYPE.INVENTORY or INVENTORY_TYPE.TOOLBAR
-     * @returns The outcome of the farming.
-     */
     private static async handleFarming(
         player: alt.Player,
         toolToUse: Item,
@@ -114,7 +95,6 @@ export class FarmingController {
 
         Athena.player.safe.setPosition(player, player.pos.x, player.pos.y, player.pos.z);
         Athena.player.set.frozen(player, true);
-        alt.log('FREEZE');
 
         alt.setTimeout(() => {
             player.deleteMeta(`Spotused-${antiMacro.x}`);
@@ -137,8 +117,8 @@ export class FarmingController {
             };
             Athena.player.emit.objectAttach(player, objectToAttach, farmingData.farmDuration);
         }
-        
-        if(farmingData.progressBar) {
+
+        if (farmingData.progressBar) {
             Athena.player.emit.createProgressBar(player, {
                 uid: `Farming-${player.data._id.toString()}`,
                 color: farmingData.progressBar.color as alt.RGBA,
@@ -216,23 +196,24 @@ export class FarmingController {
                     if (toolToUse.data.durability <= 1) {
                         Athena.player.inventory.inventoryRemove(player, itemSlot);
                     } else {
-                        let index = player.data.inventory.findIndex((item) => item.slot === itemSlot)
-                        player.data.inventory[index].data.durability -= 1
+                        let index = player.data.inventory.findIndex((item) => item.slot === itemSlot);
+                        player.data.inventory[index].data.durability -= 1;
                     }
                 } else if (INVENTORY_TYPE.TOOLBAR == inventoryType) {
                     if (toolToUse.data.durability <= 1) {
                         Athena.player.inventory.toolbarRemove(player, itemSlot);
                     } else {
-                        let index = player.data.toolbar.findIndex((item) => item.slot === itemSlot)
-                        player.data.toolbar[index].data.durability -= 1
+                        let index = player.data.toolbar.findIndex((item) => item.slot === itemSlot);
+                        player.data.toolbar[index].data.durability -= 1;
                     }
                 }
             }
             Athena.player.save.field(player, 'inventory', player.data.inventory);
             Athena.player.save.field(player, 'toolbar', player.data.toolbar);
             Athena.player.sync.inventory(player);
-            player.deleteMeta(`IsFarming`);
             Athena.player.set.frozen(player, false);
+            
+            player.deleteMeta(`IsFarming`);
         }, farmingData.farmDuration);
     }
 

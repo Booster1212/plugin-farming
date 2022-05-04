@@ -1,5 +1,5 @@
-import { ITEM_TYPE } from "../../../../../../shared/enums/itemTypes";
-import { Item } from "../../../../../../shared/interfaces/item";
+import { ITEM_TYPE } from '../../../../../../shared/enums/itemTypes';
+import { Item } from '../../../../../../shared/interfaces/item';
 
 export const farmingItems: Array<Item> = [
     {
@@ -8,8 +8,7 @@ export const farmingItems: Array<Item> = [
         description: 'Some example description.',
         behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_TRADE,
         quantity: 1,
-        data: {
-        },
+        data: {},
         dbName: 'OS-Farming-Iron-Ore',
         rarity: 0,
         version: 1,
@@ -20,8 +19,7 @@ export const farmingItems: Array<Item> = [
         description: 'Some example description.',
         behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_TRADE,
         quantity: 1,
-        data: {
-        },
+        data: {},
         dbName: 'OS-Farming-Cooper-Ore',
         rarity: 0,
         version: 1,
@@ -32,8 +30,7 @@ export const farmingItems: Array<Item> = [
         description: 'Some example description.',
         behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_TRADE,
         quantity: 1,
-        data: {
-        },
+        data: {},
         dbName: 'OS-Farming-Silver-Ore',
         rarity: 2,
         version: 1,
@@ -44,8 +41,7 @@ export const farmingItems: Array<Item> = [
         description: 'Some example description.',
         behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_TRADE,
         quantity: 1,
-        data: {
-        },
+        data: {},
         dbName: 'OS-Farming-Gold-Ore',
         rarity: 4,
         version: 1,
@@ -56,8 +52,7 @@ export const farmingItems: Array<Item> = [
         description: 'Some example description.',
         behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_TRADE,
         quantity: 1,
-        data: {
-        },
+        data: {},
         dbName: 'OS-Farming-Titanium-Ore',
         rarity: 4,
         version: 1,
@@ -68,8 +63,7 @@ export const farmingItems: Array<Item> = [
         description: 'Some example description.',
         behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_TRADE,
         quantity: 1,
-        data: {
-        },
+        data: {},
         dbName: 'OS-Farming-Oak-Wood',
         rarity: 0,
         version: 1,
@@ -80,8 +74,7 @@ export const farmingItems: Array<Item> = [
         description: 'Some example description.',
         behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_TRADE,
         quantity: 1,
-        data: {
-        },
+        data: {},
         dbName: 'OS-Farming-Rotten-Wood',
         rarity: 0,
         version: 1,
@@ -92,8 +85,7 @@ export const farmingItems: Array<Item> = [
         description: 'Some example description.',
         behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_TRADE,
         quantity: 1,
-        data: {
-        },
+        data: {},
         dbName: 'OS-Farming-Tomato',
         rarity: 0,
         version: 1,
@@ -104,8 +96,7 @@ export const farmingItems: Array<Item> = [
         description: 'Some example description.',
         behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_TRADE,
         quantity: 1,
-        data: {
-        },
+        data: {},
         dbName: 'OS-Farming-Orange',
         rarity: 0,
         version: 1,
@@ -116,8 +107,7 @@ export const farmingItems: Array<Item> = [
         description: 'Some example description.',
         behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_TRADE,
         quantity: 1,
-        data: {
-        },
+        data: {},
         dbName: 'OS-Farming-Salad',
         rarity: 0,
         version: 1,
@@ -128,8 +118,7 @@ export const farmingItems: Array<Item> = [
         description: 'Some example description.',
         behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_TRADE,
         quantity: 1,
-        data: {
-        },
+        data: {},
         dbName: 'OS-Farming-Potate',
         rarity: 0,
         version: 1,
@@ -140,8 +129,7 @@ export const farmingItems: Array<Item> = [
         description: 'Some example description.',
         behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_TRADE,
         quantity: 1,
-        data: {
-        },
+        data: {},
         dbName: 'OS-Farming-Pepper',
         rarity: 0,
         version: 1,
@@ -152,8 +140,7 @@ export const farmingItems: Array<Item> = [
         description: 'Some example description.',
         behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_TRADE,
         quantity: 1,
-        data: {
-        },
+        data: {},
         dbName: 'OS-Farming-Grape',
         rarity: 0,
         version: 1,
@@ -165,8 +152,7 @@ export const farmingItems: Array<Item> = [
         icon: 'crate',
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
-        data: {
-        },
+        data: {},
         dbName: 'Calico-bass',
         rarity: 0,
         version: 1,
@@ -177,8 +163,7 @@ export const farmingItems: Array<Item> = [
         icon: 'crate',
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
-        data: {
-        },
+        data: {},
         dbName: 'White-seabass',
         rarity: 0,
         version: 1,
@@ -190,8 +175,7 @@ export const farmingItems: Array<Item> = [
         icon: 'crate',
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
-        data: {
-        },
+        data: {},
         dbName: 'Rockfish',
         rarity: 0,
         version: 1,
@@ -203,8 +187,7 @@ export const farmingItems: Array<Item> = [
         icon: 'crate',
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
-        data: {
-        },
+        data: {},
         dbName: 'Largemouth-Bass',
         rarity: 0,
         version: 1,
@@ -216,8 +199,7 @@ export const farmingItems: Array<Item> = [
         icon: 'crate',
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
-        data: {
-        },
+        data: {},
         dbName: 'Trout',
         rarity: 0,
         version: 1,
@@ -229,8 +211,7 @@ export const farmingItems: Array<Item> = [
         icon: 'crate',
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
-        data: {
-        },
+        data: {},
         dbName: 'Catfish',
         rarity: 0,
         version: 1,
@@ -242,8 +223,7 @@ export const farmingItems: Array<Item> = [
         icon: 'crate',
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
-        data: {
-        },
+        data: {},
         dbName: 'Tilapia',
         rarity: 0,
         version: 1,
@@ -255,8 +235,7 @@ export const farmingItems: Array<Item> = [
         icon: 'crate',
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
-        data: {
-        },
+        data: {},
         dbName: 'Bluegills',
         rarity: 2,
         version: 1,
@@ -268,8 +247,7 @@ export const farmingItems: Array<Item> = [
         icon: 'crate',
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
-        data: {
-        },
+        data: {},
         dbName: 'Salmon',
         rarity: 2,
         version: 1,
@@ -281,8 +259,7 @@ export const farmingItems: Array<Item> = [
         icon: 'crate',
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
-        data: {
-        },
+        data: {},
         dbName: 'Gree-Sunfish',
         rarity: 2,
         version: 1,
@@ -294,8 +271,7 @@ export const farmingItems: Array<Item> = [
         icon: 'crate',
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
-        data: {
-        },
+        data: {},
         dbName: 'Yellowtail-Amberjack',
         rarity: 4,
         version: 1,
@@ -307,8 +283,7 @@ export const farmingItems: Array<Item> = [
         icon: 'crate',
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
-        data: {
-        },
+        data: {},
         dbName: 'Tuna',
         rarity: 4,
         version: 1,
@@ -320,8 +295,7 @@ export const farmingItems: Array<Item> = [
         icon: 'crate',
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
-        data: {
-        },
+        data: {},
         dbName: 'Mosquitofish',
         rarity: 4,
         version: 1,

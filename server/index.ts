@@ -1,10 +1,8 @@
 import * as alt from 'alt-server';
-import './src/defaults/index';
-// import './src/defaults/farmingLists/farmingTools';
-// import './src/defaults/farmingLists/farmingItems';
 import { FarmingController } from './src/controller';
 import { PluginSystem } from '../../../server/systems/plugins';
 import { config } from './src/config';
+import './src/defaults/index';
 
 PluginSystem.registerPlugin(config.pluginName, () => {
     const spots = FarmingController.createSpots();

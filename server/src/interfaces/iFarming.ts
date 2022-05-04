@@ -7,13 +7,15 @@ export interface IFarming {
     isAnimation: boolean;
     farmDuration: number;
 
-    blips?: [{
-        text: string;
-        sprite: number;
-        color: number;
-        scale: number;
-        position: alt.Vector3;
-    }];
+    blips?: [
+        {
+            text: string;
+            sprite: number;
+            color: number;
+            scale: number;
+            position: alt.Vector3;
+        },
+    ];
 
     marker?: {
         type: number;
@@ -47,17 +49,17 @@ export interface IFarming {
             g: number;
             b: number;
             a: number;
-        },
+        };
         distance: number;
         text: string;
-    }
+    };
 
     particles?: {
-        pos: alt.Vector3,
-        dict: string,
-        name: string,
-        duration: number,
-        scale: number
+        pos: alt.Vector3;
+        dict: string;
+        name: string;
+        duration: number;
+        scale: number;
     };
 
     spots: {
@@ -72,5 +74,5 @@ export interface IFarming {
         epic?: Array<string>;
         legendary?: Array<string>;
         unique?: Array<string>;
-    }
+    };
 }

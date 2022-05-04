@@ -1,15 +1,15 @@
 import * as alt from 'alt-server';
-import {Athena} from '../../../../server/api/athena';
-import {ServerMarkerController} from '../../../../server/streamers/marker';
-import {ServerBlipController} from '../../../../server/systems/blip';
-import {ItemFactory} from '../../../../server/systems/item';
-import {ItemEffects} from '../../../../server/systems/itemEffects';
-import {INVENTORY_TYPE} from '../../../../shared/enums/inventoryTypes';
+import { Athena } from '../../../../server/api/athena';
+import { ServerMarkerController } from '../../../../server/streamers/marker';
+import { ServerBlipController } from '../../../../server/systems/blip';
+import { ItemFactory } from '../../../../server/systems/item';
+import { ItemEffects } from '../../../../server/systems/itemEffects';
+import { INVENTORY_TYPE } from '../../../../shared/enums/inventoryTypes';
 import IAttachable from '../../../../shared/interfaces/iAttachable';
 import { farmRegistry } from './defaults/farmingLists/farmRegistry';
-import {Item} from '../../../../shared/interfaces/item';
-import {Particle} from '../../../../shared/interfaces/particle';
-import {IFarming} from './interfaces/iFarming';
+import { Item } from '../../../../shared/interfaces/item';
+import { Particle } from '../../../../shared/interfaces/particle';
+import { IFarming } from './interfaces/iFarming';
 
 const farmDebug = false;
 
@@ -59,20 +59,26 @@ export class FarmingController {
     }
 
     private static async handleFarmingEvent(player: alt.Player, item: Item, slot: number, type: INVENTORY_TYPE) {
-        log("Farming: Item triggered");
+        log('Farming: Item triggered');
         let wasFarming = false;
         for (const farm of farmRegistry) {
             farm.spots.positions.forEach((farmingSpot) => {
                 if (player.pos.isInRange(farmingSpot, 2.5)) {
-                    log("Farming: Is in Range");
-                    if (farm.requiredTool.find(t => t.toLowerCase() === item.name.toLowerCase() || t.toLowerCase() === item.dbName.toLowerCase())) {
-                        log("Farming: Item included");
+                    log('Farming: Is in Range');
+                    if (
+                        farm.requiredTool.find(
+                            (t) =>
+                                t.toLowerCase() === item.name.toLowerCase() ||
+                                t.toLowerCase() === item.dbName.toLowerCase(),
+                        )
+                    ) {
+                        log('Farming: Item included');
                         if (FarmingController.handleAntiMakro(player, farmingSpot, farm.spots.positions)) {
-                            log("Farming: Antimakro positive");
+                            log('Farming: Antimakro positive');
                             FarmingController.handleFarming(player, item, farm, slot, type);
                             wasFarming = true;
                         } else {
-                            log("Farming: Antimakro negative");
+                            log('Farming: Antimakro negative');
                             Athena.player.emit.notification(player, `[ANTIMACRO] - Already used this spot before.`);
                         }
                     } else {
@@ -83,9 +89,13 @@ export class FarmingController {
         }
     }
 
-    private static handleAntiMakro(player: alt.Player, currentPosition: alt.Vector3, positions: Array<alt.Vector3>):boolean {
+    private static handleAntiMakro(
+        player: alt.Player,
+        currentPosition: alt.Vector3,
+        positions: Array<alt.Vector3>,
+    ): boolean {
         if (positions.length === 1) {
-            log("Farming-Antimakro: length == 1");
+            log('Farming-Antimakro: length == 1');
             return true;
         }
 
@@ -93,25 +103,30 @@ export class FarmingController {
 
         let meta: Array<alt.Vector3> = player.getMeta(makroKey) as Array<alt.Vector3>;
         if (!meta) {
-            log("Farming-Antimakro: meta empty");
+            log('Farming-Antimakro: meta empty');
             player.setMeta(makroKey, Array.of(currentPosition));
             return true;
         }
 
-        const randomInt = FarmingController.getRandomInt(meta.length/2, positions.length - 1);
-        log("Farming-Antimakro: position-length "+positions.length);
-        log("Farming-Antimakro: Random int "+randomInt);
+        const randomInt = FarmingController.getRandomInt(meta.length / 2, positions.length - 1);
+        log('Farming-Antimakro: position-length ' + positions.length);
+        log('Farming-Antimakro: Random int ' + randomInt);
 
         //Remove first fiew used spots, so we check recent history only
-        let checkingList: Array<alt.Vector3> = meta.length <= randomInt || meta.length === 1 ? meta : meta.slice(randomInt);
-        log("Farming-Antimakro: checkingList-length "+checkingList.length);
+        let checkingList: Array<alt.Vector3> =
+            meta.length <= randomInt || meta.length === 1 ? meta : meta.slice(randomInt);
+        log('Farming-Antimakro: checkingList-length ' + checkingList.length);
 
-        if (checkingList.find(c=>c.x===currentPosition.x && c.y===currentPosition.y && c.z===currentPosition.z)) {
-            log("Farming-Antimakro: position was recent");
+        if (
+            checkingList.find(
+                (c) => c.x === currentPosition.x && c.y === currentPosition.y && c.z === currentPosition.z,
+            )
+        ) {
+            log('Farming-Antimakro: position was recent');
             player.setMeta(makroKey, checkingList);
             return false;
         } else {
-            log("Farming-Antimakro: position wasnt used recent");
+            log('Farming-Antimakro: position wasnt used recent');
             checkingList.push(currentPosition);
             player.setMeta(makroKey, checkingList);
             return true;
@@ -125,7 +140,6 @@ export class FarmingController {
         itemSlot: number,
         inventoryType: INVENTORY_TYPE,
     ) {
-
         if (player.getMeta(`IsFarming`) === true) {
             return;
         }
@@ -213,7 +227,11 @@ export class FarmingController {
 
             const randomized = FarmingController.getRandomInt(0, outcomeList.length);
             const itemToAdd = await ItemFactory.get(outcomeList[0][randomized]);
-            const leftOvers = await Athena.player.inventory.addAmountToInventoryReturnRemainingAmount(player, itemToAdd.dbName, 1);
+            const leftOvers = await Athena.player.inventory.addAmountToInventoryReturnRemainingAmount(
+                player,
+                itemToAdd.dbName,
+                1,
+            );
             if (!leftOvers) {
                 Athena.player.emit.notification(player, `You've found ${itemToAdd.name}!`);
             } else {
@@ -258,7 +276,6 @@ export class FarmingController {
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min)) + min;
     }
-
 }
 
 function log(message) {

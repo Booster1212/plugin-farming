@@ -226,7 +226,7 @@ export class FarmingController {
             }
 
             const randomized = FarmingController.getRandomInt(0, outcomeList.length);
-            const itemToAdd = await ItemFactory.get(outcomeList[0][randomized]);
+            const itemToAdd = await ItemFactory.getByName(outcomeList[0][randomized]);
             const leftOvers = await Athena.player.inventory.addAmountToInventoryReturnRemainingAmount(
                 player,
                 itemToAdd.dbName,

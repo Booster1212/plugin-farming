@@ -73,12 +73,12 @@ export class FarmingController {
                         )
                     ) {
                         log('Farming: Item included');
-                        if (FarmingController.handleAntiMakro(player, farmingSpot, farm.spots.positions)) {
-                            log('Farming: Antimakro positive');
+                        if (FarmingController.handleAntiMacro(player, farmingSpot, farm.spots.positions)) {
+                            log('Farming: antiMacro positive');
                             FarmingController.handleFarming(player, item, farm, slot, type);
                             wasFarming = true;
                         } else {
-                            log('Farming: Antimakro negative');
+                            log('Farming: antiMacro negative');
                             Athena.player.emit.notification(player, `[ANTIMACRO] - Already used this spot before.`);
                         }
                     } else {
@@ -89,13 +89,13 @@ export class FarmingController {
         }
     }
 
-    private static handleAntiMakro(
+    private static handleAntiMacro(
         player: alt.Player,
         currentPosition: alt.Vector3,
         positions: Array<alt.Vector3>,
     ): boolean {
         if (positions.length === 1) {
-            log('Farming-Antimakro: length == 1');
+            log('Farming-antiMacro: length == 1');
             return true;
         }
 
@@ -103,30 +103,29 @@ export class FarmingController {
 
         let meta: Array<alt.Vector3> = player.getMeta(makroKey) as Array<alt.Vector3>;
         if (!meta) {
-            log('Farming-Antimakro: meta empty');
+            log('Farming-antiMacro: meta empty');
             player.setMeta(makroKey, Array.of(currentPosition));
             return true;
         }
 
         const randomInt = FarmingController.getRandomInt(meta.length / 2, positions.length - 1);
-        log('Farming-Antimakro: position-length ' + positions.length);
-        log('Farming-Antimakro: Random int ' + randomInt);
+        log('Farming-antiMacro: position-length ' + positions.length);
+        log('Farming-antiMacro: Random int ' + randomInt);
 
-        //Remove first fiew used spots, so we check recent history only
         let checkingList: Array<alt.Vector3> =
             meta.length <= randomInt || meta.length === 1 ? meta : meta.slice(randomInt);
-        log('Farming-Antimakro: checkingList-length ' + checkingList.length);
+        log('Farming-antiMacro: checkingList-length ' + checkingList.length);
 
         if (
             checkingList.find(
                 (c) => c.x === currentPosition.x && c.y === currentPosition.y && c.z === currentPosition.z,
             )
         ) {
-            log('Farming-Antimakro: position was recent');
+            log('Farming-antiMacro: position was recent');
             player.setMeta(makroKey, checkingList);
             return false;
         } else {
-            log('Farming-Antimakro: position wasnt used recent');
+            log('Farming-antiMacro: position wasnt used recent');
             checkingList.push(currentPosition);
             player.setMeta(makroKey, checkingList);
             return true;
@@ -136,7 +135,7 @@ export class FarmingController {
     private static async handleFarming(
         player: alt.Player,
         toolToUse: Item,
-        farmingData: IFarming,
+        data: IFarming,
         itemSlot: number,
         inventoryType: INVENTORY_TYPE,
     ) {
@@ -150,40 +149,40 @@ export class FarmingController {
 
         Athena.player.emit.animation(
             player,
-            farmingData.animation.dict,
-            farmingData.animation.name,
-            farmingData.animation.flags,
-            farmingData.farmDuration,
+            data.animation.dict,
+            data.animation.name,
+            data.animation.flags,
+            data.farmDuration,
         );
 
-        if (farmingData.attacheable) {
+        if (data.attacheable) {
             const objectToAttach: IAttachable = {
-                model: farmingData.attacheable.model,
-                pos: farmingData.attacheable.pos,
-                rot: farmingData.attacheable.rot,
-                bone: farmingData.attacheable.bone,
+                model: data.attacheable.model,
+                pos: data.attacheable.pos,
+                rot: data.attacheable.rot,
+                bone: data.attacheable.bone,
             };
-            Athena.player.emit.objectAttach(player, objectToAttach, farmingData.farmDuration);
+            Athena.player.emit.objectAttach(player, objectToAttach, data.farmDuration);
         }
 
-        if (farmingData.progressBar) {
+        if (data.progressBar) {
             Athena.player.emit.createProgressBar(player, {
                 uid: `Farming-${player.data._id.toString()}`,
-                color: farmingData.progressBar.color as alt.RGBA,
-                distance: farmingData.progressBar.distance,
-                milliseconds: farmingData.farmDuration,
+                color: data.progressBar.color as alt.RGBA,
+                distance: data.progressBar.distance,
+                milliseconds: data.farmDuration,
                 position: player.pos,
-                text: farmingData.progressBar.text,
+                text: data.progressBar.text,
             });
         }
 
-        if (farmingData.particles) {
+        if (data.particles) {
             const particle: Particle = {
-                pos: farmingData.particles.pos,
-                dict: farmingData.particles.dict,
-                name: farmingData.particles.name,
-                duration: farmingData.particles.duration,
-                scale: farmingData.particles.scale,
+                pos: data.particles.pos,
+                dict: data.particles.dict,
+                name: data.particles.name,
+                duration: data.particles.duration,
+                scale: data.particles.scale,
             };
             Athena.player.emit.particle(player, particle, true);
         }
@@ -191,33 +190,32 @@ export class FarmingController {
         alt.setTimeout(async () => {
             let outcomeList = [];
 
-            // If tool is not required or we dont have one, we just return the common list.
-            if ((!toolToUse.rarity || toolToUse.rarity === 0 || toolToUse.rarity < 3) && farmingData.outcome.common) {
-                outcomeList.push(farmingData.outcome.common);
+            if ((!toolToUse.rarity || toolToUse.rarity === 0 || toolToUse.rarity < 3) && data.outcome.common) {
+                outcomeList.push(data.outcome.common);
             }
 
-            if (toolToUse.rarity >= 1 && toolToUse.rarity < 3 && farmingData.outcome.uncommon) {
-                outcomeList.push(farmingData.outcome.uncommon);
+            if (toolToUse.rarity >= 1 && toolToUse.rarity < 3 && data.outcome.uncommon) {
+                outcomeList.push(data.outcome.uncommon);
             }
 
-            if (toolToUse.rarity >= 2 && toolToUse.rarity < 4 && farmingData.outcome.rare) {
-                outcomeList.push(farmingData.outcome.rare);
+            if (toolToUse.rarity >= 2 && toolToUse.rarity < 4 && data.outcome.rare) {
+                outcomeList.push(data.outcome.rare);
             }
 
-            if (toolToUse.rarity >= 3 && toolToUse.rarity < 5 && farmingData.outcome.veryRare) {
-                outcomeList.push(farmingData.outcome.veryRare);
+            if (toolToUse.rarity >= 3 && toolToUse.rarity < 5 && data.outcome.veryRare) {
+                outcomeList.push(data.outcome.veryRare);
             }
 
-            if (toolToUse.rarity >= 4 && toolToUse.rarity < 6 && farmingData.outcome.epic) {
-                outcomeList.push(farmingData.outcome.epic);
+            if (toolToUse.rarity >= 4 && toolToUse.rarity < 6 && data.outcome.epic) {
+                outcomeList.push(data.outcome.epic);
             }
 
-            if (toolToUse.rarity >= 5 && toolToUse.rarity <= 6 && farmingData.outcome.legendary) {
-                outcomeList.push(farmingData.outcome.legendary);
+            if (toolToUse.rarity >= 5 && toolToUse.rarity <= 6 && data.outcome.legendary) {
+                outcomeList.push(data.outcome.legendary);
             }
 
-            if (toolToUse.rarity == 6 && farmingData.outcome.unique) {
-                outcomeList.push(farmingData.outcome.unique);
+            if (toolToUse.rarity == 6 && data.outcome.unique) {
+                outcomeList.push(data.outcome.unique);
             }
 
             if (!outcomeList || outcomeList.length === 0) {
@@ -230,18 +228,19 @@ export class FarmingController {
             if (!itemToAdd) {
                 itemToAdd = await ItemFactory.getByName(outcomeList[0][randomized]);
             }
+
             const leftOvers = await Athena.player.inventory.addAmountToInventoryReturnRemainingAmount(
                 player,
                 itemToAdd.dbName,
                 1,
             );
+
             if (!leftOvers) {
                 Athena.player.emit.notification(player, `You've found ${itemToAdd.name}!`);
             } else {
                 Athena.player.emit.notification(player, `Your inventory is full!`);
             }
 
-            //Does the Item have a durability?
             if (toolToUse.data.durability) {
                 if (INVENTORY_TYPE.INVENTORY == inventoryType) {
                     if (toolToUse.data.durability <= 1) {
@@ -265,15 +264,9 @@ export class FarmingController {
             Athena.player.set.frozen(player, false);
 
             player.deleteMeta(`IsFarming`);
-        }, farmingData.farmDuration);
+        }, data.farmDuration);
     }
 
-    /**
-     * Generate a random integer between two numbers.
-     * @param {number} min - The minimum number in the range.
-     * @param {number} max - the maximum number of times the function will be called.
-     * @returns A random integer between min and max.
-     */
     private static getRandomInt(min: number, max: number) {
         min = Math.ceil(min);
         max = Math.floor(max);
@@ -281,7 +274,7 @@ export class FarmingController {
     }
 }
 
-function log(message) {
+function log(message: string) {
     if (farmDebug) {
         alt.log(message);
     }

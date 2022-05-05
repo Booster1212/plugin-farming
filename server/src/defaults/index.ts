@@ -7,6 +7,7 @@ const itemsToRegister = [...farmingItems, ...farmingTools];
 for (const item of itemsToRegister) {
     const factoryItem = await ItemFactory.get(item.dbName);
     await ItemFactory.add(item);
+    
     if (!item || !item.version || !factoryItem || !factoryItem.version) continue;
     if (item.version != factoryItem.version) {
         await ItemFactory.update(factoryItem.dbName, item);

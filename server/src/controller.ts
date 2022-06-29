@@ -157,6 +157,8 @@ export class FarmingController {
                 (c) => c.x === currentPosition.x && c.y === currentPosition.y && c.z === currentPosition.z,
             )
         ) {
+            if (!config.useAntiMacro) return true;
+
             FarmingController.log('AntiMacro: position was recent');
             player.setMeta(makroKey, checkingList);
             return false;

@@ -10,10 +10,15 @@ import { farmRegistry } from './defaults/farmingLists/farmRegistry';
 import { Item } from '../../../../shared/interfaces/item';
 import { Particle } from '../../../../shared/interfaces/particle';
 import { IFarming } from './interfaces/iFarming';
-
-const farmDebug = false;
+import { config } from './config';
 
 export class FarmingController {
+    static log(message: string) {
+        if (!config.enableLogging) return;
+
+        alt.log(`~lg~[OS-Farming]: ${message}`);
+    }
+
     static createSpots() {
         for (let x = 0; x < farmRegistry.length; x++) {
             let currentFarm = farmRegistry[x];
@@ -59,12 +64,11 @@ export class FarmingController {
     }
 
     private static async handleFarmingEvent(player: alt.Player, item: Item, slot: number, type: INVENTORY_TYPE) {
-        log('Farming: Item triggered');
-        let wasFarming = false;
+        this.log('Farming: Item triggered');
         for (const farm of farmRegistry) {
             farm.spots.positions.forEach((farmingSpot) => {
                 if (player.pos.isInRange(farmingSpot, 2.5)) {
-                    log('Farming: Is in Range');
+                    this.log('Farming: Is in Range');
                     if (
                         farm.requiredTool.find(
                             (t) =>
@@ -72,13 +76,12 @@ export class FarmingController {
                                 t.toLowerCase() === item.dbName.toLowerCase(),
                         )
                     ) {
-                        log('Farming: Item included');
+                        this.log('Farming: Item included');
                         if (FarmingController.handleAntiMacro(player, farmingSpot, farm.spots.positions)) {
-                            log('Farming: antiMacro positive');
+                            this.log('Farming: antiMacro positive');
                             FarmingController.handleFarming(player, item, farm, slot, type);
-                            wasFarming = true;
                         } else {
-                            log('Farming: antiMacro negative');
+                            this.log('Farming: antiMacro negative');
                             Athena.player.emit.notification(player, `[ANTIMACRO] - Already used this spot before.`);
                         }
                     } else {
@@ -95,7 +98,7 @@ export class FarmingController {
         positions: Array<alt.Vector3>,
     ): boolean {
         if (positions.length === 1) {
-            log('Farming-antiMacro: length == 1');
+            this.log('Farming-antiMacro: length == 1');
             return true;
         }
 
@@ -103,29 +106,29 @@ export class FarmingController {
 
         let meta: Array<alt.Vector3> = player.getMeta(makroKey) as Array<alt.Vector3>;
         if (!meta) {
-            log('Farming-antiMacro: meta empty');
+            this.log('Farming-antiMacro: meta empty');
             player.setMeta(makroKey, Array.of(currentPosition));
             return true;
         }
 
         const randomInt = FarmingController.getRandomInt(meta.length / 2, positions.length - 1);
-        log('Farming-antiMacro: position-length ' + positions.length);
-        log('Farming-antiMacro: Random int ' + randomInt);
+        this.log('Farming-antiMacro: position-length ' + positions.length);
+        this.log('Farming-antiMacro: Random int ' + randomInt);
 
         let checkingList: Array<alt.Vector3> =
             meta.length <= randomInt || meta.length === 1 ? meta : meta.slice(randomInt);
-        log('Farming-antiMacro: checkingList-length ' + checkingList.length);
+        this.log('Farming-antiMacro: checkingList-length ' + checkingList.length);
 
         if (
             checkingList.find(
                 (c) => c.x === currentPosition.x && c.y === currentPosition.y && c.z === currentPosition.z,
             )
         ) {
-            log('Farming-antiMacro: position was recent');
+            this.log('Farming-antiMacro: position was recent');
             player.setMeta(makroKey, checkingList);
             return false;
         } else {
-            log('Farming-antiMacro: position wasnt used recent');
+            this.log('Farming-antiMacro: position wasnt used recent');
             checkingList.push(currentPosition);
             player.setMeta(makroKey, checkingList);
             return true;
@@ -271,11 +274,5 @@ export class FarmingController {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min)) + min;
-    }
-}
-
-function log(message: string) {
-    if (farmDebug) {
-        alt.log(message);
     }
 }

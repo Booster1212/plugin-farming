@@ -150,6 +150,7 @@ export class FarmingUtility {
             Athena.player.emit.notification(player, `Your inventory is full!`);
         }
     }
+
     static resyncInventory(player: alt.Player) {
         Athena.player.save.field(player, 'inventory', player.data.inventory);
         Athena.player.save.field(player, 'toolbar', player.data.toolbar);

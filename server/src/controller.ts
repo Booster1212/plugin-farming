@@ -145,14 +145,7 @@ export class FarmingController {
         itemSlot: number,
         inventoryType: INVENTORY_TYPE,
     ) {
-        if (player.getMeta(`IsFarming`) === true) {
-            return;
-        }
-        player.setMeta(`IsFarming`, true);
-
-        Athena.player.safe.setPosition(player, player.pos.x, player.pos.y, player.pos.z);
-        Athena.player.set.frozen(player, true);
-
+        FarmingUtility.handleFreezeAndMeta(player);
         FarmingUtility.playFarmingAnimation(player, data);
         FarmingUtility.attachFarmingObject(player, data);
         FarmingUtility.createFarmingProgressBar(player, data);

@@ -9,6 +9,15 @@ import { config } from './config';
 import { IFarming } from './interfaces/iFarming';
 
 export class FarmingUtility {
+    static handleFreezeAndMeta(player: alt.Player) {
+        if (player.getMeta(`IsFarming`) === true) {
+            return;
+        }
+        player.setMeta(`IsFarming`, true);
+
+        Athena.player.safe.setPosition(player, player.pos.x, player.pos.y, player.pos.z);
+        Athena.player.set.frozen(player, true);
+    }
 
     static checkItemDurability(
         player: alt.Player,

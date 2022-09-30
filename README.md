@@ -1,8 +1,6 @@
 
 # Athena Framework - OSFarming
-<p align="center">
-<img src="https://user-images.githubusercontent.com/82890183/157372229-ea35229c-ef36-4673-9bd5-2c871f650166.png" style="text-align:center; width:256px; height:256px;"/>
-</p>
+![](https://user-images.githubusercontent.com/82890183/157372229-ea35229c-ef36-4673-9bd5-2c871f650166.png)
 Herewith we bring fully open source farming for the Athena Framework!
 
 ## Description
@@ -61,8 +59,4 @@ This project is licensed under the [MIT] License - see the LICENSE.md file for d
 ## Support my work
 
 Programming plugins of course takes a lot of time, since I provide most of it as open source code for learning purposes, you have the opportunity to support me here, this is of course on a purely voluntary basis, thank you! <3
-<p align="left">
- <a href="https://www.paypal.com/donate/?hosted_button_id=V7L7S57VACCQQ">
- <img src="https://raw.githubusercontent.com/andreostrovsky/donate-with-paypal/master/PNG/blue.png" style="width:256px"/>
- </a>
-</p>
+![](https://raw.githubusercontent.com/andreostrovsky/donate-with-paypal/master/PNG/blue.png)

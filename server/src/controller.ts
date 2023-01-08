@@ -9,6 +9,7 @@ import { Item } from '../../../../shared/interfaces/item';
 import { IFarming } from './interfaces/iFarming';
 import { config } from './config';
 import { FarmingUtility } from './utility';
+import { FarmingEvents } from './defaults/events';
 
 export class FarmingController {
     static createSpots() {
@@ -51,7 +52,7 @@ export class FarmingController {
                 }
             }
         }
-        ItemEffects.add('OSFarming:Server:handleFarming', FarmingController.handleFarmingEvent);
+        ItemEffects.add(FarmingEvents.HANDLE_FARMING, FarmingController.handleFarmingEvent);
         return farmRegistry.length;
     }
 
@@ -152,9 +153,7 @@ export class FarmingController {
         FarmingUtility.createFarmingParticles(player, data);
 
         alt.setTimeout(async () => {
-            const outcomeList = FarmingUtility.calculateOutcome(player, toolToUse, data);
-
-            FarmingUtility.handleFarmingReward(player, outcomeList);
+            FarmingUtility.handleFarmingReward(player, data);
             FarmingUtility.checkItemDurability(player, toolToUse, inventoryType, itemSlot);
             FarmingUtility.resyncInventory(player);
 

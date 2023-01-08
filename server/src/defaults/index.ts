@@ -1,10 +1,11 @@
 import { ItemFactory } from '../../../../../server/systems/item';
-import { farmingItems } from './farmingLists/farmingItems';
 import { farmingTools } from './farmingLists/farmingTools';
+import { miningItems } from './farmingRoutes/miningRoute/miningItems';
+import { woodItems } from './farmingRoutes/woodRoute/woodItems';
 
-const itemsToRegister = [...farmingItems, ...farmingTools];
-for (let x = 0; x < itemsToRegister.length; x++) {
-    const item = itemsToRegister[x];
+const itemsToRegister = [...miningItems, ...woodItems, ...farmingTools];
+
+itemsToRegister.forEach((item) => {
     ItemFactory.add(item);
     ItemFactory.update(item.dbName, item);
-}
+});

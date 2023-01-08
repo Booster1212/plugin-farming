@@ -1,11 +1,12 @@
 import { ITEM_TYPE } from '../../../../../../shared/enums/itemTypes';
 import { Item } from '../../../../../../shared/interfaces/item';
+import { FarmingEvents } from '../events';
 
 export const farmingTools: Array<Item> = [
     {
         name: 'Mining-Drill',
         icon: 'crate',
-        description: 'Some example description.',
+        description: 'This drill can be used to mine different stones.',
         behavior:
             ITEM_TYPE.CAN_DROP |
             ITEM_TYPE.CAN_TRADE |
@@ -14,36 +15,17 @@ export const farmingTools: Array<Item> = [
             ITEM_TYPE.SKIP_CONSUMABLE,
         quantity: 1,
         data: {
-            durability: 25,
-            event: 'OSFarming:Server:handleFarming',
+            durability: 75,
+            event: FarmingEvents.HANDLE_FARMING,
         },
         rarity: 0,
         dbName: 'OS-Farming-Drill',
         version: 1,
     },
     {
-        name: 'Mining-Drill 6',
-        icon: 'crate',
-        description: 'Some example description.',
-        behavior:
-            ITEM_TYPE.CAN_DROP |
-            ITEM_TYPE.CAN_TRADE |
-            ITEM_TYPE.IS_TOOLBAR |
-            ITEM_TYPE.CONSUMABLE |
-            ITEM_TYPE.SKIP_CONSUMABLE,
-        quantity: 1,
-        data: {
-            durability: 25,
-            event: 'OSFarming:Server:handleFarming',
-        },
-        rarity: 6,
-        dbName: 'OS-Farming-Drill-6',
-        version: 1,
-    },
-    {
         name: 'Woodfellers Axe',
         icon: 'crate',
-        description: 'Some example description.',
+        description: 'This is an axe which can be used to fell off trees.',
         behavior:
             ITEM_TYPE.CAN_DROP |
             ITEM_TYPE.CAN_TRADE |
@@ -53,7 +35,7 @@ export const farmingTools: Array<Item> = [
         quantity: 1,
         data: {
             durability: 25,
-            event: 'OSFarming:Server:handleFarming',
+            event: FarmingEvents.HANDLE_FARMING,
         },
         rarity: 0,
         dbName: 'OS-Farming-Axe',
@@ -72,7 +54,7 @@ export const farmingTools: Array<Item> = [
         quantity: 1,
         data: {
             durability: 25,
-            event: 'OSFarming:Server:handleFarming',
+            event: FarmingEvents.HANDLE_FARMING,
         },
         rarity: 0,
         dbName: 'OS-Farming-Garden-Shears',
@@ -91,7 +73,7 @@ export const farmingTools: Array<Item> = [
         quantity: 1,
         data: {
             durability: 25,
-            event: 'OSFarming:Server:handleFarming',
+            event: FarmingEvents.HANDLE_FARMING,
         },
         rarity: 0,
         dbName: 'OS-Farming-Fishing-Rod',

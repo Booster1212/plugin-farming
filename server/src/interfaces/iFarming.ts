@@ -1,3 +1,4 @@
+import { Item } from '@AthenaShared/interfaces/item';
 import * as alt from 'alt-server';
 import { ANIMATION_FLAGS } from '../../../../../shared/flags/animationFlags';
 
@@ -66,13 +67,5 @@ export interface IFarming {
         positions: Array<alt.Vector3>;
     };
 
-    outcome?: {
-        common: Array<string>;
-        uncommon?: Array<string>;
-        rare?: Array<string>;
-        veryRare?: Array<string>;
-        epic?: Array<string>;
-        legendary?: Array<string>;
-        unique?: Array<string>;
-    };
+    outcome?: Array<Item>;
 }

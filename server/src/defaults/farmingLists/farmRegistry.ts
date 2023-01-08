@@ -3,12 +3,14 @@ import { ANIMATION_FLAGS } from '../../../../../../shared/flags/animationFlags';
 import { IFarming } from '../../interfaces/iFarming';
 import { fishingLocations } from '../farmingRoutes/fishing/fishingLocations';
 import { grapeLocations } from '../farmingRoutes/grapeRoute/grapeLocations';
+import { miningItems } from '../farmingRoutes/miningRoute/miningItems';
 import { miningLocations } from '../farmingRoutes/miningRoute/miningLocations';
 import { orangeLocations } from '../farmingRoutes/orangeRoute/orangeLocations';
 import { pepperLocations } from '../farmingRoutes/pepperRoute/pepperLocations';
 import { potatoLocations } from '../farmingRoutes/potatoRoute/potatoLocations';
 import { saladLocations } from '../farmingRoutes/saladRoute/saladLocations';
 import { tomatoLocations } from '../farmingRoutes/tomatoRoute/tomatoLocations';
+import { woodItems } from '../farmingRoutes/woodRoute/woodItems';
 import { woodLocations } from '../farmingRoutes/woodRoute/woodLocations';
 
 export const farmRegistry: Array<IFarming> = [
@@ -76,11 +78,7 @@ export const farmRegistry: Array<IFarming> = [
             positions: miningLocations,
         },
 
-        outcome: {
-            common: ['Iron Ore', 'Cooper Ore'],
-            rare: ['Silver Ore'],
-            epic: ['Gold Ore', 'Titanium Ore'],
-        },
+        outcome: [...miningItems],
     },
     // WOOD ROUTE
     {
@@ -140,11 +138,9 @@ export const farmRegistry: Array<IFarming> = [
             positions: woodLocations,
         },
 
-        outcome: {
-            common: ['Oak Wood'],
-        },
+        outcome: [...woodItems],
     },
-    {
+    /* {
         routeName: 'Fishing-Route-1',
         requiredTool: ['Fishing Rod'],
         isAnimation: true,
@@ -561,4 +557,5 @@ export const farmRegistry: Array<IFarming> = [
             common: ['Grape'],
         },
     },
+    */
 ];

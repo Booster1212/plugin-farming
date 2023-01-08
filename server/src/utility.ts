@@ -19,12 +19,7 @@ export class FarmingUtility {
         Athena.player.set.frozen(player, true);
     }
 
-    static checkItemDurability(
-        player: alt.Player,
-        toolToUse: Item,
-        inventoryType: INVENTORY_TYPE,
-        itemSlot: number,
-    ) {
+    static checkItemDurability(player: alt.Player, toolToUse: Item, inventoryType: INVENTORY_TYPE, itemSlot: number) {
         if (toolToUse.data.durability) {
             if (INVENTORY_TYPE.INVENTORY == inventoryType) {
                 if (toolToUse.data.durability <= 1) {
@@ -92,68 +87,54 @@ export class FarmingUtility {
         }
     }
 
-    static calculateOutcome(player: alt.Player, toolToUse: Item, data: IFarming) {
-        let outcomeList = [];
+    static calculatePercentageBasedOutcome(player: alt.Player, data: IFarming) {
+        const outcomeList: Array<Item> = [];
+        const random = Math.random() * 100;
+        for (const outcome of data.outcome) {
+            if (random <= outcome.data.dropchance) {
+                outcomeList.push(outcome);
+                alt.log(`${outcome.name} has dropped.`);
+            }
 
-        if ((!toolToUse.rarity || toolToUse.rarity === 0 || toolToUse.rarity < 3) && data.outcome.common) {
-            outcomeList.push(data.outcome.common);
+            alt.log(`${outcome.name} - Dropchance: ${outcome.data.dropchance} - Random Chance: ${random}`);
         }
-
-        if (toolToUse.rarity >= 1 && toolToUse.rarity < 3 && data.outcome.uncommon) {
-            outcomeList.push(data.outcome.uncommon);
-        }
-
-        if (toolToUse.rarity >= 2 && toolToUse.rarity < 4 && data.outcome.rare) {
-            outcomeList.push(data.outcome.rare);
-        }
-
-        if (toolToUse.rarity >= 3 && toolToUse.rarity < 5 && data.outcome.veryRare) {
-            outcomeList.push(data.outcome.veryRare);
-        }
-
-        if (toolToUse.rarity >= 4 && toolToUse.rarity < 6 && data.outcome.epic) {
-            outcomeList.push(data.outcome.epic);
-        }
-
-        if (toolToUse.rarity >= 5 && toolToUse.rarity <= 6 && data.outcome.legendary) {
-            outcomeList.push(data.outcome.legendary);
-        }
-
-        if (toolToUse.rarity == 6 && data.outcome.unique) {
-            outcomeList.push(data.outcome.unique);
-        }
-
-        if (!outcomeList || outcomeList.length === 0) {
-            Athena.player.emit.notification(player, `You found nothing!`);
-        }
-
         return outcomeList;
     }
 
-    static async handleFarmingReward(player: alt.Player, outcomeList: Array<string>) {
-        const randomized = FarmingUtility.getRandomInt(0, outcomeList.length);
-
-        let itemToAdd = await ItemFactory.get(outcomeList[0][randomized]);
-        if (!itemToAdd) {
-            itemToAdd = await ItemFactory.getByName(outcomeList[0][randomized]);
+    static async handleFarmingReward(player: alt.Player, data: IFarming) {
+        const farmingItems = this.calculatePercentageBasedOutcome(player, data);
+        if (farmingItems.length === 0) {
+            Athena.player.emit.notification(player, 'You did not find anything.');
+            return;
         }
 
-        const leftOvers = await Athena.player.inventory.addAmountToInventoryReturnRemainingAmount(
-            player,
-            itemToAdd.dbName,
-            1,
-        );
+        for (const farmingItem of farmingItems) {
+            let itemToAdd = await ItemFactory.get(farmingItem.dbName);
+            if (!itemToAdd) {
+                itemToAdd = await ItemFactory.getByName(farmingItem.name);
+            }
+            if (!itemToAdd) {
+                continue;
+            }
 
-        if (!leftOvers) {
-            Athena.player.emit.notification(player, `You've found ${itemToAdd.name}!`);
-        } else {
-            Athena.player.emit.notification(player, `Your inventory is full!`);
+            const leftOvers = await Athena.player.inventory.addAmountToInventoryReturnRemainingAmount(
+                player,
+                itemToAdd.dbName,
+                1,
+            );
+
+            if (!leftOvers) {
+                Athena.player.emit.notification(player, `You've found ${itemToAdd.name}!`);
+            } else {
+                Athena.player.emit.notification(player, `Your inventory is full!`);
+                break;
+            }
         }
     }
 
     static resyncInventory(player: alt.Player) {
-        Athena.player.save.field(player, 'inventory', player.data.inventory);
-        Athena.player.save.field(player, 'toolbar', player.data.toolbar);
+        Athena.player.save.save(player, 'inventory', player.data.inventory);
+        Athena.player.save.save(player, 'toolbar', player.data.toolbar);
         Athena.player.sync.inventory(player);
         Athena.player.set.frozen(player, false);
     }

@@ -95,8 +95,6 @@ export class FarmingUtility {
                 outcomeList.push(outcome);
                 alt.log(`${outcome.name} has dropped.`);
             }
-
-            alt.log(`${outcome.name} - Dropchance: ${outcome.data.dropchance} - Random Chance: ${random}`);
         }
         return outcomeList;
     }

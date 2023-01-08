@@ -1,14 +1,21 @@
 import * as alt from 'alt-server';
 import { ANIMATION_FLAGS } from '../../../../../../shared/flags/animationFlags';
 import { IFarming } from '../../interfaces/iFarming';
+import { fishingItems } from '../farmingRoutes/fishing/fishingItems';
 import { fishingLocations } from '../farmingRoutes/fishing/fishingLocations';
+import { grapeItems } from '../farmingRoutes/grapeRoute/grapeItems';
 import { grapeLocations } from '../farmingRoutes/grapeRoute/grapeLocations';
 import { miningItems } from '../farmingRoutes/miningRoute/miningItems';
 import { miningLocations } from '../farmingRoutes/miningRoute/miningLocations';
+import { orangeItems } from '../farmingRoutes/orangeRoute/orangeItems';
 import { orangeLocations } from '../farmingRoutes/orangeRoute/orangeLocations';
+import { pepperItems } from '../farmingRoutes/pepperRoute/pepperItems';
 import { pepperLocations } from '../farmingRoutes/pepperRoute/pepperLocations';
+import { potatoItems } from '../farmingRoutes/potatoRoute/potatoItems';
 import { potatoLocations } from '../farmingRoutes/potatoRoute/potatoLocations';
+import { saladItems } from '../farmingRoutes/saladRoute/saladItems';
 import { saladLocations } from '../farmingRoutes/saladRoute/saladLocations';
+import { tomatoItems } from '../farmingRoutes/tomatoRoute/tomatoItems';
 import { tomatoLocations } from '../farmingRoutes/tomatoRoute/tomatoLocations';
 import { woodItems } from '../farmingRoutes/woodRoute/woodItems';
 import { woodLocations } from '../farmingRoutes/woodRoute/woodLocations';
@@ -140,7 +147,7 @@ export const farmRegistry: Array<IFarming> = [
 
         outcome: [...woodItems],
     },
-    /* {
+    {
         routeName: 'Fishing-Route-1',
         requiredTool: ['Fishing Rod'],
         isAnimation: true,
@@ -196,9 +203,7 @@ export const farmRegistry: Array<IFarming> = [
             positions: fishingLocations,
         },
 
-        outcome: {
-            common: ['Calico bass', 'White seabass', 'Rockfish', 'Largemouth Bass', 'Trout', 'Catfish', 'Tilapia'],
-        },
+        outcome: [...fishingItems],
     },
     {
         routeName: 'Tomato-Route',
@@ -256,9 +261,7 @@ export const farmRegistry: Array<IFarming> = [
             positions: tomatoLocations,
         },
 
-        outcome: {
-            common: ['Tomato'],
-        },
+        outcome: [...tomatoItems],
     },
 
     {
@@ -317,9 +320,7 @@ export const farmRegistry: Array<IFarming> = [
             positions: orangeLocations,
         },
 
-        outcome: {
-            common: ['Orange'],
-        },
+        outcome: [...orangeItems],
     },
     {
         routeName: 'Salad-Route',
@@ -377,9 +378,7 @@ export const farmRegistry: Array<IFarming> = [
             positions: saladLocations,
         },
 
-        outcome: {
-            common: ['Salad'],
-        },
+        outcome: [...saladItems],
     },
     {
         routeName: 'Potato-Route',
@@ -437,7 +436,7 @@ export const farmRegistry: Array<IFarming> = [
             positions: potatoLocations,
         },
 
-        outcome: { common: ['Potato'] },
+        outcome: [...potatoItems],
     },
     {
         routeName: 'Pepper-Route',
@@ -495,9 +494,7 @@ export const farmRegistry: Array<IFarming> = [
             positions: pepperLocations,
         },
 
-        outcome: {
-            common: ['Pepper'],
-        },
+        outcome: [...pepperItems],
     },
     {
         routeName: 'Grape-Route',
@@ -553,9 +550,6 @@ export const farmRegistry: Array<IFarming> = [
         spots: {
             positions: grapeLocations,
         },
-        outcome: {
-            common: ['Grape'],
-        },
+        outcome: [...grapeItems],
     },
-    */
 ];

@@ -127,6 +127,7 @@ export class FarmingUtility {
                 Athena.player.emit.notification(player, `Your inventory is full!`);
                 break;
             }
+            this.resyncInventory(player);
         }
     }
 

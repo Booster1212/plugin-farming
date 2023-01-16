@@ -37,7 +37,7 @@ export const fishingItems: Array<Item> = [
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
         data: {
-            dropchance: 100,
+            dropchance: 50,
         },
         dbName: 'Rockfish',
         rarity: 0,
@@ -51,7 +51,7 @@ export const fishingItems: Array<Item> = [
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
         data: {
-            dropchance: 80,
+            dropchance: 20,
         },
         dbName: 'Largemouth-Bass',
         rarity: 0,
@@ -65,7 +65,7 @@ export const fishingItems: Array<Item> = [
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
         data: {
-            dropchance: 50,
+            dropchance: 10,
         },
         dbName: 'Trout',
         rarity: 0,
@@ -79,7 +79,7 @@ export const fishingItems: Array<Item> = [
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
         data: {
-            dropchance: 50,
+            dropchance: 5,
         },
         dbName: 'Catfish',
         rarity: 0,
@@ -93,7 +93,7 @@ export const fishingItems: Array<Item> = [
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
         data: {
-            dropchance: 75,
+            dropchance: 7,
         },
         dbName: 'Tilapia',
         rarity: 0,
@@ -107,7 +107,7 @@ export const fishingItems: Array<Item> = [
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
         data: {
-            dropchance: 75,
+            dropchance: 12,
         },
         dbName: 'Bluegills',
         rarity: 2,
@@ -121,7 +121,7 @@ export const fishingItems: Array<Item> = [
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
         data: {
-            dropchance: 90,
+            dropchance: 10,
         },
         dbName: 'Salmon',
         rarity: 2,
@@ -135,7 +135,7 @@ export const fishingItems: Array<Item> = [
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
         data: {
-            dropchance: 75,
+            dropchance: 15,
         },
         dbName: 'Gree-Sunfish',
         rarity: 2,
@@ -149,7 +149,7 @@ export const fishingItems: Array<Item> = [
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
         data: {
-            dropchance: 90,
+            dropchance: 20,
         },
         dbName: 'Yellowtail-Amberjack',
         rarity: 4,
@@ -163,7 +163,7 @@ export const fishingItems: Array<Item> = [
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
         data: {
-            dropchance: 30,
+            dropchance: 35,
         },
         dbName: 'Tuna',
         rarity: 4,
@@ -177,7 +177,7 @@ export const fishingItems: Array<Item> = [
         quantity: 1,
         behavior: ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_TRADE,
         data: {
-            dropchance: 40,
+            dropchance: 15,
         },
         dbName: 'Mosquitofish',
         rarity: 4,

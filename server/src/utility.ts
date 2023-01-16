@@ -112,6 +112,7 @@ export class FarmingUtility {
                 itemToAdd = await ItemFactory.getByName(farmingItem.name);
             }
             if (!itemToAdd) {
+                alt.logWarning(`Could not find item ${farmingItem.name} in database.`);
                 continue;
             }
 

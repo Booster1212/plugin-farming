@@ -1,4 +1,4 @@
-import { Item } from '@AthenaShared/interfaces/item';
+import { BaseItem, Item } from '@AthenaShared/interfaces/item';
 import * as alt from 'alt-server';
 import { ANIMATION_FLAGS } from '../../../../../shared/flags/animationFlags';
 
@@ -67,5 +67,5 @@ export interface IFarming {
         positions: Array<alt.Vector3>;
     };
 
-    outcome?: Array<Item>;
+    outcome: Array<BaseItem>;
 }

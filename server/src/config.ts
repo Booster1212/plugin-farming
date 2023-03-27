@@ -1,5 +1,5 @@
 export const config = {
-    enableLogging: false,
+    enableLogging: true,
     rangeToSpot: 2.5,
     useAntiMacro: true,
-}
+};

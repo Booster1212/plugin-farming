@@ -24,14 +24,7 @@ export const farmRegistry: Array<IFarming> = [
     // MINING ROUTE
     {
         routeName: 'Mining Route',
-        requiredTool: [
-            'Mining-Drill', // Uncommon
-            'Mining-Drill 2', // Common
-            'Mining-Drill 3', // Rare
-            'Mining-Drill 4', // Very Rare
-            'Mining-Drill 5', // Legendary
-            'Mining-Drill 6', // Unique
-        ],
+        requiredTool: ['os-farming-drill'],
         isAnimation: true,
         farmDuration: 10000,
         blips: [

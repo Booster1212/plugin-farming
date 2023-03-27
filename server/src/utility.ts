@@ -1,9 +1,8 @@
 import * as alt from 'alt-server';
-import { Athena } from '../../../../server/api/athena';
-import { ItemFactory } from '../../../../server/systems/item';
-import { INVENTORY_TYPE } from '../../../../shared/enums/inventoryTypes';
+import * as Athena from '@AthenaServer/api';
+
 import IAttachable from '../../../../shared/interfaces/iAttachable';
-import { Item } from '../../../../shared/interfaces/item';
+import { BaseItem, SharedItem } from '../../../../shared/interfaces/item';
 import { Particle } from '../../../../shared/interfaces/particle';
 import { config } from './config';
 import { IFarming } from './interfaces/iFarming';
@@ -16,27 +15,11 @@ export class FarmingUtility {
         player.setMeta(`IsFarming`, true);
 
         Athena.player.safe.setPosition(player, player.pos.x, player.pos.y, player.pos.z);
-        Athena.player.set.frozen(player, true);
+        player.frozen = true;
     }
 
-    static checkItemDurability(player: alt.Player, toolToUse: Item, inventoryType: INVENTORY_TYPE, itemSlot: number) {
-        if (toolToUse.data.durability) {
-            if (INVENTORY_TYPE.INVENTORY == inventoryType) {
-                if (toolToUse.data.durability <= 1) {
-                    Athena.player.inventory.inventoryRemove(player, itemSlot);
-                } else {
-                    let index = player.data.inventory.findIndex((item) => item.slot === itemSlot);
-                    player.data.inventory[index].data.durability -= 1;
-                }
-            } else if (INVENTORY_TYPE.TOOLBAR == inventoryType) {
-                if (toolToUse.data.durability <= 1) {
-                    Athena.player.inventory.toolbarRemove(player, itemSlot);
-                } else {
-                    let index = player.data.toolbar.findIndex((item) => item.slot === itemSlot);
-                    player.data.toolbar[index].data.durability -= 1;
-                }
-            }
-        }
+    static checkItemDurability(player: alt.Player, slot: number, type: 'inventory' | 'toolbar') {
+        // TODO: Rebuild Durability System
     }
 
     static attachFarmingObject(player: alt.Player, data: IFarming) {
@@ -62,9 +45,10 @@ export class FarmingUtility {
     }
 
     static createFarmingProgressBar(player: alt.Player, data: IFarming) {
+        const playerData = Athena.document.character.get(player);
         if (data.progressBar) {
             Athena.player.emit.createProgressBar(player, {
-                uid: `Farming-${player.data._id.toString()}`,
+                uid: `Farming-${playerData._id.toString()}`,
                 color: data.progressBar.color as alt.RGBA,
                 distance: data.progressBar.distance,
                 milliseconds: data.farmDuration,
@@ -88,10 +72,11 @@ export class FarmingUtility {
     }
 
     static calculatePercentageBasedOutcome(player: alt.Player, data: IFarming) {
-        const outcomeList: Array<Item> = [];
+        const outcomeList: Array<BaseItem> = [];
         const random = Math.random() * 100;
         for (const outcome of data.outcome) {
-            if (random <= outcome.data.dropchance) {
+            const droppedItem = outcome as unknown as SharedItem<{ dropchance: number }>;
+            if (random <= droppedItem.data.dropchance) {
                 outcomeList.push(outcome);
                 alt.log(`${outcome.name} has dropped.`);
             }
@@ -107,36 +92,18 @@ export class FarmingUtility {
         }
 
         for (const farmingItem of farmingItems) {
-            let itemToAdd = await ItemFactory.get(farmingItem.dbName);
-            if (!itemToAdd) {
-                itemToAdd = await ItemFactory.getByName(farmingItem.name);
-            }
-            if (!itemToAdd) {
-                alt.logWarning(`Could not find item ${farmingItem.name} in database.`);
-                continue;
-            }
+            const isAdded = await Athena.player.inventory.add(player, {
+                dbName: farmingItem.dbName,
+                quantity: 1,
+                data: farmingItem.data,
+            });
+            player.frozen = false;
 
-            const leftOvers = await Athena.player.inventory.addAmountToInventoryReturnRemainingAmount(
-                player,
-                itemToAdd.dbName,
-                1,
-            );
-
-            if (!leftOvers) {
-                Athena.player.emit.notification(player, `You've found ${itemToAdd.name}!`);
-            } else {
-                Athena.player.emit.notification(player, `Your inventory is full!`);
-                break;
+            if (!isAdded) {
+                Athena.player.emit.notification(player, `Can't add ${farmingItem.name} - Inventory full?`);
+                return;
             }
-            this.resyncInventory(player);
         }
-    }
-
-    static resyncInventory(player: alt.Player) {
-        Athena.player.save.save(player, 'inventory', player.data.inventory);
-        Athena.player.save.save(player, 'toolbar', player.data.toolbar);
-        Athena.player.sync.inventory(player);
-        Athena.player.set.frozen(player, false);
     }
 
     static getRandomInt(min: number, max: number) {

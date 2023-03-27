@@ -1,4 +1,5 @@
-import { ItemFactory } from '../../../../../server/systems/item';
+import * as Athena from '@AthenaServer/api';
+
 import { farmingTools } from './farmingLists/farmingTools';
 import { fishingItems } from './farmingRoutes/fishing/fishingItems';
 import { grapeItems } from './farmingRoutes/grapeRoute/grapeItems';
@@ -23,7 +24,6 @@ const itemsToRegister = [
     ...farmingTools,
 ];
 
-itemsToRegister.forEach((item) => {
-    ItemFactory.add(item);
-    ItemFactory.update(item.dbName, item);
+itemsToRegister.forEach(async (item) => {
+    await Athena.systems.inventory.factory.upsertAsync(item);
 });

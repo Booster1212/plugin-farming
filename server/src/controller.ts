@@ -1,11 +1,7 @@
 import * as alt from 'alt-server';
-import { Athena } from '../../../../server/api/athena';
-import { ServerMarkerController } from '../../../../server/streamers/marker';
-import { ServerBlipController } from '../../../../server/systems/blip';
-import { ItemEffects } from '../../../../server/systems/itemEffects';
-import { INVENTORY_TYPE } from '../../../../shared/enums/inventoryTypes';
+import * as Athena from '@AthenaServer/api';
+
 import { farmRegistry } from './defaults/farmingLists/farmRegistry';
-import { Item } from '../../../../shared/interfaces/item';
 import { IFarming } from './interfaces/iFarming';
 import { config } from './config';
 import { FarmingUtility } from './utility';
@@ -18,7 +14,7 @@ export class FarmingController {
 
             if (currentFarm.blips) {
                 currentFarm.blips.forEach((blip) =>
-                    ServerBlipController.append({
+                    Athena.controllers.blip.append({
                         pos: blip.position,
                         shortRange: true,
                         sprite: blip.sprite,
@@ -32,7 +28,7 @@ export class FarmingController {
 
             for (let spot = 0; spot < currentFarm.spots.positions.length; spot++) {
                 if (currentFarm.marker.isMarker) {
-                    ServerMarkerController.append({
+                    Athena.controllers.marker.append({
                         pos: {
                             x: currentFarm.spots.positions[spot].x,
                             y: currentFarm.spots.positions[spot].y,
@@ -52,43 +48,39 @@ export class FarmingController {
                 }
             }
         }
-        ItemEffects.add(FarmingEvents.HANDLE_FARMING, FarmingController.handleFarmingEvent);
         return farmRegistry.length;
     }
 
     private static handleRequiredTool(
         player: alt.Player,
-        item: Item,
         farmingSpot: alt.Vector3,
         farm: IFarming,
         slot: number,
-        type: INVENTORY_TYPE,
+        type: 'inventory' | 'toolbar',
     ): void {
         FarmingUtility.log('Player is in range');
-        if (
-            farm.requiredTool.find(
-                (t) => t.toLowerCase() === item.name.toLowerCase() || t.toLowerCase() === item.dbName.toLowerCase(),
-            )
-        ) {
+        const item = Athena.player.toolbar.getAt(player, slot);
+        if (farm.requiredTool.find((t) => t.toLowerCase() === item.dbName.toLowerCase())) {
             FarmingUtility.log('Farming: Item included');
             if (FarmingController.handleAntiMacro(player, farmingSpot, farm.spots.positions)) {
                 FarmingUtility.log('AntiMacro is true!');
-                FarmingController.handleFarming(player, item, farm, slot, type);
+                FarmingController.handleFarming(player, farm, slot, type);
             } else {
                 FarmingUtility.log('AntiMacro is false!');
                 Athena.player.emit.notification(player, `[ANTIMACRO] - Already used this spot before.`);
             }
         } else {
+            FarmingUtility.log(`requiredTool => ${farm.requiredTool} | item = ${item.dbName.toLowerCase()}`);
             Athena.player.emit.notification(player, `You can't use this item here!`);
         }
     }
 
-    private static async handleFarmingEvent(player: alt.Player, item: Item, slot: number, type: INVENTORY_TYPE) {
+    static async handleFarmingEvent(player: alt.Player, slot: number, type: 'inventory' | 'toolbar') {
         FarmingUtility.log('Item Event was triggered');
         for (const farm of farmRegistry) {
             farm.spots.positions.forEach((farmingSpot) => {
                 if (player.pos.isInRange(farmingSpot, config.rangeToSpot)) {
-                    FarmingController.handleRequiredTool(player, item, farmingSpot, farm, slot, type);
+                    FarmingController.handleRequiredTool(player, farmingSpot, farm, slot, type);
                 }
             });
         }
@@ -104,12 +96,12 @@ export class FarmingController {
             return true;
         }
 
-        const makroKey = 'OSFarming:Spotused-antiMacro';
+        const macroKey = 'OSFarming:Spotused-antiMacro';
 
-        let meta: Array<alt.Vector3> = player.getMeta(makroKey) as Array<alt.Vector3>;
+        let meta: Array<alt.Vector3> = player.getMeta(macroKey) as Array<alt.Vector3>;
         if (!meta) {
             FarmingUtility.log('AntiMacro: Meta is empty');
-            player.setMeta(makroKey, Array.of(currentPosition));
+            player.setMeta(macroKey, Array.of(currentPosition));
             return true;
         }
 
@@ -129,22 +121,21 @@ export class FarmingController {
             if (!config.useAntiMacro) return true;
 
             FarmingUtility.log('AntiMacro: position was recent');
-            player.setMeta(makroKey, checkingList);
+            player.setMeta(macroKey, checkingList);
             return false;
         } else {
             FarmingUtility.log('AntiMacro: position wasnt used recent');
             checkingList.push(currentPosition);
-            player.setMeta(makroKey, checkingList);
+            player.setMeta(macroKey, checkingList);
             return true;
         }
     }
 
     private static async handleFarming(
         player: alt.Player,
-        toolToUse: Item,
         data: IFarming,
         itemSlot: number,
-        inventoryType: INVENTORY_TYPE,
+        inventoryType: 'inventory' | 'toolbar',
     ) {
         FarmingUtility.handleFreezeAndMeta(player);
         FarmingUtility.playFarmingAnimation(player, data);
@@ -154,8 +145,7 @@ export class FarmingController {
 
         alt.setTimeout(async () => {
             FarmingUtility.handleFarmingReward(player, data);
-            FarmingUtility.checkItemDurability(player, toolToUse, inventoryType, itemSlot);
-            FarmingUtility.resyncInventory(player);
+            FarmingUtility.checkItemDurability(player, itemSlot, inventoryType);
 
             player.deleteMeta(`IsFarming`);
         }, data.farmDuration);

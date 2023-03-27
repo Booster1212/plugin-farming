@@ -1,18 +1,14 @@
-import { ITEM_TYPE } from '@AthenaShared/enums/itemTypes';
-import { Item } from '@AthenaShared/interfaces/item';
+import { BaseItem } from '@AthenaShared/interfaces/item';
 
-export const pepperItems: Array<Item> = [
+const pepperBehavior = { canDrop: true, canStack: true };
+export const pepperItems: Array<BaseItem> = [
     {
         name: 'Pepper',
         icon: 'crate',
-        description: 'Some example description.',
-        behavior: ITEM_TYPE.CAN_DROP | ITEM_TYPE.CAN_STACK | ITEM_TYPE.CAN_TRADE,
-        quantity: 1,
+        behavior: pepperBehavior,
         data: {
             dropchance: 100,
         },
         dbName: 'OS-Farming-Pepper',
-        rarity: 0,
-        version: 1,
     },
 ];

@@ -1,16 +1,15 @@
 import * as alt from 'alt-server';
 import * as Athena from '@AthenaServer/api';
+import * as FarmRegistry from '@AthenaPlugins/plugin-farmingsystem/server/src/config/registry';
+import * as FarmConfig from '@AthenaPlugins/plugin-farmingsystem/server/src/config/index';
 
-import { farmRegistry } from './defaults/farmingLists/farmRegistry';
 import { IFarming } from './interfaces/iFarming';
-import { config } from './config';
 import { FarmingUtility } from './utility';
-import { FarmingEvents } from './defaults/events';
 
 export class FarmingController {
     static createSpots() {
-        for (let x = 0; x < farmRegistry.length; x++) {
-            let currentFarm = farmRegistry[x];
+        for (let x = 0; x < FarmRegistry.main.length; x++) {
+            let currentFarm = FarmRegistry.main[x];
 
             if (currentFarm.blips) {
                 currentFarm.blips.forEach((blip) =>
@@ -48,7 +47,7 @@ export class FarmingController {
                 }
             }
         }
-        return farmRegistry.length;
+        return FarmRegistry.main.length;
     }
 
     private static handleRequiredTool(
@@ -77,9 +76,9 @@ export class FarmingController {
 
     static async handleFarmingEvent(player: alt.Player, slot: number, type: 'inventory' | 'toolbar') {
         FarmingUtility.log('Item Event was triggered');
-        for (const farm of farmRegistry) {
+        for (const farm of FarmRegistry.main) {
             farm.spots.positions.forEach((farmingSpot) => {
-                if (player.pos.isInRange(farmingSpot, config.rangeToSpot)) {
+                if (player.pos.isInRange(farmingSpot, FarmConfig.general.rangeToSpot)) {
                     FarmingController.handleRequiredTool(player, farmingSpot, farm, slot, type);
                 }
             });
@@ -118,7 +117,7 @@ export class FarmingController {
                 (c) => c.x === currentPosition.x && c.y === currentPosition.y && c.z === currentPosition.z,
             )
         ) {
-            if (!config.useAntiMacro) return true;
+            if (!FarmConfig.general.antiMacro) return true;
 
             FarmingUtility.log('AntiMacro: position was recent');
             player.setMeta(macroKey, checkingList);

@@ -1,26 +1,11 @@
 import * as alt from 'alt-server';
-import { ANIMATION_FLAGS } from '../../../../../../shared/flags/animationFlags';
-import { IFarming } from '../../interfaces/iFarming';
-import { fishingItems } from '../farmingRoutes/fishing/fishingItems';
-import { fishingLocations } from '../farmingRoutes/fishing/fishingLocations';
-import { grapeItems } from '../farmingRoutes/grapeRoute/grapeItems';
-import { grapeLocations } from '../farmingRoutes/grapeRoute/grapeLocations';
-import { miningItems } from '../farmingRoutes/miningRoute/miningItems';
-import { miningLocations } from '../farmingRoutes/miningRoute/miningLocations';
-import { orangeItems } from '../farmingRoutes/orangeRoute/orangeItems';
-import { orangeLocations } from '../farmingRoutes/orangeRoute/orangeLocations';
-import { pepperItems } from '../farmingRoutes/pepperRoute/pepperItems';
-import { pepperLocations } from '../farmingRoutes/pepperRoute/pepperLocations';
-import { potatoItems } from '../farmingRoutes/potatoRoute/potatoItems';
-import { potatoLocations } from '../farmingRoutes/potatoRoute/potatoLocations';
-import { saladItems } from '../farmingRoutes/saladRoute/saladItems';
-import { saladLocations } from '../farmingRoutes/saladRoute/saladLocations';
-import { tomatoItems } from '../farmingRoutes/tomatoRoute/tomatoItems';
-import { tomatoLocations } from '../farmingRoutes/tomatoRoute/tomatoLocations';
-import { woodItems } from '../farmingRoutes/woodRoute/woodItems';
-import { woodLocations } from '../farmingRoutes/woodRoute/woodLocations';
+import * as FarmingItems from '@AthenaPlugins/plugin-farmingsystem/server/src/config/items';
+import * as FarmingLocations from '@AthenaPlugins/plugin-farmingsystem/server/src/config/locations';
 
-export const farmRegistry: Array<IFarming> = [
+import { IFarming } from '../interfaces/iFarming';
+import { ANIMATION_FLAGS } from '@AthenaShared/flags/animationFlags';
+
+export const main: Array<IFarming> = [
     // MINING ROUTE
     {
         routeName: 'Mining Route',
@@ -68,22 +53,22 @@ export const farmRegistry: Array<IFarming> = [
         },
 
         attacheable: {
-            bone: 60309,
+            bone: 61,
             model: 'prop_tool_jackham',
             pos: { x: 0, y: 0, z: 0 } as alt.Vector3,
             rot: { x: 0, y: 0, z: 0 } as alt.Vector3,
         },
 
         spots: {
-            positions: miningLocations,
+            positions: FarmingLocations.miningLocations,
         },
 
-        outcome: [...miningItems],
+        outcome: [...FarmingItems.miningItems],
     },
     // WOOD ROUTE
     {
         routeName: 'Wood-Route',
-        requiredTool: ['Woodfellers Axe'],
+        requiredTool: ['os-farming-axe'],
         isAnimation: true,
         farmDuration: 3000,
 
@@ -122,7 +107,7 @@ export const farmRegistry: Array<IFarming> = [
         },
 
         attacheable: {
-            bone: 6286,
+            bone: 91,
             model: 'prop_ld_fireaxe',
             pos: { x: 0.05, y: -0.1, z: -0.06 } as alt.Vector3,
             rot: { x: 60, y: 0, z: -180 } as alt.Vector3,
@@ -135,14 +120,14 @@ export const farmRegistry: Array<IFarming> = [
         },
 
         spots: {
-            positions: woodLocations,
+            positions: FarmingLocations.woodLocations,
         },
 
-        outcome: [...woodItems],
+        outcome: [...FarmingItems.woodItems],
     },
     {
         routeName: 'Fishing-Route-1',
-        requiredTool: ['Fishing Rod'],
+        requiredTool: ['os-farming-fishing-rod'],
         isAnimation: true,
         farmDuration: 3000,
         blips: [
@@ -189,18 +174,18 @@ export const farmRegistry: Array<IFarming> = [
             model: 'prop_fishing_rod_01',
             pos: { x: 0, y: -0.01, z: 0.01 } as alt.Vector3,
             rot: { x: 0, y: -0.01, z: 0.01 } as alt.Vector3,
-            bone: 60309,
+            bone: 61,
         },
 
         spots: {
-            positions: fishingLocations,
+            positions: FarmingLocations.fishingLocations,
         },
 
-        outcome: [...fishingItems],
+        outcome: [...FarmingItems.fishingItems],
     },
     {
         routeName: 'Tomato-Route',
-        requiredTool: ['Garden Shears'],
+        requiredTool: ['os-farming-garden-shears'],
         isAnimation: true,
         farmDuration: 60000,
         blips: [
@@ -244,22 +229,22 @@ export const farmRegistry: Array<IFarming> = [
         },
 
         attacheable: {
-            bone: 57005,
+            bone: 71,
             model: 'v_ret_gc_scissors',
             pos: { x: 0.2, y: 0.09, z: 0.05 } as alt.Vector3,
             rot: { x: -55, y: -145, z: 10 } as alt.Vector3,
         },
 
         spots: {
-            positions: tomatoLocations,
+            positions: FarmingLocations.tomatoLocations,
         },
 
-        outcome: [...tomatoItems],
+        outcome: [...FarmingItems.tomatoItems],
     },
 
     {
         routeName: 'Orange-Route',
-        requiredTool: ['Garden Shears'],
+        requiredTool: ['os-farming-garden-shears'],
         isAnimation: true,
         farmDuration: 60000,
         blips: [
@@ -298,7 +283,7 @@ export const farmRegistry: Array<IFarming> = [
 
         attacheable: {
             model: 'ng_proc_food_ornge1a',
-            bone: 57005,
+            bone: 71,
             pos: { x: 0.16, y: 0.01, z: -0.01 } as alt.Vector3,
             rot: { x: -15, y: -150, z: -95 } as alt.Vector3,
         },
@@ -310,14 +295,14 @@ export const farmRegistry: Array<IFarming> = [
         },
 
         spots: {
-            positions: orangeLocations,
+            positions: FarmingLocations.orangeLocations,
         },
 
-        outcome: [...orangeItems],
+        outcome: [...FarmingItems.orangeItems],
     },
     {
         routeName: 'Salad-Route',
-        requiredTool: ['Garden Shears'],
+        requiredTool: ['os-farming-garden-shears'],
         isAnimation: true,
         farmDuration: 60000,
         blips: [
@@ -361,21 +346,21 @@ export const farmRegistry: Array<IFarming> = [
         },
 
         attacheable: {
-            bone: 57005,
+            bone: 71,
             model: 'prop_cs_trowel',
             pos: { x: 0.1, y: 0.01, z: -0.03 } as alt.Vector3,
             rot: { x: 130, y: 70, z: -5 } as alt.Vector3,
         },
 
         spots: {
-            positions: saladLocations,
+            positions: FarmingLocations.saladLocations,
         },
 
-        outcome: [...saladItems],
+        outcome: [...FarmingItems.saladItems],
     },
     {
         routeName: 'Potato-Route',
-        requiredTool: ['Garden Shears'],
+        requiredTool: ['os-farming-garden-shears'],
         isAnimation: true,
         farmDuration: 60000,
         blips: [
@@ -419,21 +404,21 @@ export const farmRegistry: Array<IFarming> = [
         },
 
         attacheable: {
-            bone: 57005,
+            bone: 71,
             model: 'prop_cs_trowel',
             pos: { x: 0.1, y: 0.01, z: -0.03 } as alt.Vector3,
             rot: { x: 130, y: 70, z: -5 } as alt.Vector3,
         },
 
         spots: {
-            positions: potatoLocations,
+            positions: FarmingLocations.potatoLocations,
         },
 
-        outcome: [...potatoItems],
+        outcome: [...FarmingItems.potatoItems],
     },
     {
         routeName: 'Pepper-Route',
-        requiredTool: ['Garden Shears'],
+        requiredTool: ['os-farming-garden-shears'],
         isAnimation: true,
         farmDuration: 60000,
         blips: [
@@ -477,21 +462,21 @@ export const farmRegistry: Array<IFarming> = [
         },
 
         attacheable: {
-            bone: 57005,
+            bone: 71,
             model: 'prop_cs_trowel',
             pos: { x: 0.1, y: 0.01, z: -0.03 } as alt.Vector3,
             rot: { x: 130, y: 70, z: -5 } as alt.Vector3,
         },
 
         spots: {
-            positions: pepperLocations,
+            positions: FarmingLocations.pepperLocations,
         },
 
-        outcome: [...pepperItems],
+        outcome: [...FarmingItems.pepperItems],
     },
     {
         routeName: 'Grape-Route',
-        requiredTool: ['Garden Shears'],
+        requiredTool: ['os-farming-garden-shears'],
         isAnimation: true,
         farmDuration: 60000,
         blips: [
@@ -535,14 +520,14 @@ export const farmRegistry: Array<IFarming> = [
         },
 
         attacheable: {
-            bone: 57005,
+            bone: 71,
             model: 'prop_cs_trowel',
             pos: { x: 0.1, y: 0.01, z: -0.03 } as alt.Vector3,
             rot: { x: 130, y: 70, z: -5 } as alt.Vector3,
         },
         spots: {
-            positions: grapeLocations,
+            positions: FarmingLocations.grapeLocations,
         },
-        outcome: [...grapeItems],
+        outcome: [...FarmingItems.grapeItems],
     },
 ];

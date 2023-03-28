@@ -1,10 +1,10 @@
 import * as alt from 'alt-server';
 import * as Athena from '@AthenaServer/api';
+import * as FarmConfig from '@AthenaPlugins/plugin-farmingsystem/server/src/config/index';
 
 import IAttachable from '../../../../shared/interfaces/iAttachable';
 import { BaseItem, SharedItem } from '../../../../shared/interfaces/item';
 import { Particle } from '../../../../shared/interfaces/particle';
-import { config } from './config';
 import { IFarming } from './interfaces/iFarming';
 
 export class FarmingUtility {
@@ -113,7 +113,7 @@ export class FarmingUtility {
     }
 
     static log(message: string) {
-        if (!config.enableLogging) return;
+        if (!FarmConfig.general.debug) return;
 
         alt.log(`~lg~[OS-Farming]: ${message}`);
     }

@@ -1,6 +1,6 @@
 import * as alt from 'alt-server';
 import * as Athena from '@AthenaServer/api';
-import * as FarmItems from '@AthenaPlugins/plugin-farmingsystem/server/src/config/items';
+import * as FarmItems from '@AthenaPlugins/plugin-farming/server/src/config/items';
 
 import { FarmingController } from './src/controller';
 

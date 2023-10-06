@@ -1,7 +1,7 @@
 import * as alt from 'alt-server';
 import * as Athena from '@AthenaServer/api';
-import * as FarmRegistry from '@AthenaPlugins/plugin-farmingsystem/server/src/config/registry';
-import * as FarmConfig from '@AthenaPlugins/plugin-farmingsystem/server/src/config/index';
+import * as FarmRegistry from '@AthenaPlugins/plugin-farming/server/src/config/registry';
+import * as FarmConfig from '@AthenaPlugins/plugin-farming/server/src/config/index';
 
 import { IFarming } from './interfaces/iFarming';
 import { FarmingUtility } from './utility';

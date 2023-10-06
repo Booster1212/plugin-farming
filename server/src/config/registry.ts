@@ -1,6 +1,6 @@
 import * as alt from 'alt-server';
-import * as FarmingItems from '@AthenaPlugins/plugin-farmingsystem/server/src/config/items';
-import * as FarmingLocations from '@AthenaPlugins/plugin-farmingsystem/server/src/config/locations';
+import * as FarmingItems from '@AthenaPlugins/plugin-farming/server/src/config/items';
+import * as FarmingLocations from '@AthenaPlugins/plugin-farming/server/src/config/locations';
 
 import { IFarming } from '../interfaces/iFarming';
 import { ANIMATION_FLAGS } from '@AthenaShared/flags/animationFlags';

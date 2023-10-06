@@ -1,6 +1,6 @@
 import * as alt from 'alt-server';
 import * as Athena from '@AthenaServer/api';
-import * as FarmConfig from '@AthenaPlugins/plugin-farmingsystem/server/src/config/index';
+import * as FarmConfig from '@AthenaPlugins/plugin-farming/server/src/config/index';
 
 import IAttachable from '../../../../shared/interfaces/iAttachable';
 import { BaseItem, SharedItem } from '../../../../shared/interfaces/item';

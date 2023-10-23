@@ -1,8 +1,8 @@
 import * as alt from 'alt-server';
-import * as Athena from '@AthenaServer/api';
-import * as FarmItems from '@AthenaPlugins/plugin-farming/server/src/config/items';
+import * as Athena from '@AthenaServer/api/index.js';
+import * as FarmItems from '@AthenaPlugins/plugin-farming/server/src/config/items.js';
 
-import { FarmingController } from './src/controller';
+import { FarmingController } from './src/controller.js';
 
 const PLUGIN_NAME = 'Farming System';
 const AUTHORS = ['Der Lord!', 'deeMace'];

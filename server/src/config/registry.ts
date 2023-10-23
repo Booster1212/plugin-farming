@@ -1,9 +1,9 @@
 import * as alt from 'alt-server';
-import * as FarmingItems from '@AthenaPlugins/plugin-farming/server/src/config/items';
-import * as FarmingLocations from '@AthenaPlugins/plugin-farming/server/src/config/locations';
+import * as FarmingItems from '@AthenaPlugins/plugin-farming/server/src/config/items.js';
+import * as FarmingLocations from '@AthenaPlugins/plugin-farming/server/src/config/locations.js';
 
-import { IFarming } from '../interfaces/iFarming';
-import { ANIMATION_FLAGS } from '@AthenaShared/flags/animationFlags';
+import { IFarming } from '../interfaces/iFarming.js';
+import { ANIMATION_FLAGS } from '@AthenaShared/flags/animationFlags.js';
 
 export const main: Array<IFarming> = [
     // MINING ROUTE

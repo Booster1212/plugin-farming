@@ -1,5 +1,5 @@
-import * as Athena from '@AthenaServer/api';
-import * as FarmingItems from '@AthenaPlugins/plugin-farming/server/src/config/items';
+import * as Athena from '@AthenaServer/api/index.js';
+import * as FarmingItems from '@AthenaPlugins/plugin-farming/server/src/config/items.js';
 
 export const general = {
     debug: true,

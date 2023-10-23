@@ -1,10 +1,10 @@
 import * as alt from 'alt-server';
-import * as Athena from '@AthenaServer/api';
-import * as FarmRegistry from '@AthenaPlugins/plugin-farming/server/src/config/registry';
-import * as FarmConfig from '@AthenaPlugins/plugin-farming/server/src/config/index';
+import * as Athena from '@AthenaServer/api/index.js';
+import * as FarmRegistry from '@AthenaPlugins/plugin-farming/server/src/config/registry.js';
+import * as FarmConfig from '@AthenaPlugins/plugin-farming/server/src/config/index.js';
 
-import { IFarming } from './interfaces/iFarming';
-import { FarmingUtility } from './utility';
+import { IFarming } from './interfaces/iFarming.js';
+import { FarmingUtility } from './utility.js';
 
 export class FarmingController {
     static createSpots() {

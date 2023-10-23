@@ -1,4 +1,4 @@
-import { BaseItem } from '@AthenaShared/interfaces/item';
+import { BaseItem } from '@AthenaShared/interfaces/item.js';
 
 export const Events = {
     FARMING_START: 'os-farming:start-farming',

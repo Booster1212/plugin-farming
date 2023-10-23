@@ -1,6 +1,6 @@
-import { BaseItem, Item } from '@AthenaShared/interfaces/item';
+import { BaseItem, Item } from '@AthenaShared/interfaces/item.js';
 import * as alt from 'alt-server';
-import { ANIMATION_FLAGS } from '../../../../../shared/flags/animationFlags';
+import { ANIMATION_FLAGS } from '../../../../../shared/flags/animationFlags.js';
 
 export interface IFarming {
     routeName: string;

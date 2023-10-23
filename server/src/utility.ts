@@ -1,11 +1,11 @@
 import * as alt from 'alt-server';
-import * as Athena from '@AthenaServer/api';
-import * as FarmConfig from '@AthenaPlugins/plugin-farming/server/src/config/index';
+import * as Athena from '@AthenaServer/api/index.js';
+import * as FarmConfig from '@AthenaPlugins/plugin-farming/server/src/config/index.js';
 
-import IAttachable from '../../../../shared/interfaces/iAttachable';
-import { BaseItem, SharedItem } from '../../../../shared/interfaces/item';
-import { Particle } from '../../../../shared/interfaces/particle';
-import { IFarming } from './interfaces/iFarming';
+import IAttachable from '../../../../shared/interfaces/iAttachable.js';
+import { BaseItem, SharedItem } from '../../../../shared/interfaces/item.js';
+import { Particle } from '../../../../shared/interfaces/particle.js';
+import { IFarming } from './interfaces/iFarming.js';
 
 export class FarmingUtility {
     static handleFreezeAndMeta(player: alt.Player) {

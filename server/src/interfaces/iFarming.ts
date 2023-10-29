@@ -1,67 +1,28 @@
-import { BaseItem, Item } from '@AthenaShared/interfaces/item.js';
 import * as alt from 'alt-server';
-import { ANIMATION_FLAGS } from '../../../../../shared/flags/animationFlags.js';
+import IAttachable from '@AthenaShared/interfaces/iAttachable.js';
 
+import { BaseItem } from '@AthenaShared/interfaces/item.js';
+import { Marker } from '@AthenaShared/interfaces/marker.js';
+import { Blip } from 'alt-server';
+import { Animation } from '@AthenaShared/interfaces/animation.js';
+import { ProgressBar } from '@AthenaShared/interfaces/progressBar.js';
+import { Particle } from '@AthenaShared/interfaces/particle.js';
+
+interface CustomMarker extends Marker {
+    isMarker: boolean;
+}
 export interface IFarming {
     routeName: string;
     requiredTool?: Array<string>;
     isAnimation: boolean;
-    farmDuration: number;
+    duration: number;
 
-    blips?: [
-        {
-            text: string;
-            sprite: number;
-            color: number;
-            scale: number;
-            position: alt.Vector3;
-        },
-    ];
-
-    marker?: {
-        type: number;
-        color: {
-            r: number;
-            g: number;
-            b: number;
-            a: number;
-        };
-        bobUpAndDown: boolean;
-        rotate: boolean;
-        isMarker: boolean;
-    };
-
-    animation?: {
-        dict: string;
-        name: string;
-        flags: ANIMATION_FLAGS;
-    };
-
-    attacheable?: {
-        bone: number;
-        model: string;
-        pos: alt.Vector3;
-        rot: alt.Vector3;
-    };
-
-    progressBar?: {
-        color: {
-            r: number;
-            g: number;
-            b: number;
-            a: number;
-        };
-        distance: number;
-        text: string;
-    };
-
-    particles?: {
-        pos: alt.Vector3;
-        dict: string;
-        name: string;
-        duration: number;
-        scale: number;
-    };
+    blips?: Array<Partial<Blip>>;
+    marker?: Partial<CustomMarker>;
+    animation?: Partial<Animation>;
+    attacheable?: IAttachable;
+    progressBar?: Partial<ProgressBar>;
+    particles?: Particle;
 
     spots: {
         positions: Array<alt.Vector3>;

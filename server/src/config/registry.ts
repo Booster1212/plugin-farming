@@ -5,31 +5,29 @@ import * as FarmingLocations from '@AthenaPlugins/plugin-farming/server/src/conf
 import { IFarming } from '../interfaces/iFarming.js';
 import { ANIMATION_FLAGS } from '@AthenaShared/flags/animationFlags.js';
 
+const markerColorAll = new alt.RGBA(10, 156, 0, 255);
+const progressBarColorAll = new alt.RGBA(255, 0, 0, 255);
+
 export const main: Array<IFarming> = [
     // MINING ROUTE
     {
         routeName: 'Mining Route',
         requiredTool: ['os-farming-drill'],
         isAnimation: true,
-        farmDuration: 10000,
+        duration: 10000,
         blips: [
             {
-                text: 'Miners Place',
+                name: 'Miners Place',
                 color: 40,
                 sprite: 88,
                 scale: 1,
-                position: { x: 2912.41748046875, y: 2778.765380859375, z: 44.96366882324219 - 1 } as alt.Vector3,
+                pos: { x: 2912.41748046875, y: 2778.765380859375, z: 44.96366882324219 - 1 } as alt.Vector3,
             },
         ],
 
         marker: {
             type: 2,
-            color: {
-                r: 10,
-                g: 156,
-                b: 0,
-                a: 255,
-            },
+            color: markerColorAll,
             bobUpAndDown: true,
             rotate: true,
             isMarker: true,
@@ -42,12 +40,7 @@ export const main: Array<IFarming> = [
         },
 
         progressBar: {
-            color: {
-                r: 255,
-                g: 0,
-                b: 0,
-                a: 255,
-            },
+            color: progressBarColorAll,
             distance: 15,
             text: 'Mining...',
         },
@@ -70,38 +63,28 @@ export const main: Array<IFarming> = [
         routeName: 'Wood-Route',
         requiredTool: ['os-farming-axe'],
         isAnimation: true,
-        farmDuration: 3000,
+        duration: 3000,
 
         blips: [
             {
-                text: 'Woodfellers Place',
+                name: 'Woodfellers Place',
                 color: 56,
                 sprite: 801,
                 scale: 1,
-                position: { x: -474.09478759765625, y: 5587.1962890625, z: 69.96195220947266 } as alt.Vector3,
+                pos: { x: -474.09478759765625, y: 5587.1962890625, z: 69.96195220947266 } as alt.Vector3,
             },
         ],
 
         marker: {
             type: 2,
-            color: {
-                r: 10,
-                g: 156,
-                b: 0,
-                a: 255,
-            },
+            color: markerColorAll,
             bobUpAndDown: true,
             rotate: true,
             isMarker: true,
         },
 
         progressBar: {
-            color: {
-                r: 255,
-                g: 0,
-                b: 0,
-                a: 255,
-            },
+            color: progressBarColorAll,
             distance: 15,
             text: 'Woodfelling...',
         },
@@ -129,25 +112,20 @@ export const main: Array<IFarming> = [
         routeName: 'Fishing-Route-1',
         requiredTool: ['os-farming-fishing-rod'],
         isAnimation: true,
-        farmDuration: 3000,
+        duration: 3000,
         blips: [
             {
-                text: 'Fishermens Place',
+                name: 'Fishermens Place',
                 color: 56,
                 sprite: 801,
                 scale: 1,
-                position: { x: 32.57453536987305, y: 855.6867065429688, z: 197.7342987060547 } as alt.Vector3,
+                pos: { x: 32.57453536987305, y: 855.6867065429688, z: 197.7342987060547 } as alt.Vector3,
             },
         ],
 
         marker: {
             type: 2,
-            color: {
-                r: 10,
-                g: 156,
-                b: 0,
-                a: 255,
-            },
+            color: markerColorAll,
             bobUpAndDown: true,
             rotate: true,
             isMarker: true,
@@ -160,12 +138,7 @@ export const main: Array<IFarming> = [
         },
 
         progressBar: {
-            color: {
-                r: 255,
-                g: 0,
-                b: 0,
-                a: 255,
-            },
+            color: progressBarColorAll,
             distance: 15,
             text: 'Farming...',
         },
@@ -187,25 +160,20 @@ export const main: Array<IFarming> = [
         routeName: 'Tomato-Route',
         requiredTool: ['os-farming-garden-shears'],
         isAnimation: true,
-        farmDuration: 60000,
+        duration: 60000,
         blips: [
             {
-                text: 'Tomato Plantation',
+                name: 'Tomato Plantation',
                 color: 1,
                 sprite: 88,
                 scale: 1,
-                position: { x: 322.28570556640625, y: 6487.79345703125, z: 29.161865234375 } as alt.Vector3,
+                pos: { x: 322.28570556640625, y: 6487.79345703125, z: 29.161865234375 } as alt.Vector3,
             },
         ],
 
         marker: {
             type: 2,
-            color: {
-                r: 10,
-                g: 156,
-                b: 0,
-                a: 255,
-            },
+            color: markerColorAll,
             bobUpAndDown: true,
             rotate: true,
             isMarker: true,
@@ -218,12 +186,7 @@ export const main: Array<IFarming> = [
         },
 
         progressBar: {
-            color: {
-                r: 255,
-                g: 0,
-                b: 0,
-                a: 255,
-            },
+            color: progressBarColorAll,
             distance: 15,
             text: 'Farming...',
         },
@@ -246,37 +209,27 @@ export const main: Array<IFarming> = [
         routeName: 'Orange-Route',
         requiredTool: ['os-farming-garden-shears'],
         isAnimation: true,
-        farmDuration: 60000,
+        duration: 60000,
         blips: [
             {
-                text: 'Orange Plantation',
+                name: 'Orange Plantation',
                 color: 17,
                 sprite: 88,
                 scale: 1,
-                position: { x: 350.9010925292969, y: 6516.77783203125, z: 28.5216064453125 } as alt.Vector3,
+                pos: { x: 350.9010925292969, y: 6516.77783203125, z: 28.5216064453125 } as alt.Vector3,
             },
         ],
 
         marker: {
             type: 2,
-            color: {
-                r: 10,
-                g: 156,
-                b: 0,
-                a: 255,
-            },
+            color: markerColorAll,
             bobUpAndDown: true,
             rotate: true,
             isMarker: true,
         },
 
         progressBar: {
-            color: {
-                r: 255,
-                g: 0,
-                b: 0,
-                a: 255,
-            },
+            color: progressBarColorAll,
             distance: 15,
             text: 'Farming...',
         },
@@ -304,25 +257,20 @@ export const main: Array<IFarming> = [
         routeName: 'Salad-Route',
         requiredTool: ['os-farming-garden-shears'],
         isAnimation: true,
-        farmDuration: 60000,
+        duration: 60000,
         blips: [
             {
-                text: 'Salad Plantation',
+                name: 'Salad Plantation',
                 color: 2,
                 sprite: 88,
                 scale: 1,
-                position: { x: 551.5120849609375, y: 6518.59765625, z: 29.819091796875 } as alt.Vector3,
+                pos: { x: 551.5120849609375, y: 6518.59765625, z: 29.819091796875 } as alt.Vector3,
             },
         ],
 
         marker: {
             type: 2,
-            color: {
-                r: 10,
-                g: 156,
-                b: 0,
-                a: 255,
-            },
+            color: markerColorAll,
             bobUpAndDown: true,
             rotate: true,
             isMarker: true,
@@ -335,12 +283,7 @@ export const main: Array<IFarming> = [
         },
 
         progressBar: {
-            color: {
-                r: 255,
-                g: 0,
-                b: 0,
-                a: 255,
-            },
+            color: progressBarColorAll,
             distance: 15,
             text: 'Farming...',
         },
@@ -362,25 +305,20 @@ export const main: Array<IFarming> = [
         routeName: 'Potato-Route',
         requiredTool: ['os-farming-garden-shears'],
         isAnimation: true,
-        farmDuration: 60000,
+        duration: 60000,
         blips: [
             {
-                text: 'Potato Plantation',
+                name: 'Potato Plantation',
                 color: 21,
                 sprite: 88,
                 scale: 1,
-                position: { x: 545.1692504882812, y: 6517.595703125, z: 29.920166015625 } as alt.Vector3,
+                pos: { x: 545.1692504882812, y: 6517.595703125, z: 29.920166015625 } as alt.Vector3,
             },
         ],
 
         marker: {
             type: 2,
-            color: {
-                r: 10,
-                g: 156,
-                b: 0,
-                a: 255,
-            },
+            color: markerColorAll,
             bobUpAndDown: true,
             rotate: true,
             isMarker: true,
@@ -393,12 +331,7 @@ export const main: Array<IFarming> = [
         },
 
         progressBar: {
-            color: {
-                r: 255,
-                g: 0,
-                b: 0,
-                a: 255,
-            },
+            color: progressBarColorAll,
             distance: 15,
             text: 'Farming...',
         },
@@ -420,25 +353,20 @@ export const main: Array<IFarming> = [
         routeName: 'Pepper-Route',
         requiredTool: ['os-farming-garden-shears'],
         isAnimation: true,
-        farmDuration: 60000,
+        duration: 60000,
         blips: [
             {
-                text: 'Pepper Plantation',
+                name: 'Pepper Plantation',
                 color: 25,
                 sprite: 88,
                 scale: 1,
-                position: { x: 393.6263732910156, y: 6594.98876953125, z: 28.5047607421875 } as alt.Vector3,
+                pos: { x: 393.6263732910156, y: 6594.98876953125, z: 28.5047607421875 } as alt.Vector3,
             },
         ],
 
         marker: {
             type: 2,
-            color: {
-                r: 10,
-                g: 156,
-                b: 0,
-                a: 255,
-            },
+            color: markerColorAll,
             bobUpAndDown: true,
             rotate: true,
             isMarker: true,
@@ -451,12 +379,7 @@ export const main: Array<IFarming> = [
         },
 
         progressBar: {
-            color: {
-                r: 255,
-                g: 0,
-                b: 0,
-                a: 255,
-            },
+            color: progressBarColorAll,
             distance: 15,
             text: 'Farming...',
         },
@@ -478,25 +401,20 @@ export const main: Array<IFarming> = [
         routeName: 'Grape-Route',
         requiredTool: ['os-farming-garden-shears'],
         isAnimation: true,
-        farmDuration: 60000,
+        duration: 60000,
         blips: [
             {
-                text: 'Grape Plantation',
+                name: 'Grape Plantation',
                 color: 58,
                 sprite: 88,
                 scale: 1,
-                position: { x: -1888.3385009765625, y: 2049.62646484375, z: 140.977294921875 } as alt.Vector3,
+                pos: { x: -1888.3385009765625, y: 2049.62646484375, z: 140.977294921875 } as alt.Vector3,
             },
         ],
 
         marker: {
             type: 2,
-            color: {
-                r: 10,
-                g: 156,
-                b: 0,
-                a: 255,
-            },
+            color: markerColorAll,
             bobUpAndDown: true,
             rotate: true,
             isMarker: true,
@@ -509,12 +427,7 @@ export const main: Array<IFarming> = [
         },
 
         progressBar: {
-            color: {
-                r: 255,
-                g: 0,
-                b: 0,
-                a: 255,
-            },
+            color: progressBarColorAll,
             distance: 15,
             text: 'Farming...',
         },
